@@ -122,7 +122,6 @@ public:
     virtual void walk(const Position& oldPos, const Position& newPos);
     virtual void stopWalk();
 
-    int getAnimationInterval() override;
     bool isWalking() { return m_walking; }
     bool isRemoved() { return m_removed; }
     bool isInvisible() { return m_outfit.getCategory() == ThingCategoryEffect && m_outfit.getAuxId() == 13; }
@@ -146,7 +145,7 @@ protected:
     void updateWalkingTile();
     virtual void updateWalkAnimation();
     virtual void updateWalkOffset(int totalPixelsWalked);
-    virtual void updateWalk(const bool isPreWalking = false);
+    virtual void updateWalk();
     virtual void nextWalkUpdate();
     virtual void terminateWalk();
 

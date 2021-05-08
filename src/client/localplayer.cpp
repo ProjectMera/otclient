@@ -208,14 +208,6 @@ bool LocalPlayer::autoWalk(const Position& destination)
     m_autoWalkDestination = destination;
     m_lastAutoWalkPosition = m_position.translatedToDirections(limitedPath).back();
 
-    /*
-    // debug calculated path using minimap
-    for(auto pos : m_position.translatedToDirections(limitedPath)) {
-        g_map.getOrCreateTile(pos)->overwriteMinimapColor(215);
-        g_map.notificateTileUpdate(pos);
-    }
-    */
-
     g_game.autoWalk(limitedPath);
     return true;
 }
@@ -233,8 +225,12 @@ void LocalPlayer::stopAutoWalk()
 void LocalPlayer::stopWalk()
 {
     Creature::stopWalk(); // will call terminateWalk
-
     m_lastPrewalkDestination = Position();
+}
+void LocalPlayer::updateWalk()
+{
+    Creature::updateWalk();
+    g_map.notificateCameraMove(m_walkOffset);
 }
 
 void LocalPlayer::updateWalkOffset(int totalPixelsWalked)
@@ -276,13 +272,11 @@ void LocalPlayer::terminateWalk()
 
 void LocalPlayer::onAppear()
 {
-    Creature::onAppear();
+    if(m_position != m_oldPosition) {
+        g_map.notificateCameraMove(m_walkOffset);
+    }
 
-    /* Does not seem to be needed anymore
-    // on teleports lock the walk
-    if(!m_oldPosition.isInRange(m_position,1,1))
-        lockWalk();
-    */
+    Creature::onAppear();
 }
 
 void LocalPlayer::onPositionChange(const Position& newPos, const Position& oldPos)

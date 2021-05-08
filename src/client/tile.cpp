@@ -267,7 +267,6 @@ void Tile::draw(const Point& dest, float scaleFactor, int frameFlags, LightView*
 void Tile::clean()
 {
     m_things.clear();
-    cancelScheduledPainting();
 }
 
 void Tile::addWalkingCreature(const CreaturePtr& creature)
@@ -350,10 +349,6 @@ void Tile::addThing(const ThingPtr& thing, int stackPos)
 
     m_things.insert(m_things.begin() + stackPos, thing);
 
-    if(!thing->isCreature() && thing->hasAnimationPhases()) {
-        m_animatedItems.push_back(thing->static_self_cast<Item>());
-    }
-
     analyzeThing(thing, true);
     checkForDetachableThing();
 
@@ -391,13 +386,6 @@ bool Tile::removeThing(const ThingPtr& thing)
         return false;
 
     analyzeThing(thing, false);
-
-    if(!thing->isCreature() && thing->hasAnimationPhases()) {
-        const auto& subIt = std::find(m_animatedItems.begin(), m_animatedItems.end(), thing->static_self_cast<Item>());
-        if(subIt != m_animatedItems.end()) {
-            m_animatedItems.erase(subIt);
-        }
-    }
 
     m_things.erase(it);
 
@@ -786,16 +774,6 @@ void Tile::checkTranslucentLight()
     tile->m_flags &= ~TILESTATE_TRANSLUECENT_LIGHT;
 }
 
-void Tile::cancelScheduledPainting()
-{
-    if(m_animatedItems.empty()) return;
-
-    for(const ItemPtr& item : m_animatedItems)
-        item->cancelScheduledPainting();
-
-    m_animatedItems.clear();
-}
-
 void Tile::checkForDetachableThing()
 {
     m_highlight.thing = nullptr;
@@ -986,7 +964,6 @@ void Tile::select()
 
     m_highlight.listeningEvent = g_dispatcher.cycleEvent([=]() {
         m_highlight.update = true;
-        g_map.schedulePainting(Otc::FUpdateThing);
     }, 30);
 }
 
@@ -997,6 +974,4 @@ void Tile::unselect()
     m_highlight.enabled = false;
     m_highlight.listeningEvent->cancel();
     m_highlight.listeningEvent = nullptr;
-
-    g_map.schedulePainting(Otc::FUpdateThing);
 }

@@ -192,9 +192,9 @@ void UIMap::onGeometryChange(const Rect& oldRect, const Rect& newRect)
 bool UIMap::onMouseMove(const Point& mousePos, const Point& mouseMoved)
 {
     const Position& pos = getPosition(mousePos);
-    if(pos.isValid() && m_mapView->getLastMousePosition() != pos) {
+    if(pos.isValid() && m_mapView->getMousePosition() != pos) {
         m_mapView->onMouseMove(pos);
-        m_mapView->setLastMousePosition(pos);
+        m_mapView->setMousePosition(pos);
     }
     return UIWidget::onMouseMove(mousePos, mouseMoved);
 }
@@ -217,8 +217,6 @@ void UIMap::updateVisibleDimension()
 
     if(m_keepAspectRatio)
         updateMapSize();
-
-    g_map.schedulePainting(Otc::FUpdateAll, FrameBuffer::FORCE_UPDATE);
 }
 
 void UIMap::updateMapSize()
@@ -239,9 +237,6 @@ void UIMap::updateMapSize()
 
     if(!m_keepAspectRatio)
         updateVisibleDimension();
-    else {
-        g_map.schedulePainting(Otc::FUpdateAll, FrameBuffer::FORCE_UPDATE);
-    }
 }
 
 /* vim: set ts=4 sw=4 et: */

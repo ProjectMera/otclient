@@ -152,8 +152,6 @@ public:
 
     bool isTopGround() const { return m_countFlag.hasTopGround > 0; }
 
-    void cancelScheduledPainting();
-
     bool hasBorderShadowColor() { return m_borderShadowColor != Color::white; }
 
     bool isCovered() { return m_covered; };
@@ -202,8 +200,6 @@ private:
     std::vector<CreaturePtr> m_walkingCreatures;
     std::vector<ThingPtr> m_things;
     std::vector<EffectPtr> m_effects;
-
-    std::vector<ItemPtr> m_animatedItems;
 
     CountFlag m_countFlag;
     Highlight m_highlight;

@@ -140,10 +140,6 @@ public:
     void notificateCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags);
     void notificateCameraMove(const Point& offset);
 
-    void schedulePainting(const Otc::FrameUpdate frameFlags, const uint16_t delay = FrameBuffer::MIN_TIME_UPDATE);
-    void schedulePainting(const Position& pos, const Otc::FrameUpdate frameFlags, const uint16_t delay = FrameBuffer::MIN_TIME_UPDATE);
-    void cancelScheduledPainting(const Otc::FrameUpdate frameFlags, const uint16_t delay);
-
     bool loadOtcm(const std::string& fileName);
     void saveOtcm(const std::string& fileName);
 

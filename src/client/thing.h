@@ -49,9 +49,6 @@ public:
     virtual void draw(const Point& /*dest*/, float /*scaleFactor*/, bool /*animate*/, const Highlight& /*highLight*/, int /*frameFlag*/ = Otc::FUpdateThing, LightView* /*lightView*/ = nullptr) {}
     virtual void setId(uint32 /*id*/) {}
 
-    void schedulePainting(uint16_t delay = FrameBuffer::MIN_TIME_UPDATE);
-    void cancelScheduledPainting();
-
     void setPosition(const Position& position);
 
     virtual uint32 getId() { return 0; }
@@ -61,7 +58,6 @@ public:
     ContainerPtr getParentContainer();
     int getStackPos();
 
-    virtual int getAnimationInterval() { return 0; }
     virtual bool isItem() { return false; }
     virtual bool isEffect() { return false; }
     virtual bool isMissile() { return false; }

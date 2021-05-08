@@ -215,8 +215,6 @@ void Creature::drawOutfit(const Rect& destRect, bool resize)
         const FrameBufferPtr& outfitBuffer = g_framebuffers.getTemporaryFrameBuffer();
         outfitBuffer->resize(Size(frameSize, frameSize));
         outfitBuffer->bind();
-        g_painter->setAlphaWriting(true);
-        g_painter->clear(Color::alpha);
         internalDrawOutfit(Point(frameSize - Otc::TILE_PIXELS) + getDisplacement(), 1, true, false, Otc::South);
         outfitBuffer->release();
         outfitBuffer->draw(destRect, Rect(0, 0, frameSize, frameSize));
@@ -424,7 +422,6 @@ void Creature::updateJump()
     if(isLocalPlayer()) {
         g_map.notificateCameraMove(m_walkOffset);
     }
-    schedulePainting();
 
     int diff = 0;
     if(m_jumpTimer.ticksElapsed() < halfJumpDuration)
@@ -462,12 +459,6 @@ void Creature::onAppear()
         m_disappearEvent->cancel();
         m_disappearEvent = nullptr;
     }
-
-    if(isLocalPlayer() && m_position != m_oldPosition) {
-        g_map.notificateCameraMove(m_walkOffset);
-    }
-
-    g_map.schedulePainting(m_position, Otc::FUpdateThing, getAnimationInterval());
 
     // creature appeared the first time or wasn't seen for a long time
     if(m_removed) {
@@ -530,7 +521,7 @@ void Creature::updateWalkAnimation()
         return;
     }
 
-    const int footDelay = std::max<int>(m_stepCache.getDuration(m_lastStepDirection) / footAnimPhases, 20);
+    const int footDelay = std::max<int>(m_stepCache.getDuration(m_lastStepDirection) / footAnimPhases, 50);
 
     if(m_footTimer.ticksElapsed() >= footDelay) {
         if(m_walkAnimationPhase == footAnimPhases) m_walkAnimationPhase = 1;
@@ -599,10 +590,6 @@ void Creature::nextWalkUpdate()
 
     // do the update
     updateWalk();
-    if(isLocalPlayer()) {
-        g_map.notificateCameraMove(m_walkOffset);
-    }
-    schedulePainting();
 
     if(!m_walking) return;
 
@@ -611,10 +598,10 @@ void Creature::nextWalkUpdate()
     m_walkUpdateEvent = g_dispatcher.scheduleEvent([self] {
         self->m_walkUpdateEvent = nullptr;
         self->nextWalkUpdate();
-    }, std::max<int>(m_stepCache.duration / Otc::TILE_PIXELS, FrameBuffer::MIN_TIME_UPDATE));
+    }, std::max<int>(m_stepCache.duration / Otc::TILE_PIXELS, 16));
 }
 
-void Creature::updateWalk(const bool isPreWalking)
+void Creature::updateWalk()
 {
     int stepDuration = getStepDuration(true);
     stepDuration += (20 - stepDuration * .05);
@@ -635,11 +622,7 @@ void Creature::updateWalk(const bool isPreWalking)
 
     // terminate walk only when client and server side walk are completed
     if(m_walking && m_walkTimer.ticksElapsed() >= stepDuration) {
-        if(!isPreWalking) {
-            terminateWalk();
-        } else {
-            m_walkAnimationPhase = 0;
-        }
+        terminateWalk();
     }
 }
 
@@ -670,7 +653,6 @@ void Creature::terminateWalk()
     m_walkFinishAnimEvent = g_dispatcher.scheduleEvent([self] {
         self->m_walkAnimationPhase = 0;
         self->m_walkFinishAnimEvent = nullptr;
-        self->schedulePainting();
     }, g_game.getServerBeat());
 
 }
@@ -716,10 +698,6 @@ void Creature::setDirection(Otc::Direction direction)
 
 void Creature::setOutfit(const Outfit& outfit)
 {
-    if(m_type != Proto::CREATURE_TYPE_UNKNOW) {
-        cancelScheduledPainting();
-    }
-
     const Outfit oldOutfit = m_outfit;
     if(outfit.getCategory() != ThingCategoryCreature) {
         if(!g_things.isValidDatId(outfit.getAuxId(), outfit.getCategory()))
@@ -737,11 +715,6 @@ void Creature::setOutfit(const Outfit& outfit)
     m_walkAnimationPhase = 0; // might happen when player is walking and outfit is changed.
 
     callLuaField("onOutfitChange", m_outfit, oldOutfit);
-
-    if(m_type != Proto::CREATURE_TYPE_UNKNOW) {
-        g_map.schedulePainting(m_position, Otc::FupdateCreature);
-        g_map.schedulePainting(m_position, Otc::FUpdateThing, getAnimationInterval());
-    }
 
     // Cache
     {
@@ -822,16 +795,12 @@ void Creature::setSkull(uint8 skull)
 {
     m_skull = skull;
     callLuaField("onSkullChange", m_skull);
-
-    g_map.schedulePainting(m_position, Otc::FUpdateCreatureInformation);
 }
 
 void Creature::setShield(uint8 shield)
 {
     m_shield = shield;
     callLuaField("onShieldChange", m_shield);
-
-    g_map.schedulePainting(m_position, Otc::FUpdateCreatureInformation);
 }
 
 void Creature::setEmblem(uint8 emblem)
@@ -910,8 +879,6 @@ void Creature::updateShield()
         }, SHIELD_BLINK_TICKS);
     } else if(!m_shieldBlink)
         m_showShieldTexture = true;
-
-    g_map.schedulePainting(m_position, Otc::FUpdateCreatureInformation);
 }
 
 Point Creature::getDrawOffset()
@@ -1052,17 +1019,6 @@ int Creature::getCurrentAnimationPhase(const bool mount)
     }
 
     return m_walkAnimationPhase;
-}
-
-int Creature::getAnimationInterval()
-{
-    const auto& datType = m_outfit.hasMount() ? rawGetMountThingType() : rawGetThingType();
-
-    const auto idleAnimator = datType->getIdleAnimator();
-    if(idleAnimator) return idleAnimator->getAverageDuration();
-    if(datType->isAnimateAlways()) return 1000 / datType->getAnimationPhases();
-
-    return 0;
 }
 
 int Creature::getExactSize(int layer, int xPattern, int yPattern, int zPattern, int animationPhase)

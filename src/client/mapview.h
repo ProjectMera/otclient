@@ -107,24 +107,24 @@ public:
     void setDrawTexts(bool enable) { m_drawTexts = enable; }
     bool isDrawingTexts() { return m_drawTexts; }
 
-    void setDrawNames(bool enable) { m_drawNames = enable; schedulePainting(Otc::FUpdateCreatureInformation); }
+    void setDrawNames(bool enable) { m_drawNames = enable; }
     bool isDrawingNames() { return m_drawNames; }
 
-    void setDrawHealthBars(bool enable) { m_drawHealthBars = enable; schedulePainting(Otc::FUpdateCreatureInformation); }
+    void setDrawHealthBars(bool enable) { m_drawHealthBars = enable; }
     bool isDrawingHealthBars() { return m_drawHealthBars; }
 
     void setDrawLights(bool enable);
     bool isDrawingLights() { return m_drawLights && m_lightView->isDark(); }
 
-    void setFloorShadowingFlag(const Otc::ShadowFloor flag) { m_lastFloorShadowingColor = Color::white; m_floorShadowingFlag = flag; requestVisibleTilesCacheUpdate(); schedulePainting(Otc::FUpdateThing); }
+    void setFloorShadowingFlag(const Otc::ShadowFloor flag) { m_lastFloorShadowingColor = Color::white; m_floorShadowingFlag = flag; requestVisibleTilesCacheUpdate(); }
     bool hasFloorShadowingFlag(const Otc::ShadowFloor flag) { return m_floorShadowingFlag & flag; }
     bool hasFloorShadowingFlag() { return m_floorShadowingFlag > 0; }
     const Color getLastFloorShadowingColor() { return m_lastFloorShadowingColor; }
 
-    void setDrawViewportEdge(bool enable) { m_drawViewportEdge = enable; schedulePainting(Otc::FUpdateThing); }
+    void setDrawViewportEdge(bool enable) { m_drawViewportEdge = enable; }
     bool isDrawingViewportEdge() { return m_drawViewportEdge; }
 
-    void setDrawManaBar(bool enable) { m_drawManaBar = enable; schedulePainting(Otc::FUpdateCreatureInformation); }
+    void setDrawManaBar(bool enable) { m_drawManaBar = enable; }
     bool isDrawingManaBar() { return m_drawManaBar; }
 
     void move(int32 x, int32 y);
@@ -135,10 +135,6 @@ public:
     Position getPosition(const Point& point, const Size& mapSize);
 
     MapViewPtr asMapView() { return static_self_cast<MapView>(); }
-
-    void schedulePainting(const Otc::FrameUpdate frameFlags, const uint16_t delay = FrameBuffer::MIN_TIME_UPDATE);
-    void schedulePainting(const Position& pos, const Otc::FrameUpdate frameFlags, const uint16_t delay = FrameBuffer::MIN_TIME_UPDATE);
-    void cancelScheduledPainting(const Otc::FrameUpdate frameFlags, uint16_t delay);
 
     void resetLastCamera() { m_lastCameraPosition = Position(); }
 
@@ -153,8 +149,8 @@ public:
     void onPositionChange(const Position& newPos, const Position& oldPos);
     void onMouseMove(const Position& mousePos, const bool isVirtualMove = false);
 
-    void setLastMousePosition(const Position& mousePos) { m_lastMousePosition = mousePos; }
-    const Position& getLastMousePosition() { return m_lastMousePosition; }
+    void setMousePosition(const Position& mousePos) { m_mousePosition = mousePos; }
+    const Position& getMousePosition() { return m_mousePosition; }
 
     void setDrawHighlightTarget(const bool enable) { m_drawHighlightTarget = enable; }
 
@@ -167,16 +163,9 @@ private:
     };
 
     struct FrameCache {
-        FrameBufferPtr tile, staticText, dynamicText,
-            crosshair, creatureInformation;
+        FrameBufferPtr tile, staticText, dynamicText, creatureInformation;
 
         uint32_t flags = 0;
-    };
-
-    struct Crosshair {
-        bool positionChanged = false;
-        Position position;
-        TexturePtr texture;
     };
 
     struct RectCache {
@@ -238,7 +227,7 @@ private:
 
     Position m_customCameraPosition,
         m_lastCameraPosition,
-        m_lastMousePosition;
+        m_mousePosition;
 
     std::array<ViewPort, Otc::InvalidDirection + 1> m_viewPortDirection;
     ViewPort m_viewport;
@@ -270,7 +259,7 @@ private:
 
     FrameCache m_frameCache;
     RectCache m_rectCache;
-    Crosshair m_crosshair;
+    TexturePtr m_crosshairTexture;
     ViewMode m_viewMode;
 
     Color m_lastFloorShadowingColor;
