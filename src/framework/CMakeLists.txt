@@ -277,7 +277,7 @@ if(USE_LIBCPP)
 endif()
 
 if(WIN32)
-    if(NOT MSVC OR CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(NOT MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads")
     endif()
 
@@ -289,7 +289,7 @@ else()
         set(framework_DEFINITIONS ${framework_DEFINITIONS} -D_REENTRANT) # enable thread safe code
         set(SYSTEM_LIBRARIES "")
     else()
-        if(NOT MSVC OR CMAKE_BUILD_TYPE STREQUAL "Debug")
+        if(NOT)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
             set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -rdynamic -Wl,-rpath,./libs") # rdynamic is needed by backtrace.h used in crash handler
             set(SYSTEM_LIBRARIES dl rt)
