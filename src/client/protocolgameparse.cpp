@@ -77,6 +77,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerPing:
                 parsePingBack(msg);
                 break;
+            case Proto::GameServerPingBack:
+                parsePing(msg);
+                break;
             case Proto::GameServerChallenge:
                 parseChallenge(msg);
                 break;
@@ -760,7 +763,12 @@ void ProtocolGame::parseLoginToken(const InputMessagePtr& msg)
     g_game.processLoginToken(unknown);
 }
 
-void ProtocolGame::parsePingBack(const InputMessagePtr& /*msg*/)
+void ProtocolGame::parsePing(const InputMessagePtr&)
+{
+    g_game.processPing();
+}
+
+void ProtocolGame::parsePingBack(const InputMessagePtr&)
 {
     g_game.processPingBack();
 }
