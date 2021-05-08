@@ -126,8 +126,10 @@ set(framework_SOURCES ${framework_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/platform/platform.h
 )
 
+if(NOT MSVC)
 set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/luafunctions.cpp
-                                PROPERTIES LANGUAGE CXX COMPILE_FLAGS "-g0 -Os")
+            PROPERTIES LANGUAGE CXX COMPILE_FLAGS "-g0 -Os")
+endif()
 
 # some build options
 option(USE_STATIC_LIBS "Don't use shared libraries (dlls)" ON)
