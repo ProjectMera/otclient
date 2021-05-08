@@ -240,9 +240,6 @@
     <ClCompile Include="..\src\framework\input\mouse.cpp">
       <Filter>Source Files\framework\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\framework\luaengine\lbitlib.cpp">
-      <Filter>Source Files\framework\luaengine</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\framework\luaengine\luaexception.cpp">
       <Filter>Source Files\framework\luaengine</Filter>
     </ClCompile>
@@ -693,9 +690,6 @@
       <Filter>Header Files\framework\input</Filter>
     </ClInclude>
     <ClInclude Include="..\src\framework\luaengine\declarations.h">
-      <Filter>Header Files\framework\luaengine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\framework\luaengine\lbitlib.h">
       <Filter>Header Files\framework\luaengine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\framework\luaengine\luabinder.h">
