@@ -50,9 +50,7 @@ void GraphicalApplication::init(std::vector<std::string>& args)
     g_window.setOnInputEvent(std::bind(&GraphicalApplication::inputEvent, this, std::placeholders::_1));
     g_window.setOnClose(std::bind(&GraphicalApplication::close, this));
 
-    m_foregroundFrameCache = g_framebuffers.createFrameBuffer();
-    m_foregroundFrameCache->useSchedulePainting(false);
-    m_foregroundFrameCache->setMinTimeUpdate(40);
+    m_foregroundFrameCache = g_framebuffers.createFrameBuffer(true, 40);
 
     g_mouse.init();
 
@@ -160,8 +158,6 @@ void GraphicalApplication::run()
                         // draw foreground
                         if(m_foregroundFrameCache->canUpdate()) {
                             m_foregroundFrameCache->bind();
-                            g_painter->setAlphaWriting(true);
-                            g_painter->clear(Color::alpha);
                             g_ui.render(Fw::ForegroundPane);
 
                             // copy the foreground to a texture

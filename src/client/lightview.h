@@ -53,11 +53,11 @@ public:
     void setGlobalLight(const Light& light) { m_globalLight = light; m_globalLightColor = Color::from8bit(m_globalLight.color, m_globalLight.intensity / static_cast<float>(UINT8_MAX)); }
     void setFloor(const uint8 floor) { m_currentFloor = floor; }
     void setShade(const Point& point);
-    void schedulePainting(const uint16_t delay = FrameBuffer::MIN_TIME_UPDATE) const { if(isDark()) m_lightbuffer->schedulePainting(delay); }
 
     const Light& getGlobalLight() const { return m_globalLight; }
 
     bool canUpdate() const { return isDark() && m_lightbuffer->canUpdate(); }
+    void update() const { if(isDark()) m_lightbuffer->update(); }
     bool isDark() const { return m_globalLight.intensity < 250; }
 
 private:

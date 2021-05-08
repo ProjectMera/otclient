@@ -87,13 +87,6 @@ void Missile::setPath(const Position& fromPosition, const Position& toPosition)
     // schedule removal
     const auto self = asMissile();
     g_dispatcher.scheduleEvent([self]() { g_map.removeThing(self); }, m_duration);
-
-    schedulePainting(getAnimationInterval());
-}
-
-int Missile::getAnimationInterval()
-{
-    return std::floor((static_cast<float>(Otc::MISSILE_TICKS_PER_FRAME) / Otc::TILE_PIXELS) * 10);
 }
 
 void Missile::setId(uint32 id)

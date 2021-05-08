@@ -34,50 +34,37 @@ static constexpr int32_t MAX_NODES = 512;
 class FrameBuffer : public stdext::shared_object
 {
 protected:
-    FrameBuffer();
+    FrameBuffer(const bool useAlphaWriting, const uint16_t minTimeUpdate);
 
     friend class FrameBufferManager;
 
 public:
-    const static uint8_t
-        MIN_TIME_UPDATE = 16,
-        FORCE_UPDATE = 1,
-        FLUSH_AMOUNT = 25;
-
     virtual ~FrameBuffer();
 
     void resize(const Size& size);
-    void bind();
+    void bind(const bool autoClear = true);
     void release();
     void draw();
+    void clear(const Color color = Color::black);
     void draw(const Rect& dest);
     void draw(const Rect& dest, const Rect& src);
 
     void setBackuping(bool enabled) { m_backuping = enabled; }
     void setSmooth(bool enabled) { m_smooth = enabled; }
-    void setDrawable(bool enabled) { m_drawable = enabled; }
 
     TexturePtr getTexture() { return m_texture; }
     Size getSize();
     bool isBackuping() { return m_backuping; }
     bool isSmooth() { return m_smooth; }
-    bool isDrawable() { return m_drawable; }
 
     bool canUpdate();
     void update();
-    void schedulePainting(const uint16_t time);
-    void removeRenderingTime(const uint16_t time);
     void cleanTexture() { m_texture = nullptr; }
-
-    void useSchedulePainting(const bool use) { m_schedulePaintingEnabled = use; }
-    void setMinTimeUpdate(const uint16 time) { m_minTimeUpdate = time; }
 
 private:
     void internalCreate();
     void internalBind();
     void internalRelease();
-
-    uint16_t flushTime();
 
     TexturePtr m_texture;
     TexturePtr m_screenBackup;
@@ -87,15 +74,13 @@ private:
     stdext::boolean<true> m_forceUpdate;
     stdext::boolean<true> m_backuping;
     stdext::boolean<true> m_smooth;
-    stdext::boolean<true> m_drawable;
-    stdext::boolean<true> m_schedulePaintingEnabled;
+
+    stdext::boolean<false> m_useAlphaWriting;
 
     static uint boundFbo;
 
-    std::unordered_map<uint16_t, std::pair<uint16_t, ScheduledEventPtr>> m_schedules;
     Timer m_lastRenderedTime;
-    uint16_t m_requestAmount;
-    uint16 m_minTimeUpdate;
+    uint16_t m_minTimeUpdate;
 };
 
 #endif

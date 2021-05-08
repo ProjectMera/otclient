@@ -932,8 +932,6 @@ void Game::attack(CreaturePtr creature)
         ++m_seq;
 
     m_protocolGame->sendAttack(creature ? creature->getId() : 0, m_seq);
-
-    g_map.schedulePainting(Otc::FUpdateThing);
 }
 
 void Game::follow(CreaturePtr creature)

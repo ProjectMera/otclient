@@ -108,9 +108,6 @@ void LightView::setShade(const Point& point)
 void LightView::drawLights()
 {
     const auto& shadeBase = std::make_pair<Point, Size>(Point(m_mapView->m_tileSize / 4.8), Size(m_mapView->m_tileSize * 1.4));
-
-    g_painter->setColor(m_globalLightColor);
-    g_painter->drawFilledRect(m_mapView->m_rectDimension);
     for(int_fast8_t z = m_mapView->m_floorMax; z >= m_mapView->m_floorMin; --z) {
         if(z < m_mapView->m_floorMax) {
             g_painter->setColor(m_globalLightColor);
@@ -144,7 +141,8 @@ void LightView::draw(const Rect& dest, const Rect& src)
     if(!isDark()) return;
 
     if(m_lightbuffer->canUpdate()) {
-        m_lightbuffer->bind();
+        m_lightbuffer->bind(false);
+        m_lightbuffer->clear(m_globalLightColor);
         drawLights();
         m_lightbuffer->release();
     }
