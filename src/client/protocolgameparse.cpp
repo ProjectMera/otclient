@@ -566,7 +566,7 @@ void ProtocolGame::parseStore(const InputMessagePtr& msg)
         std::string category = msg->getString();
         std::string description = msg->getString();
 
-        int highlightState = msg->getU8();
+        msg->getU8(); // highlightState
 
         std::vector<std::string> icons;
         int iconCount = msg->getU8();
