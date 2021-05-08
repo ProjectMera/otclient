@@ -101,8 +101,6 @@ set(framework_SOURCES ${framework_SOURCES}
     ${CMAKE_CURRENT_LIST_DIR}/luaengine/luaobject.h
     ${CMAKE_CURRENT_LIST_DIR}/luaengine/luavaluecasts.cpp
     ${CMAKE_CURRENT_LIST_DIR}/luaengine/luavaluecasts.h
-    ${CMAKE_CURRENT_LIST_DIR}/luaengine/lbitlib.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/luaengine/lbitlib.h
 
     # otml
     ${CMAKE_CURRENT_LIST_DIR}/otml/declarations.h
@@ -134,8 +132,11 @@ if(NOT MSVC)
 endif()
 
 # some build options
-option(LUAJIT "Use lua jit" OFF)
-option(USE_STATIC_LIBS "Don't use shared libraries (dlls)" ON)
+option(LUAJIT "Use lua jit" ON)
+message(STATUS "Use lua jit: " ${LUAJIT})
+if(NOT MSVC)
+    option(USE_STATIC_LIBS "Don't use shared libraries (dlls)" ON)
+endif()
 if(NOT APPLE)
     option(CRASH_HANDLER "Generate crash reports" ON)
     option(USE_LIBCPP "Use the new libc++ library instead of stdc++" OFF)
@@ -152,15 +153,15 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif()
 
-set(COMPILER_CXX_EXTRA_FLAGS       "-Wall -Wextra -Wno-unused -Wno-unused-parameter -Wno-unused-result -pipe")
-set(CMAKE_CXX_FLAGS_DEBUG          "-O0 -g")
+set(COMPILER_CXX_EXTRA_FLAGS "-Wall -Wextra -Wno-unused -Wno-unused-parameter -Wno-unused-result -pipe")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O1 -g -fno-omit-frame-pointer")
-set(CMAKE_CXX_FLAGS_RELEASE        "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 if (WIN32 AND MSVC)
-    set(COMPILER_CXX_EXTRA_FLAGS       "/bigobj")
-    set(CMAKE_CXX_FLAGS_DEBUG          "/Od /DEBUG:FULL")
+    set(COMPILER_CXX_EXTRA_FLAGS "/bigobj")
+    set(CMAKE_CXX_FLAGS_DEBUG "/Od /DEBUG:FULL")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O12 /DEBUG:FASTLINK")
-    set(CMAKE_CXX_FLAGS_RELEASE        "/Ot")
+    set(CMAKE_CXX_FLAGS_RELEASE "/Ot")
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILER_CXX_EXTRA_FLAGS} ${ARCH_FLAGS} ${CPP2011_FLAGS}")
@@ -176,10 +177,12 @@ endif()
 
 # process options
 if(USE_STATIC_LIBS)
-    if(NOT APPLE)
-        set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -static-libgcc -static-libstdc++")
+    if(NOT MSVC)
+        if(NOT APPLE)
+            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -static-libgcc -static-libstdc++")
+        endif()
+        message(STATUS "Link to static libraries: ON")
     endif()
-    message(STATUS "Link to static libraries: ON")
 else()
     message(STATUS "Link to static libraries: OFF")
 endif()
@@ -198,20 +201,20 @@ if(WIN32)
     set(framework_DEFINITIONS ${framework_DEFINITIONS} -DBOOST_THREAD_USE_LIB) # fix boost thread linkage
 endif()
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_LIBS ${USE_STATIC_LIBS})
+if(NOT MSVC)
+    set(Boost_USE_STATIC_LIBS ${USE_STATIC_LIBS})
+endif()
 find_package(Boost 1.48.0 COMPONENTS ${REQUIRED_BOOST_COMPONENTS} REQUIRED)
 
 #find lua
 if(LUAJIT)
     find_package(LuaJIT REQUIRED)
-    set(LUA_INCLUDE_DIR ${LUAJIT_INCLUDE_DIR})
-    set(LUA_LIBRARY ${LUAJIT_LIBRARY})
+    set(LUAJIT_INCLUDE_DIR ${LUAJIT_INCLUDE_DIR})
+    set(LUAJIT_LIBRARY ${LUAJIT_LIBRARY})
 
     if(APPLE)
       set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -pagezero_size 10000 -image_base 100000000")
     endif()
-else()
-    find_package(Lua REQUIRED)
 endif()
 message(STATUS "LuaJIT: " ${LUAJIT})
 
@@ -220,14 +223,14 @@ find_package(ZLIB REQUIRED)
 
 set(framework_LIBRARIES ${framework_LIBRARIES}
     ${Boost_LIBRARIES}
-    ${LUA_LIBRARY}
+    ${LUAJIT_LIBRARY}
     ${PHYSFS_LIBRARY}
     ${ZLIB_LIBRARY}
 )
 
 set(framework_INCLUDE_DIRS ${framework_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    ${LUA_INCLUDE_DIR}
+    ${LUAJIT_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
     ${framework_INCLUDE_DIRS}
 )
@@ -252,8 +255,10 @@ else()
         set(framework_DEFINITIONS ${framework_DEFINITIONS} -DNDEBUG) # NDEBUG disable asserts
     endif()
     if(NOT APPLE)
-        set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,-s") # strip all debug information
-        set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,--as-needed") # only link needed libraries
+        if(NOT MSVC)
+            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,-s") # strip all debug information
+            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,--as-needed") # only link needed libraries
+        endif()
     endif()
 endif()
 
@@ -272,7 +277,7 @@ if(USE_LIBCPP)
 endif()
 
 if(WIN32)
-    if(NOT MSVC)
+    if(NOT MSVC OR CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads")
     endif()
 
@@ -284,9 +289,11 @@ else()
         set(framework_DEFINITIONS ${framework_DEFINITIONS} -D_REENTRANT) # enable thread safe code
         set(SYSTEM_LIBRARIES "")
     else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-        set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -rdynamic -Wl,-rpath,./libs") # rdynamic is needed by backtrace.h used in crash handler
-        set(SYSTEM_LIBRARIES dl rt)
+        if(NOT MSVC OR CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -rdynamic -Wl,-rpath,./libs") # rdynamic is needed by backtrace.h used in crash handler
+            set(SYSTEM_LIBRARIES dl rt)
+        endif()
     endif()
 endif()
 set(framework_LIBRARIES ${framework_LIBRARIES} ${SYSTEM_LIBRARIES})
@@ -330,8 +337,10 @@ if(FRAMEWORK_GRAPHICS)
         if(WINDOWS_CONSOLE)
             message(STATUS "Windows console: ON")
         else()
-            set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -mwindows")
-            message(STATUS "Windows console: OFF")
+            if(NOT MSVC)
+                set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -mwindows")
+                message(STATUS "Windows console: OFF")
+            endif()
         endif()
 
         # native dx9 support while its under development
