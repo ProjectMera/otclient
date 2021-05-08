@@ -1,4 +1,25 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+
+# CMAKE
+# apt install build-essential git
+# git clone https://github.com/Kitware/CMake/; cd CMake
+# ./bootstrap && make && sudo make install
+
+# VCPKG
+# cmake -DCMAKE_TOOLCHAIN_FILE=/opt/workspace/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+# ./vcpkg install boost-asio boost-lockfree boost-variant boost-filesystem boost-iostreams boost-system libmariadb pugixml spdlog
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      CACHE STRING "")
+endif()
+
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
+set(VCPKG_FEATURE_FLAGS "versions")
+set(VCPKG_BUILD_TYPE "release")
+
 project(otclient)
 
 set(VERSION "1.0.0")
@@ -16,8 +37,6 @@ include(src/client/CMakeLists.txt)
 if(NOT APPLE)
     set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,-Map=${PROJECT_NAME}.map")
 endif()
-
-option(USE_PCH "Use precompiled header (speed up compile)" ON)
 
 set(executable_SOURCES
     src/main.cpp
@@ -56,14 +75,6 @@ target_link_libraries(${PROJECT_NAME} ${framework_LIBRARIES})
 
 if(APPLE AND USE_STATIC_LIBS)
     target_link_libraries(${PROJECT_NAME} "-framework Foundation" "-framework IOKit")
-endif()
-
-if(USE_PCH)
-    include(cotire)
-    cotire(${PROJECT_NAME})
-    message(STATUS "Use precompiled header: ON")
-else()
-    message(STATUS "Use precompiled header: OFF")
 endif()
 
 # installation

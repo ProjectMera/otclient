@@ -130,7 +130,6 @@ set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/luafunctions.cpp
                                 PROPERTIES LANGUAGE CXX COMPILE_FLAGS "-g0 -Os")
 
 # some build options
-option(LUAJIT "Use lua jit" ON)
 option(USE_STATIC_LIBS "Don't use shared libraries (dlls)" ON)
 if(NOT APPLE)
     option(CRASH_HANDLER "Generate crash reports" ON)
@@ -198,16 +197,13 @@ set(Boost_USE_STATIC_LIBS ${USE_STATIC_LIBS})
 find_package(Boost 1.48.0 COMPONENTS ${REQUIRED_BOOST_COMPONENTS} REQUIRED)
 
 #find lua
-if(LUAJIT)
-    find_package(LuaJIT REQUIRED)
-    set(LUAJIT_INCLUDE_DIR ${LUAJIT_INCLUDE_DIR})
-    set(LUAJIT_LIBRARY ${LUAJIT_LIBRARY})
+find_package(LuaJIT REQUIRED)
+set(LUAJIT_INCLUDE_DIR ${LUAJIT_INCLUDE_DIR})
+set(LUAJIT_LIBRARY ${LUAJIT_LIBRARY})
 
-    if(APPLE)
-      set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -pagezero_size 10000 -image_base 100000000")
-    endif()
+if(APPLE)
+    set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -pagezero_size 10000 -image_base 100000000")
 endif()
-message(STATUS "LuaJIT: " ${LUAJIT})
 
 find_package(PhysFS REQUIRED)
 find_package(ZLIB REQUIRED)
