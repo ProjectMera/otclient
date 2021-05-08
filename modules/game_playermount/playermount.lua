@@ -15,15 +15,11 @@ function terminate()
 end
 
 function online()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_keyboard.bindKeyDown('Ctrl+R', toggleMount)
-  end
+  g_keyboard.bindKeyDown('Ctrl+R', toggleMount)
 end
 
 function offline()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_keyboard.unbindKeyDown('Ctrl+R')
-  end
+  g_keyboard.unbindKeyDown('Ctrl+R')
 end
 
 function toggleMount()

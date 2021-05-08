@@ -160,7 +160,6 @@ private:
     void parseLoginAdvice(const InputMessagePtr& msg);
     void parseLoginWait(const InputMessagePtr& msg);
     void parseLoginToken(const InputMessagePtr& msg);
-    void parsePing(const InputMessagePtr& msg);
     void parsePingBack(const InputMessagePtr& msg);
     void parseChallenge(const InputMessagePtr& msg);
     void parseDeath(const InputMessagePtr& msg);

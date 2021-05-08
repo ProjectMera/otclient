@@ -76,18 +76,10 @@ function setSpelllistProfile(name)
 end
 
 function online()
-  if g_game.getFeature(GameSpellList) then
-    spelllistButton:show()
-  else
-    spelllistButton:hide()
-  end
+  spelllistButton:show()
 
   -- Vocation is only send in newer clients
-  if g_game.getClientVersion() >= 950 then
-    spelllistWindow:getChildById('buttonFilterVocation'):setVisible(true)
-  else
-    spelllistWindow:getChildById('buttonFilterVocation'):setVisible(false)
-  end
+  spelllistWindow:getChildById('buttonFilterVocation'):setVisible(true)
 end
 
 function offline()

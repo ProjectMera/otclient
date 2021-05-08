@@ -82,21 +82,15 @@ function Player:isMounted()
 end
 
 function Player:toggleMount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(not self:isMounted())
-  end
+  g_game.mount(not self:isMounted())
 end
 
 function Player:mount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(true)
-  end
+  g_game.mount(true)
 end
 
 function Player:dismount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(false)
-  end
+  g_game.mount(false)
 end
 
 function Player:getItem(itemId, subType)
