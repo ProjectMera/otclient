@@ -34,20 +34,8 @@ void Effect::drawEffect(const Point& dest, float scaleFactor, int frameFlag, Lig
     // It only starts to draw when the first effect as it is about to end.
     if(m_animationTimer.ticksElapsed() < m_timeToStartDrawing) return;
 
-    int animationPhase;
-
-    if(g_game.getFeature(Otc::GameEnhancedAnimations)) {
-        // This requires a separate getPhaseAt method as using getPhase would make all magic effects use the same phase regardless of their appearance time
-        animationPhase = rawGetThingType()->getAnimator()->getPhaseAt(m_animationTimer.ticksElapsed());
-    } else {
-        // hack to fix some animation phases duration, currently there is no better solution
-        int ticks = Otc::EFFECT_TICKS_PER_FRAME;
-        if(m_id == 33) {
-            ticks <<= 2;
-        }
-
-        animationPhase = std::min<int>(static_cast<int>(m_animationTimer.ticksElapsed() / ticks), getAnimationPhases() - 1);
-    }
+    // This requires a separate getPhaseAt method as using getPhase would make all magic effects use the same phase regardless of their appearance time
+    int animationPhase = rawGetThingType()->getAnimator()->getPhaseAt(m_animationTimer.ticksElapsed());
 
     const int xPattern = m_position.x % getNumPatternX();
     const int yPattern = m_position.y % getNumPatternY();
@@ -59,18 +47,7 @@ void Effect::onAppear()
 {
     m_animationTimer.restart();
 
-    if(g_game.getFeature(Otc::GameEnhancedAnimations)) {
-        m_duration = getThingType()->getAnimator()->getTotalDuration();
-    } else {
-        m_duration = Otc::EFFECT_TICKS_PER_FRAME;
-
-        // hack to fix some animation phases duration, currently there is no better solution
-        if(m_id == 33) {
-            m_duration <<= 2;
-        }
-
-        m_duration *= getAnimationPhases();
-    }
+    m_duration = getThingType()->getAnimator()->getTotalDuration();
 
     // schedule removal
     const auto self = asEffect();

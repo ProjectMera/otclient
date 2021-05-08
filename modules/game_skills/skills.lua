@@ -185,18 +185,10 @@ end
 
 function update()
   local offlineTraining = skillsWindow:recursiveGetChildById('offlineTraining')
-  if not g_game.getFeature(GameOfflineTrainingTime) then
-    offlineTraining:hide()
-  else
-    offlineTraining:show()
-  end
+  offlineTraining:show()
 
   local regenerationTime = skillsWindow:recursiveGetChildById('regenerationTime')
-  if not g_game.getFeature(GamePlayerRegenerationTime) then
-    regenerationTime:hide()
-  else
-    regenerationTime:show()
-  end
+  regenerationTime:show()
 end
 
 function refresh()
@@ -218,13 +210,12 @@ function refresh()
   onRegenerationChange(player, player:getRegenerationTime())
   onSpeedChange(player, player:getSpeed())
 
-  local hasAdditionalSkills = g_game.getFeature(GameAdditionalSkills)
   for i = Skill.Fist, Skill.ManaLeechAmount do
     onSkillChange(player, i, player:getSkillLevel(i), player:getSkillLevelPercent(i))
     onBaseSkillChange(player, i, player:getSkillBaseLevel(i))
 
     if i > Skill.Fishing then
-      toggleSkill('skillId'..i, hasAdditionalSkills)
+      toggleSkill('skillId'..i, true)
     end
   end
 
@@ -232,11 +223,7 @@ function refresh()
 
   local contentsPanel = skillsWindow:getChildById('contentsPanel')
   skillsWindow:setContentMinimumHeight(44)
-  if hasAdditionalSkills then
-    skillsWindow:setContentMaximumHeight(480)
-  else
-    skillsWindow:setContentMaximumHeight(390)
-  end
+  skillsWindow:setContentMaximumHeight(480)
 end
 
 function offline()
@@ -371,9 +358,6 @@ function onStaminaChange(localPlayer, stamina)
 end
 
 function onOfflineTrainingChange(localPlayer, offlineTrainingTime)
-  if not g_game.getFeature(GameOfflineTrainingTime) then
-    return
-  end
   local hours = math.floor(offlineTrainingTime / 60)
   local minutes = offlineTrainingTime % 60
   if minutes < 10 then
@@ -386,9 +370,6 @@ function onOfflineTrainingChange(localPlayer, offlineTrainingTime)
 end
 
 function onRegenerationChange(localPlayer, regenerationTime)
-  if not g_game.getFeature(GamePlayerRegenerationTime) or regenerationTime < 0 then
-    return
-  end
   local minutes = math.floor(regenerationTime / 60)
   local seconds = regenerationTime % 60
   if seconds < 10 then

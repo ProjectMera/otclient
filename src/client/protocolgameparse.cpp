@@ -44,16 +44,6 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
         {
             opcode = msg->getU8();
 
-            // must be > so extended will be enabled before GameStart.
-            if(!g_game.getFeature(Otc::GameLoginPending))
-            {
-                if(!m_gameInitialized && opcode > Proto::GameServerFirstGameOpcode)
-                {
-                    g_game.processGameStart();
-                    m_gameInitialized = true;
-                }
-            }
-
             // try to parse in lua first
             int readPos = msg->getReadPos();
             if(callLuaField<bool>("onOpcode", opcode, msg))
@@ -85,12 +75,7 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 parseLoginToken(msg);
                 break;
             case Proto::GameServerPing:
-            case Proto::GameServerPingBack:
-                if((opcode == Proto::GameServerPing && g_game.getFeature(Otc::GameClientPing)) ||
-                   (opcode == Proto::GameServerPingBack && !g_game.getFeature(Otc::GameClientPing)))
-                    parsePingBack(msg);
-                else
-                    parsePing(msg);
+                parsePingBack(msg);
                 break;
             case Proto::GameServerChallenge:
                 parseChallenge(msg);
@@ -486,11 +471,9 @@ void ProtocolGame::parseLogin(const InputMessagePtr& msg)
     uint playerId = msg->getU32();
     int serverBeat = msg->getU16();
 
-    if(g_game.getFeature(Otc::GameNewSpeedLaw)) {
-        Creature::speedA = msg->getDouble();
-        Creature::speedB = msg->getDouble();
-        Creature::speedC = msg->getDouble();
-    }
+    Creature::speedA = msg->getDouble();
+    Creature::speedB = msg->getDouble();
+    Creature::speedC = msg->getDouble();
 
     bool canReportBugs = msg->getU8();
 
@@ -580,9 +563,7 @@ void ProtocolGame::parseStore(const InputMessagePtr& msg)
         std::string category = msg->getString();
         std::string description = msg->getString();
 
-        int highlightState = 0;
-        if(g_game.getFeature(Otc::GameIngameStoreHighlights))
-            highlightState = msg->getU8();
+        int highlightState = msg->getU8();
 
         std::vector<std::string> icons;
         int iconCount = msg->getU8();
@@ -663,14 +644,14 @@ void ProtocolGame::parseStoreOffers(const InputMessagePtr& msg)
 
         msg->getU32(); // price
         int highlightState = msg->getU8();
-        if(highlightState == 2 && g_game.getFeature(Otc::GameIngameStoreHighlights) && g_game.getClientVersion() >= 1097)
+        if(highlightState == 2)
         {
             msg->getU32(); // saleValidUntilTimestamp
             msg->getU32(); // basePrice
         }
 
         int disabledState = msg->getU8();
-        if(g_game.getFeature(Otc::GameIngameStoreHighlights) && disabledState == 1)
+        if(disabledState == 1)
         {
             msg->getString(); // disabledReason
         }
@@ -777,11 +758,6 @@ void ProtocolGame::parseLoginToken(const InputMessagePtr& msg)
 {
     bool unknown = (msg->getU8() == 0);
     g_game.processLoginToken(unknown);
-}
-
-void ProtocolGame::parsePing(const InputMessagePtr& /*msg*/)
-{
-    g_game.processPing();
 }
 
 void ProtocolGame::parsePingBack(const InputMessagePtr& /*msg*/)
@@ -978,13 +954,10 @@ void ProtocolGame::parseOpenContainer(const InputMessagePtr& msg)
     int containerSize = 0;
     int firstIndex = 0;
 
-    if(g_game.getFeature(Otc::GameContainerPagination))
-    {
-        isUnlocked = (msg->getU8() != 0); // drag and drop
-        hasPages = (msg->getU8() != 0);   // pagination
-        containerSize = msg->getU16();    // container size
-        firstIndex = msg->getU16();       // first index
-    }
+    isUnlocked = (msg->getU8() != 0); // drag and drop
+    hasPages = (msg->getU8() != 0);   // pagination
+    containerSize = msg->getU16();    // container size
+    firstIndex = msg->getU16();       // first index
 
     int itemCount = msg->getU8();
 
@@ -1004,11 +977,7 @@ void ProtocolGame::parseCloseContainer(const InputMessagePtr& msg)
 void ProtocolGame::parseContainerAddItem(const InputMessagePtr& msg)
 {
     int containerId = msg->getU8();
-    int slot = 0;
-    if(g_game.getFeature(Otc::GameContainerPagination))
-    {
-        slot = msg->getU16(); // slot
-    }
+    int      slot = msg->getU16();
     ItemPtr item = getItem(msg);
     g_game.processContainerAddItem(containerId, item, slot);
 }
@@ -1016,14 +985,8 @@ void ProtocolGame::parseContainerAddItem(const InputMessagePtr& msg)
 void ProtocolGame::parseContainerUpdateItem(const InputMessagePtr& msg)
 {
     int containerId = msg->getU8();
-    int slot;
-    if(g_game.getFeature(Otc::GameContainerPagination))
-    {
-        slot = msg->getU16();
-    } else
-    {
-        slot = msg->getU8();
-    }
+    int slot = msg->getU16();
+
     ItemPtr item = getItem(msg);
     g_game.processContainerUpdateItem(containerId, slot, item);
 }
@@ -1031,19 +994,13 @@ void ProtocolGame::parseContainerUpdateItem(const InputMessagePtr& msg)
 void ProtocolGame::parseContainerRemoveItem(const InputMessagePtr& msg)
 {
     int containerId = msg->getU8();
-    int slot;
     ItemPtr lastItem;
-    if(g_game.getFeature(Otc::GameContainerPagination))
-    {
-        slot = msg->getU16();
+    int slot = msg->getU16();
 
-        int itemId = msg->getU16();
-        if(itemId != 0)
-            lastItem = getItem(msg, itemId);
-    } else
-    {
-        slot = msg->getU8();
-    }
+    int itemId = msg->getU16();
+    if(itemId != 0)
+        lastItem = getItem(msg, itemId);
+
     g_game.processContainerRemoveItem(containerId, slot, lastItem);
 }
 
@@ -1064,8 +1021,7 @@ void ProtocolGame::parseOpenNpcTrade(const InputMessagePtr& msg)
 {
     std::vector<std::tuple<ItemPtr, std::string, int, int, int>> items;
 
-    if(g_game.getFeature(Otc::GameNameOnNpcTrade))
-        msg->getString(); // npcName
+    msg->getString(); // npcName
 
     int listCount;
 
@@ -1393,8 +1349,7 @@ void ProtocolGame::parseEditText(const InputMessagePtr& msg)
     msg->getU8(); // Show (Traded)
 
     std::string date = "";
-    if(g_game.getFeature(Otc::GameWritableDate))
-        date = msg->getString();
+    date = msg->getString();
 
     g_game.processEditText(id, itemId, maxLength, text, writer, date);
 }
@@ -1517,9 +1472,7 @@ void ProtocolGame::parsePlayerIcons(const InputMessagePtr& msg)
 
 void ProtocolGame::parsePlayerCancelAttack(const InputMessagePtr& msg)
 {
-    uint seq = 0;
-    if(g_game.getFeature(Otc::GameAttackSeq))
-        seq = msg->getU32();
+    uint      seq = msg->getU32();
 
     g_game.processAttackCancel(seq);
 }
@@ -1530,9 +1483,7 @@ void ProtocolGame::parsePlayerModes(const InputMessagePtr& msg)
     int chaseMode = msg->getU8();
     bool safeMode = msg->getU8();
 
-    int pvpMode = 0;
-    if(g_game.getFeature(Otc::GamePVPMode))
-        pvpMode = msg->getU8();
+    int        pvpMode = msg->getU8();
 
     g_game.processPlayerModes((Otc::FightModes)fightMode, (Otc::ChaseModes)chaseMode, safeMode, (Otc::PVPModes)pvpMode);
 }
@@ -1563,16 +1514,13 @@ void ProtocolGame::parseMultiUseCooldown(const InputMessagePtr& msg)
 
 void ProtocolGame::parseTalk(const InputMessagePtr& msg)
 {
-    if(g_game.getFeature(Otc::GameMessageStatements))
-        msg->getU32(); // channel statement guid
+    msg->getU32(); // channel statement guid
 
     std::string name = g_game.formatCreatureName(msg->getString());
 
     msg->getU8(); // Show (Traded)
 
-    int level = 0;
-    if(g_game.getFeature(Otc::GameMessageLevel))
-        level = msg->getU16();
+    int      level = msg->getU16();
 
     Otc::MessageMode mode = Proto::translateMessageModeFromServer(msg->getU8());
     int channelId = 0;
@@ -1637,15 +1585,12 @@ void ProtocolGame::parseOpenChannel(const InputMessagePtr& msg)
     int channelId = msg->getU16();
     std::string name = msg->getString();
 
-    if(g_game.getFeature(Otc::GameChannelPlayerList))
-    {
-        int joinedPlayers = msg->getU16();
-        for(int i = 0; i < joinedPlayers; ++i)
-            g_game.formatCreatureName(msg->getString()); // player name
-        int invitedPlayers = msg->getU16();
-        for(int i = 0; i < invitedPlayers; ++i)
-            g_game.formatCreatureName(msg->getString()); // player name
-    }
+    int joinedPlayers = msg->getU16();
+    for(int i = 0; i < joinedPlayers; ++i)
+        g_game.formatCreatureName(msg->getString()); // player name
+    int invitedPlayers = msg->getU16();
+    for(int i = 0; i < invitedPlayers; ++i)
+        g_game.formatCreatureName(msg->getString()); // player name
 
     g_game.processOpenChannel(channelId, name);
 }
@@ -1910,12 +1855,9 @@ void ProtocolGame::parseVipAdd(const InputMessagePtr& msg)
 
     id = msg->getU32();
     name = g_game.formatCreatureName(msg->getString());
-    if(g_game.getFeature(Otc::GameAdditionalVipInfo))
-    {
-        desc = msg->getString();
-        iconId = msg->getU32();
-        notifyLogin = msg->getU8();
-    }
+    desc = msg->getString();
+    iconId = msg->getU32();
+    notifyLogin = msg->getU8();
     status = msg->getU8();
 
     // TODO: implement vipGroups usage
@@ -1927,14 +1869,8 @@ void ProtocolGame::parseVipAdd(const InputMessagePtr& msg)
 void ProtocolGame::parseVipState(const InputMessagePtr& msg)
 {
     uint id = msg->getU32();
-    if(g_game.getFeature(Otc::GameLoginPending))
-    {
-        uint status = msg->getU8();
-        g_game.processVipStateChange(id, status);
-    } else
-    {
-        g_game.processVipStateChange(id, 1);
-    }
+    uint status = msg->getU8();
+    g_game.processVipStateChange(id, status);
 }
 
 void ProtocolGame::parseVipLogout(const InputMessagePtr& msg)
@@ -1956,9 +1892,7 @@ void ProtocolGame::parseAutomapFlag(const InputMessagePtr& msg)
     int icon = msg->getU8();
     std::string description = msg->getString();
 
-    bool remove = false;
-    if(g_game.getFeature(Otc::GameMinimapRemove))
-        remove = msg->getU8() != 0;
+    bool remove = msg->getU8() != 0;
 
     if(!remove)
         g_game.processAddAutomapFlag(pos, icon, description);

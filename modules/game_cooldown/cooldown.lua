@@ -17,7 +17,7 @@ function init()
                     onSpellGroupCooldown = onSpellGroupCooldown,
                     onSpellCooldown = onSpellCooldown })
 
-  cooldownButton = modules.client_topmenu.addRightGameToggleButton('cooldownButton', 
+  cooldownButton = modules.client_topmenu.addRightGameToggleButton('cooldownButton',
     tr('Cooldowns'), '/images/topbuttons/cooldowns', toggle)
   cooldownButton:setOn(true)
   cooldownButton:hide()
@@ -87,12 +87,7 @@ function toggle()
 end
 
 function online()
-  if g_game.getFeature(GameSpellList) then
-    cooldownButton:show()
-  else
-    cooldownButton:hide()
-    cooldownWindow:close()
-  end
+ cooldownButton:show()
 
   if not lastPlayer or lastPlayer ~= g_game.getCharacterName() then
     refresh()
@@ -144,8 +139,8 @@ function updateCooldown(progressRect, duration)
   if progressRect:getPercent() < 100 then
     removeEvent(progressRect.event)
 
-    progressRect.event = scheduleEvent(function() 
-      progressRect.callback[ProgressCallback.update]() 
+    progressRect.event = scheduleEvent(function()
+      progressRect.callback[ProgressCallback.update]()
     end, 100)
   else
     progressRect.callback[ProgressCallback.finish]()

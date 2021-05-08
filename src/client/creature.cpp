@@ -279,7 +279,7 @@ void Creature::drawInformation(const Rect& parentRect, const Point& dest, float 
     if(g_game.getFeature(Otc::GameBlueNpcNameColor) && isNpc() && m_healthPercent == 100 && !useGray)
         fillColor = Color(0x66, 0xcc, 0xff);
 
-    if(drawFlags & Otc::DrawBars && (!isNpc() || !g_game.getFeature(Otc::GameHideNpcNames))) {
+    if(drawFlags & Otc::DrawBars) {
         g_painter->setColor(Color::black);
         g_painter->drawFilledRect(backgroundRect);
 
@@ -765,14 +765,12 @@ void Creature::setSpeed(uint16 speed)
     m_speed = speed;
 
     // Cache for stepSpeed Law
-    if(g_game.getFeature(Otc::GameNewSpeedLaw)) {
-        speed *= 2;
+    speed *= 2;
 
-        if(speed > -speedB) {
-            m_calculatedStepSpeed = floor((Creature::speedA * log((speed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
-            if(m_calculatedStepSpeed == 0) m_calculatedStepSpeed = 1;
-        } else m_calculatedStepSpeed = 1;
-    }
+    if(speed > -speedB) {
+        m_calculatedStepSpeed = floor((Creature::speedA * log((speed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
+        if(m_calculatedStepSpeed == 0) m_calculatedStepSpeed = 1;
+    } else m_calculatedStepSpeed = 1;
 
     // speed can change while walking (utani hur, paralyze, etc..)
     if(m_walking)
@@ -902,45 +900,28 @@ int Creature::getStepDuration(bool ignoreDiagonal, Otc::Direction dir)
     if(isParalyzed())
         return 0;
 
-    Position tilePos;
-    int groundSpeed;
-
-    if(dir == Otc::InvalidDirection)
-        tilePos = m_lastStepToPosition;
-    else
-        tilePos = m_position.translatedToDirection(dir);
-
+    Position tilePos = dir == Otc::InvalidDirection ? m_lastStepToPosition : m_position.translatedToDirection(dir);
     if(!tilePos.isValid())
         tilePos = m_position;
 
     const TilePtr& tile = g_map.getTile(tilePos);
-    if(tile) {
-        groundSpeed = tile->getGroundSpeed();
-        if(groundSpeed == 0)
-            groundSpeed = 150;
-    } else groundSpeed = 150;
+
+    int groundSpeed = 0;
+    if(tile) groundSpeed = tile->getGroundSpeed();
+    if(groundSpeed == 0)
+        groundSpeed = 150;
 
     if(m_speed != m_stepCache.speed || groundSpeed != m_stepCache.groundSpeed) {
+        const auto serverBeat = g_game.getServerBeat();
+
         m_stepCache.speed = m_speed;
         m_stepCache.groundSpeed = groundSpeed;
 
-        double stepDuration = 1000. * groundSpeed;
-        if(g_game.getFeature(Otc::GameNewSpeedLaw)) {
-            stepDuration = std::floor(stepDuration / m_calculatedStepSpeed);
-        } else stepDuration /= m_speed;
-
-        bool checkTibiaVersion900Plus = true;
-#if FORCE_USE_FORMULA_WALK_900_PLUS == 1
-        checkTibiaVersion900Plus = false;
-#endif
-
-        if(!checkTibiaVersion900Plus || g_game.getClientVersion() >= 900) {
-            const auto serverBeat = g_game.getServerBeat();
-            stepDuration = std::ceil(stepDuration / serverBeat) * serverBeat;
-        }
+        double stepDuration = std::floor(1000 * groundSpeed / m_calculatedStepSpeed);
+        stepDuration = std::ceil(stepDuration / serverBeat) * serverBeat;
 
         m_stepCache.duration = stepDuration;
-        m_stepCache.diagonalDuration = stepDuration * (g_game.getClientVersion() <= 810 ? 2 : 3);
+        m_stepCache.diagonalDuration = stepDuration * 3;
     }
 
     return ignoreDiagonal ? m_stepCache.duration : m_stepCache.getDuration(m_lastStepDirection);

@@ -30,10 +30,8 @@ int push_luavalue(const Outfit& outfit)
     g_lua.setField("type");
     g_lua.pushInteger(outfit.getAuxId());
     g_lua.setField("auxType");
-    if(g_game.getFeature(Otc::GamePlayerAddons)) {
-        g_lua.pushInteger(outfit.getAddons());
-        g_lua.setField("addons");
-    }
+    g_lua.pushInteger(outfit.getAddons());
+    g_lua.setField("addons");
     g_lua.pushInteger(outfit.getHead());
     g_lua.setField("head");
     g_lua.pushInteger(outfit.getBody());
@@ -42,10 +40,8 @@ int push_luavalue(const Outfit& outfit)
     g_lua.setField("legs");
     g_lua.pushInteger(outfit.getFeet());
     g_lua.setField("feet");
-    if(g_game.getFeature(Otc::GamePlayerMounts)) {
-        g_lua.pushInteger(outfit.getMount());
-        g_lua.setField("mount");
-    }
+    g_lua.pushInteger(outfit.getMount());
+    g_lua.setField("mount");
     return 1;
 }
 
@@ -56,10 +52,8 @@ bool luavalue_cast(int index, Outfit& outfit)
         outfit.setId(g_lua.popInteger());
         g_lua.getField("auxType", index);
         outfit.setAuxId(g_lua.popInteger());
-        if(g_game.getFeature(Otc::GamePlayerAddons)) {
-            g_lua.getField("addons", index);
-            outfit.setAddons(g_lua.popInteger());
-        }
+        g_lua.getField("addons", index);
+        outfit.setAddons(g_lua.popInteger());
         g_lua.getField("head", index);
         outfit.setHead(g_lua.popInteger());
         g_lua.getField("body", index);
@@ -68,10 +62,8 @@ bool luavalue_cast(int index, Outfit& outfit)
         outfit.setLegs(g_lua.popInteger());
         g_lua.getField("feet", index);
         outfit.setFeet(g_lua.popInteger());
-        if(g_game.getFeature(Otc::GamePlayerMounts)) {
-            g_lua.getField("mount", index);
-            outfit.setMount(g_lua.popInteger());
-        }
+        g_lua.getField("mount", index);
+        outfit.setMount(g_lua.popInteger());
         return true;
     }
     return false;

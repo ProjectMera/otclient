@@ -150,13 +150,6 @@ end
 
 function onGameStart()
   show()
-
-  -- open tibia has delay in auto walking
-  if not g_game.isOfficialTibia() then
-    g_game.enableFeature(GameForceFirstAutoWalkStep)
-  else
-    g_game.disableFeature(GameForceFirstAutoWalkStep)
-  end
 end
 
 function onGameEnd()
@@ -500,7 +493,7 @@ function createThingMenu(menuPosition, lookThing, useThing, creatureThing)
       menu:addOption(tr('Rotate'), function() g_game.rotate(useThing) end)
     end
 
-    if g_game.getFeature(GameBrowseField) and useThing:getPosition().x ~= 0xffff then
+    if  useThing:getPosition().x ~= 0xffff then
       menu:addOption(tr('Browse Field'), function() g_game.browseField(useThing:getPosition()) end)
     end
   end
@@ -524,13 +517,11 @@ function createThingMenu(menuPosition, lookThing, useThing, creatureThing)
     if creatureThing:isLocalPlayer() then
       menu:addOption(tr('Set Outfit'), function() g_game.requestOutfit() end)
 
-      if g_game.getFeature(GamePlayerMounts) then
         if not localPlayer:isMounted() then
           menu:addOption(tr('Mount'), function() localPlayer:mount() end)
         else
           menu:addOption(tr('Dismount'), function() localPlayer:dismount() end)
         end
-      end
 
       if creatureThing:isPartyMember() then
         if creatureThing:isPartyLeader() then

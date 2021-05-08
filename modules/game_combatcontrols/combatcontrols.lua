@@ -129,13 +129,11 @@ function update()
   local safeFight = g_game.isSafeFight()
   safeFightButton:setChecked(not safeFight)
 
-  if g_game.getFeature(GamePVPMode) then
     local pvpMode = g_game.getPVPMode()
     local pvpWidget = getPVPBoxByMode(pvpMode)
     if pvpWidget then
       pvpModeRadioGroup:selectWidget(pvpWidget)
     end
-  end
 end
 
 function check()
@@ -164,20 +162,11 @@ function online()
       end
     end
 
-    if g_game.getFeature(GamePlayerMounts) then
       mountButton:setVisible(true)
       mountButton:setChecked(player:isMounted())
-    else
-      mountButton:setVisible(false)
-    end
 
-    if g_game.getFeature(GamePVPMode) then
       pvpModesPanel:setVisible(true)
       combatControlsWindow:setHeight(combatControlsWindow.extendedControlsHeight)
-    else
-      pvpModesPanel:setVisible(false)
-      combatControlsWindow:setHeight(combatControlsWindow.simpleControlsHeight)
-    end
   end
 
   update()
@@ -198,10 +187,7 @@ function offline()
       safeFight = g_game.isSafeFight()
     }
 
-    if g_game.getFeature(GamePVPMode) then
-      lastCombatControls[char].pvpMode = g_game.getPVPMode()
-    end
-
+    lastCombatControls[char].pvpMode = g_game.getPVPMode()
     -- save last combat control settings
     g_settings.setNode('LastCombatControls', lastCombatControls)
   end
