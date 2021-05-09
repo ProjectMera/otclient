@@ -32,7 +32,7 @@ int main(int argc, const char* argv[])
     // setup application name and version
     g_app.setName("OTClient");
     g_app.setCompactName("otclient");
-    g_app.setVersion(VERSION);
+    g_app.setVersion("1.0.0");
 
     // initialize application framework and otclient
     g_app.init(args);

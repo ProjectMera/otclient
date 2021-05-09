@@ -22,8 +22,6 @@ set(VCPKG_BUILD_TYPE "release")
 
 project(otclient)
 
-set(VERSION "1.0.0")
-
 option(FRAMEWORK_SOUND "Use SOUND " OFF)
 option(FRAMEWORK_GRAPHICS "Use GRAPHICS " ON)
 option(FRAMEWORK_XML "Use XML " ON)
@@ -62,8 +60,6 @@ if(WIN32)
 
     set(executable_SOURCES ${executable_SOURCES} otcicon.o)
 endif()
-
-add_definitions(-D"VERSION=\\"${VERSION}\\"")
 
 # add client executable
 add_executable(${PROJECT_NAME} ${framework_SOURCES} ${client_SOURCES} ${executable_SOURCES})
