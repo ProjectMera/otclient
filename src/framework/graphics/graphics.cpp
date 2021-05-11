@@ -95,7 +95,7 @@ void Graphics::init()
     if(m_maxTextureSize == -1 || m_maxTextureSize > maxTextureSize)
         m_maxTextureSize = maxTextureSize;
 
-    if(Size(m_maxTextureSize,m_maxTextureSize) < g_window.getDisplaySize())
+    if(Size(m_maxTextureSize, m_maxTextureSize) < g_window.getDisplaySize())
         m_cacheBackbuffer = false;
 
     m_alphaBits = 0;
@@ -184,8 +184,8 @@ bool Graphics::isPainterEngineAvailable(Graphics::PainterEngine painterEngine)
 
 bool Graphics::selectPainterEngine(PainterEngine painterEngine)
 {
-    Painter *painter = nullptr;
-    Painter *fallbackPainter = nullptr;
+    Painter* painter = nullptr;
+    Painter* fallbackPainter = nullptr;
     PainterEngine fallbackPainterEngine = Painter_Any;
 
 #ifdef PAINTER_DX9

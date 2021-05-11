@@ -35,7 +35,7 @@ public:
 
     bool prepareOgg();
 
-    int read(void *buffer, int bufferSize);
+    int read(void* buffer, int bufferSize);
     void reset();
 
 private:

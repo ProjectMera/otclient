@@ -39,4 +39,3 @@ void UIBoxLayout::applyStyle(const OTMLNodePtr& styleNode)
             setFitChildren(node->value<bool>());
     }
 }
-

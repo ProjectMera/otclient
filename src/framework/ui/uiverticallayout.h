@@ -25,11 +25,11 @@
 
 #include "uiboxlayout.h"
 
-// @bindclass
+ // @bindclass
 class UIVerticalLayout : public UIBoxLayout
 {
 public:
-    UIVerticalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) { }
+    UIVerticalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) {}
 
     void applyStyle(const OTMLNodePtr& styleNode);
 

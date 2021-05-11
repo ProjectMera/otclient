@@ -249,7 +249,6 @@ void UIWidget::removeChild(UIWidgetPtr child)
         g_logger.traceError("attempt to remove an unknown child from a UIWidget");
 }
 
-
 void UIWidget::focusChild(const UIWidgetPtr& child, Fw::FocusReason reason)
 {
     if(m_destroyed)

@@ -124,7 +124,6 @@ void SpriteManager::unload()
 ImagePtr SpriteManager::getSpriteImage(int id)
 {
     try {
-
         if(id == 0 || !m_spritesFile)
             return nullptr;
 
@@ -196,4 +195,3 @@ ImagePtr SpriteManager::getSpriteImage(int id)
         return nullptr;
     }
 }
-

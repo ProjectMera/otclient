@@ -489,7 +489,6 @@ void ProtocolGame::parseLogin(const InputMessagePtr& msg)
     // e.g you can only buy packs of 25, 50, 75, .. coins in the market
     msg->getU16();
 
-
     msg->getU8(); // Implement exiva button usage
     msg->getU8(); // Implement tournament button usage
 
@@ -2744,7 +2743,7 @@ void ProtocolGame::getImbuementInfo(const InputMessagePtr& msg)
 void ProtocolGame::parseImbuementWindow(const InputMessagePtr& msg)
 {
     msg->getU16(); // item client ID
-    uint8_t slot = msg->getU8(); // slot id 
+    uint8_t slot = msg->getU8(); // slot id
 
     for(uint8_t i = 0; i < slot; i++) {
         uint8_t firstByte = msg->getU8();

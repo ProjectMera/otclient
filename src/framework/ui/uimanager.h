@@ -28,7 +28,7 @@
 #include <framework/core/inputevent.h>
 #include <framework/otml/declarations.h>
 
-//@bindsingleton g_ui
+ //@bindsingleton g_ui
 class UIManager
 {
 public:
@@ -89,7 +89,6 @@ private:
     std::unordered_map<std::string, OTMLNodePtr> m_styles;
     UIWidgetList m_destroyedWidgets;
     ScheduledEventPtr m_checkEvent;
-
 };
 
 extern UIManager g_ui;

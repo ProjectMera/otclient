@@ -59,7 +59,7 @@ void SoundManager::terminate()
 {
     ensureContext();
 
-    for(auto &streamFile: m_streamFiles) {
+    for(auto& streamFile : m_streamFiles) {
         auto& future = streamFile.second;
         future.wait();
     }
@@ -252,7 +252,7 @@ SoundSourcePtr SoundManager::createSoundSource(const std::string& filename)
             streamSource = StreamSoundSourcePtr(new StreamSoundSource);
             streamSource->downMix(StreamSoundSource::DownMixRight);
             streamSource->setRelative(true);
-            streamSource->setPosition(Point(128,0));
+            streamSource->setPosition(Point(128, 0));
             combinedSource->addSource(streamSource);
             m_streamFiles[streamSource] = g_asyncDispatcher.schedule([=]() -> SoundFilePtr {
                 try {

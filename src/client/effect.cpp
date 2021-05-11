@@ -38,7 +38,6 @@ void Effect::onAppear()
     g_dispatcher.scheduleEvent([self]() { g_map.removeThing(self); }, m_duration);
 }
 
-
 void Effect::waitFor(const EffectPtr& firstEffect)
 {
     m_timeToStartDrawing = (firstEffect->m_duration * .6) - firstEffect->m_animationTimer.ticksElapsed();

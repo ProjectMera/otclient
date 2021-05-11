@@ -51,7 +51,6 @@ public:
         TriangleStrip = GL_TRIANGLE_STRIP
     };
 
-
     Painter();
     virtual ~Painter() {}
 

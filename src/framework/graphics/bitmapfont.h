@@ -32,7 +32,7 @@
 class BitmapFont : public stdext::shared_object
 {
 public:
-    BitmapFont(const std::string& name) : m_name(name) { }
+    BitmapFont(const std::string& name) : m_name(name) {}
 
     /// Load font from otml node
     void load(const OTMLNodePtr& fontNode);
@@ -76,6 +76,5 @@ private:
     Rect m_glyphsTextureCoords[256];
     Size m_glyphsSize[256];
 };
-
 
 #endif

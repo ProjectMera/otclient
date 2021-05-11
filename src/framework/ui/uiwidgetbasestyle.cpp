@@ -59,7 +59,7 @@ void UIWidget::parseBaseStyle(const OTMLNodePtr& styleNode)
                 g_lua.loadFunction(node->value(), funcOrigin);
                 luaSetField(funcName);
             }
-        // lua fields value
+            // lua fields value
         } else if(stdext::starts_with(node->tag(), "&")) {
             std::string fieldName = node->tag().substr(1);
             std::string fieldOrigin = "@" + node->source() + ": [" + node->tag() + "]";
@@ -159,8 +159,7 @@ void UIWidget::parseBaseStyle(const OTMLNodePtr& styleNode)
                 setBorderColor(stdext::safe_cast<Color>(split[1]));
             } else
                 throw OTMLException(node, "border param must have its width followed by its color");
-        }
-        else if(node->tag() == "border-width")
+        } else if(node->tag() == "border-width")
             setBorderWidth(node->value<int>());
         else if(node->tag() == "border-width-top")
             setBorderWidthTop(node->value<int>());
@@ -218,8 +217,7 @@ void UIWidget::parseBaseStyle(const OTMLNodePtr& styleNode)
                 setMarginBottom(margin);
                 setMarginLeft(margin);
             }
-        }
-        else if(node->tag() == "padding-top")
+        } else if(node->tag() == "padding-top")
             setPaddingTop(node->value<int>());
         else if(node->tag() == "padding-right")
             setPaddingRight(node->value<int>());

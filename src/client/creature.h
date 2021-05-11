@@ -50,7 +50,6 @@ public:
         VOLATILE_SQUARE_DURATION = 1000
     };
 
-
     static double speedA, speedB, speedC;
 
     Creature();
@@ -110,7 +109,6 @@ public:
     int getDisplacementX() override;
     int getDisplacementY() override;
     int getExactSize(int layer = 0, int xPattern = 0, int yPattern = 0, int zPattern = 0, int animationPhase = 0) override;
-
 
     int getTotalAnimationPhase();
     int getCurrentAnimationPhase(bool mount = false);

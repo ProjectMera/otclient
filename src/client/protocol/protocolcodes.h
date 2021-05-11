@@ -190,7 +190,6 @@ namespace Proto {
         GameServerSendError = 0xED,
         GameServerSendCollectionResource = 0xEE,
         GameServerSendTibiaTime = 0xEF
-
     };
 
     enum ClientOpcodes : uint8

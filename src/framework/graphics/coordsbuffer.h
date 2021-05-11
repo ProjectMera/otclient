@@ -35,31 +35,37 @@ public:
     CoordsBuffer();
     ~CoordsBuffer();
 
-    void clear() {
+    void clear()
+    {
         m_textureCoordArray.clear();
         m_vertexArray.clear();
         m_hardwareCached = false;
     }
 
-    void addTriangle(const Point& a, const Point& b, const Point& c) {
+    void addTriangle(const Point& a, const Point& b, const Point& c)
+    {
         m_vertexArray.addTriangle(a, b, c);
         m_hardwareCached = false;
     }
-    void addRect(const Rect& dest) {
+    void addRect(const Rect& dest)
+    {
         m_vertexArray.addRect(dest);
         m_hardwareCached = false;
     }
-    void addRect(const Rect& dest, const Rect& src) {
+    void addRect(const Rect& dest, const Rect& src)
+    {
         m_vertexArray.addRect(dest);
         m_textureCoordArray.addRect(src);
         m_hardwareCached = false;
     }
-    void addQuad(const Rect& dest, const Rect& src) {
+    void addQuad(const Rect& dest, const Rect& src)
+    {
         m_vertexArray.addQuad(dest);
         m_textureCoordArray.addQuad(src);
         m_hardwareCached = false;
     }
-    void addUpsideDownQuad(const Rect& dest, const Rect& src) {
+    void addUpsideDownQuad(const Rect& dest, const Rect& src)
+    {
         m_vertexArray.addUpsideDownQuad(dest);
         m_textureCoordArray.addQuad(src);
         m_hardwareCached = false;
@@ -72,17 +78,17 @@ public:
     void updateCaches();
     bool isHardwareCached() { return m_hardwareCached; }
 
-    float *getVertexArray() { return m_vertexArray.vertices(); }
-    float *getTextureCoordArray() { return m_textureCoordArray.vertices(); }
+    float* getVertexArray() { return m_vertexArray.vertices(); }
+    float* getTextureCoordArray() { return m_textureCoordArray.vertices(); }
     int getVertexCount() { return m_vertexArray.vertexCount(); }
     int getTextureCoordCount() { return m_textureCoordArray.vertexCount(); }
 
-    HardwareBuffer *getHardwareVertexArray() { return m_hardwareVertexArray; }
-    HardwareBuffer *getHardwareTextureCoordArray() { return m_hardwareTextureCoordArray; }
+    HardwareBuffer* getHardwareVertexArray() { return m_hardwareVertexArray; }
+    HardwareBuffer* getHardwareTextureCoordArray() { return m_hardwareTextureCoordArray; }
 
 private:
-    HardwareBuffer *m_hardwareVertexArray;
-    HardwareBuffer *m_hardwareTextureCoordArray;
+    HardwareBuffer* m_hardwareVertexArray;
+    HardwareBuffer* m_hardwareTextureCoordArray;
     HardwareBuffer::UsagePattern m_hardwareCacheMode;
     VertexArray m_vertexArray;
     VertexArray m_textureCoordArray;

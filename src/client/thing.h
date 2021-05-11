@@ -156,9 +156,7 @@ protected:
 
 private:
     stdext::boolean<true> m_canDraw;
-
 };
 #pragma pack(pop)
 
 #endif
-

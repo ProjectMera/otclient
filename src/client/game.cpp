@@ -586,7 +586,7 @@ bool Game::walk(const Otc::Direction direction)
     // check we can walk and add new walk event if false
     if(!m_localPlayer->canWalk(direction)) {
         if(m_lastWalkDir != direction) {
-            // must add a new walk event            
+            // must add a new walk event
             if(m_walkEvent) {
                 m_walkEvent->cancel();
                 m_walkEvent = nullptr;
@@ -1199,7 +1199,6 @@ void Game::setOpenPvpSituations(int openPvpSituations)
     m_openPvpSituations = openPvpSituations;
     g_lua.callGlobalField("g_game", "onOpenPvpSituationsChange", openPvpSituations);
 }
-
 
 void Game::inspectNpcTrade(const ItemPtr& item)
 {

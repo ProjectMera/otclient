@@ -25,7 +25,7 @@
 
 #include "uilayout.h"
 
-// @bindclass
+ // @bindclass
 class UIGridLayout : public UILayout
 {
 public:

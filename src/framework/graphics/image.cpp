@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-
 #include "image.h"
 
 #include <framework/core/resourcemanager.h>

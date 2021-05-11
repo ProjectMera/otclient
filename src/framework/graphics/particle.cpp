@@ -72,7 +72,7 @@ void Particle::update(float elapsedTime)
 
 void Particle::updatePosition(float elapsedTime)
 {
-    if(m_ignorePhysicsAfter < 0 || m_elapsedTime < m_ignorePhysicsAfter ) {
+    if(m_ignorePhysicsAfter < 0 || m_elapsedTime < m_ignorePhysicsAfter) {
         // update position
         PointF delta = m_velocity * elapsedTime;
         delta.y *= -1; // painter orientate Y axis in the inverse direction
@@ -101,7 +101,7 @@ void Particle::updateColor()
     float currentLife = m_elapsedTime / m_duration;
     if(currentLife < m_colorsStops[1]) {
         float range = m_colorsStops[1] - m_colorsStops[0];
-        float factor = (currentLife - m_colorsStops[0])/range;
+        float factor = (currentLife - m_colorsStops[0]) / range;
         m_color = m_colors[0] * (1.0f - factor) + m_colors[1] * factor;
     } else {
         if(m_colors.size() > 1) {

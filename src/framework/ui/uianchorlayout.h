@@ -29,7 +29,9 @@ class UIAnchor : public stdext::shared_object
 {
 public:
     UIAnchor(Fw::AnchorEdge anchoredEdge, const std::string& hookedWidgetId, Fw::AnchorEdge hookedEdge) :
-        m_anchoredEdge(anchoredEdge), m_hookedEdge(hookedEdge), m_hookedWidgetId(hookedWidgetId) { }
+        m_anchoredEdge(anchoredEdge), m_hookedEdge(hookedEdge), m_hookedWidgetId(hookedWidgetId)
+    {
+    }
 
     Fw::AnchorEdge getAnchoredEdge() const { return m_anchoredEdge; }
     Fw::AnchorEdge getHookedEdge() const { return m_hookedEdge; }
@@ -46,7 +48,7 @@ protected:
 class UIAnchorGroup : public stdext::shared_object
 {
 public:
-    UIAnchorGroup() : m_updated(true) { }
+    UIAnchorGroup() : m_updated(true) {}
 
     void addAnchor(const UIAnchorPtr& anchor);
     const UIAnchorList& getAnchors() { return m_anchors; }
@@ -62,7 +64,7 @@ private:
 class UIAnchorLayout : public UILayout
 {
 public:
-    UIAnchorLayout(UIWidgetPtr parentWidget) : UILayout(parentWidget) { }
+    UIAnchorLayout(UIWidgetPtr parentWidget) : UILayout(parentWidget) {}
 
     void addAnchor(const UIWidgetPtr& anchoredWidget, Fw::AnchorEdge anchoredEdge,
                    const std::string& hookedWidgetId, Fw::AnchorEdge hookedEdge);

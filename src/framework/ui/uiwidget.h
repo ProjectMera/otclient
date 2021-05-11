@@ -159,7 +159,6 @@ private:
     stdext::boolean<false> m_updateEventScheduled;
     stdext::boolean<false> m_loadingStyle;
 
-
     // state managment
 protected:
     bool setState(Fw::WidgetState state, bool on);
@@ -176,7 +175,6 @@ private:
     stdext::boolean<true> m_firstOnStyle;
     OTMLNodePtr m_stateStyle;
     int m_states;
-
 
     // event processing
 protected:
@@ -210,7 +208,6 @@ protected:
     bool propagateOnKeyUp(uchar keyCode, int keyboardModifiers);
     bool propagateOnMouseEvent(const Point& mousePos, UIWidgetList& widgetList);
     bool propagateOnMouseMove(const Point& mousePos, const Point& mouseMoved, UIWidgetList& widgetList);
-
 
     // function shortcuts
 public:
@@ -266,7 +263,6 @@ public:
     Point getVirtualOffset() { return m_virtualOffset; }
     std::string getStyleName() { return m_style->tag(); }
     Point getLastClickPosition() { return m_lastClickPosition; }
-
 
     // base style
 private:
@@ -393,7 +389,6 @@ public:
     int getPaddingLeft() { return m_padding.left; }
     float getOpacity() { return m_opacity; }
     float getRotation() { return m_rotation; }
-
 
     // image
 private:

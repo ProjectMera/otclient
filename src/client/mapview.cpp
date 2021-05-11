@@ -144,7 +144,6 @@ void MapView::updateVisibleTilesCache()
             // loop current diagonal tiles
             const uint32 advance = std::max<uint32>(diagonal - m_drawDimension.height(), 0);
             for(int_fast32_t iy = diagonal - advance, ix = advance; iy >= 0 && ix < m_drawDimension.width(); --iy, ++ix) {
-
                 // position on current floor
                 //TODO: check position limits
                 Position tilePos = cameraPosition.translated(ix - m_virtualCenterOffset.x, iy - m_virtualCenterOffset.y);
@@ -368,7 +367,6 @@ void MapView::onMapCenterChange(const Position&)
 {
     requestVisibleTilesCacheUpdate();
 }
-
 
 void MapView::updateLight()
 {
@@ -756,6 +754,5 @@ void MapView::removeVisibleCreature(const CreaturePtr& creature)
     if(it != m_visibleCreatures.end())
         m_visibleCreatures.erase(it);
 }
-
 
 /* vim: set ts=4 sw=4 et: */

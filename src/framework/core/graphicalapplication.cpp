@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-
 #include "graphicalapplication.h"
 #include <framework/core/clock.h>
 #include <framework/core/eventdispatcher.h>
@@ -100,7 +99,6 @@ void GraphicalApplication::terminate()
     m_foregroundFrameCache = nullptr;
     g_graphics.terminate();
     g_window.terminate();
-
 
     m_terminated = true;
 }
@@ -199,7 +197,6 @@ void GraphicalApplication::run()
             int sleepMicros = m_backgroundFrameCounter.getMaximumSleepMicros();
             if(sleepMicros >= AdaptativeFrameCounter::MINIMUM_MICROS_SLEEP)
                 stdext::microsleep(sleepMicros);
-
         } else {
             // sleeps until next poll to avoid massive cpu usage
             stdext::millisleep(POLL_CYCLE_DELAY + 1);

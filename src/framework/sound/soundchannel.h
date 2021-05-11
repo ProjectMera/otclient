@@ -25,11 +25,11 @@
 
 #include "soundsource.h"
 
-// @bindclass
+ // @bindclass
 class SoundChannel : public LuaObject
 {
 public:
-    SoundChannel(int id) : m_id(id), m_gain(1) { }
+    SoundChannel(int id) : m_id(id), m_gain(1) {}
 
     SoundSourcePtr play(const std::string& filename, float fadetime = 0, float gain = 1.0f);
     void stop(float fadetime = 0);

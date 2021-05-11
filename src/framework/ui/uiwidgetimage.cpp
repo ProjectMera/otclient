@@ -102,9 +102,9 @@ void UIWidget::drawImage(const Rect& screenCoords)
 
                 Point texCoordsOffset;
                 if(textureSize.height() > textureClipSize.height())
-                    texCoordsOffset.y = (textureSize.height() - textureClipSize.height())/2;
+                    texCoordsOffset.y = (textureSize.height() - textureClipSize.height()) / 2;
                 else if(textureSize.width() > textureClipSize.width())
-                    texCoordsOffset.x = (textureSize.width() - textureClipSize.width())/2;
+                    texCoordsOffset.x = (textureSize.width() - textureClipSize.width()) / 2;
 
                 Rect textureClipRect(texCoordsOffset, textureClipSize);
 
@@ -118,8 +118,8 @@ void UIWidget::drawImage(const Rect& screenCoords)
         } else {
             int top = m_imageBorder.top;
             int bottom = m_imageBorder.bottom;
-            int left =  m_imageBorder.left;
-            int right  = m_imageBorder.right;
+            int left = m_imageBorder.left;
+            int right = m_imageBorder.right;
 
             // calculates border coords
             const Rect clip = clipRect;

@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-
 #include "minimap.h"
 #include "tile.h"
 

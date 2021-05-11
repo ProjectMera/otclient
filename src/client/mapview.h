@@ -52,7 +52,6 @@ public:
     MapView();
     ~MapView();
 
-
 public:
     // floor visibility related
     uint8 getLockedFirstVisibleFloor() { return m_lockedFirstVisibleFloor; }
@@ -185,8 +184,6 @@ private:
 
     void updateLight();
     void updateViewportDirectionCache();
-
-
 
     void addVisibleCreature(const CreaturePtr& creature);
     void removeVisibleCreature(const CreaturePtr& creature);

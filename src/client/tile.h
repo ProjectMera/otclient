@@ -179,7 +179,6 @@ private:
         int hasGroundOrBorder = 0;
     };
 
-
     void checkForDetachableThing();
     void checkTranslucentLight();
 

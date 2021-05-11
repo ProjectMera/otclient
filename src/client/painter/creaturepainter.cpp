@@ -111,7 +111,6 @@ void CreaturePainter::internalDrawOutfit(const CreaturePtr& creature, Point dest
 
         // yPattern => creature addon
         for(int yPattern = 0; yPattern < creature->getNumPatternY(); ++yPattern) {
-
             // continue if we dont have this addon
             if(yPattern > 0 && !(creature->m_outfit.getAddons() & (1 << (yPattern - 1))))
                 continue;

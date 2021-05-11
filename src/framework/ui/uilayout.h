@@ -27,7 +27,7 @@
 #include <framework/luaengine/luaobject.h>
 #include <framework/otml/otml.h>
 
-// @bindclass
+ // @bindclass
 class UILayout : public LuaObject
 {
 public:
@@ -36,11 +36,11 @@ public:
     void update();
     void updateLater();
 
-    virtual void applyStyle(const OTMLNodePtr& /*styleNode*/) { }
-    virtual void addWidget(const UIWidgetPtr& /*widget*/) { }
-    virtual void removeWidget(const UIWidgetPtr& /*widget*/) { }
+    virtual void applyStyle(const OTMLNodePtr& /*styleNode*/) {}
+    virtual void addWidget(const UIWidgetPtr& /*widget*/) {}
+    virtual void removeWidget(const UIWidgetPtr& /*widget*/) {}
     void disableUpdates() { m_updateDisabled++; }
-    void enableUpdates() { m_updateDisabled = std::max<int>(m_updateDisabled-1,0); }
+    void enableUpdates() { m_updateDisabled = std::max<int>(m_updateDisabled - 1, 0); }
 
     void setParent(UIWidgetPtr parentWidget) { m_parentWidget = parentWidget; }
     UIWidgetPtr getParentWidget() { return m_parentWidget; }

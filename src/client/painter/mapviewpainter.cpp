@@ -79,13 +79,13 @@ void MapViewPainter::draw(const MapViewPtr& mapView, const Rect& rect)
                                 }
 
                                 pos2D -= mapView->m_tileSize;
-                        }
+                            }
 
                             lightView->setShade(pos2D);
+                        }
                     }
                 }
             }
-        }
 
             mapView->onFloorDrawingStart(z);
 
@@ -108,7 +108,7 @@ void MapViewPainter::draw(const MapViewPtr& mapView, const Rect& rect)
             }
 
             mapView->onFloorDrawingEnd(z);
-    }
+        }
 
         if(redrawThing) {
             if(mapView->m_crosshairTexture && mapView->m_mousePosition.isValid()) {
@@ -119,7 +119,7 @@ void MapViewPainter::draw(const MapViewPtr& mapView, const Rect& rect)
 
             mapView->m_frameCache.tile->release();
         }
-}
+    }
 
     // generating mipmaps each frame can be slow in older cards
     //m_framebuffer->getTexture()->buildHardwareMipmaps();

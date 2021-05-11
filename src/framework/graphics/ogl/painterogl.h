@@ -38,16 +38,16 @@ public:
         Painter::CompositionMode compositionMode;
         Painter::BlendEquation blendEquation;
         Rect clipRect;
-        Texture *texture;
-        PainterShaderProgram *shaderProgram;
+        Texture* texture;
+        PainterShaderProgram* shaderProgram;
         bool alphaWriting;
     };
 
     PainterOGL();
-    virtual ~PainterOGL() { }
+    virtual ~PainterOGL() {}
 
     virtual void bind() { refreshState(); }
-    virtual void unbind() { }
+    virtual void unbind() {}
 
     void resetState();
     virtual void refreshState();
@@ -64,8 +64,8 @@ public:
     virtual void setCompositionMode(CompositionMode compositionMode);
     virtual void setBlendEquation(BlendEquation blendEquation);
     virtual void setClipRect(const Rect& clipRect);
-    virtual void setShaderProgram(PainterShaderProgram *shaderProgram) { m_shaderProgram = shaderProgram; }
-    virtual void setTexture(Texture *texture);
+    virtual void setShaderProgram(PainterShaderProgram* shaderProgram) { m_shaderProgram = shaderProgram; }
+    virtual void setTexture(Texture* texture);
     virtual void setAlphaWriting(bool enable);
 
     void setTexture(const TexturePtr& texture) { setTexture(texture.get()); }
@@ -83,7 +83,7 @@ public:
     Matrix3 getProjectionMatrix() { return m_projectionMatrix; }
     Matrix3 getTextureMatrix() { return m_textureMatrix; }
     BlendEquation getBlendEquation() { return m_blendEquation; }
-    PainterShaderProgram *getShaderProgram() { return m_shaderProgram; }
+    PainterShaderProgram* getShaderProgram() { return m_shaderProgram; }
     bool getAlphaWriting() { return m_alphaWriting; }
 
     void resetBlendEquation() { setBlendEquation(BlendEquation_Add); }
@@ -107,7 +107,7 @@ protected:
     Matrix3 m_textureMatrix;
 
     BlendEquation m_blendEquation;
-    Texture *m_texture;
+    Texture* m_texture;
     bool m_alphaWriting;
 
     PainterState m_olderStates[10];

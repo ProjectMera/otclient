@@ -258,7 +258,6 @@ void UITextEdit::update(bool focusCursor)
     } else if(m_textAlign & Fw::AlignHorizontalCenter) {
         m_drawArea.translate((textScreenCoords.width() - textBoxSize.width()) / 2, 0);
     } else { // AlignLeft
-
     }
 
     for(int i = 0; i < textLength; ++i) {
@@ -739,7 +738,6 @@ bool UITextEdit::onKeyPress(uchar keyCode, int keyboardModifiers, int autoRepeat
                 parent->focusPreviousChild(Fw::KeyboardFocusReason, true);
             return true;
         } else if(keyCode == Fw::KeyRight || keyCode == Fw::KeyLeft) {
-
             int oldCursorPos = m_cursorPos;
 
             if(keyCode == Fw::KeyRight) // move cursor right

@@ -28,7 +28,7 @@
 class UIHorizontalLayout : public UIBoxLayout
 {
 public:
-    UIHorizontalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) { }
+    UIHorizontalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) {}
 
     void applyStyle(const OTMLNodePtr& styleNode);
 

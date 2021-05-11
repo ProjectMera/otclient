@@ -30,7 +30,7 @@
 class SoundSource : public LuaObject
 {
 protected:
-    SoundSource(uint sourceId) : m_sourceId(sourceId) { }
+    SoundSource(uint sourceId) : m_sourceId(sourceId) {}
 
 public:
     enum FadeState { NoFading, FadingOn, FadingOff };

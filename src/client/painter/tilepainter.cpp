@@ -139,9 +139,8 @@ void TilePainter::drawCreature(const TilePtr& tile, const Point& dest, float sca
             dest.y + ((creature->getPosition().y - tile->m_position.y) * Otc::TILE_PIXELS - tile->m_drawElevation) * scaleFactor
         ), scaleFactor, true, frameFlags, lightView);
     }
-#endif    
+#endif
 }
-
 
 void TilePainter::drawBottom(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView)
 {
@@ -169,9 +168,9 @@ void TilePainter::drawBottom(const TilePtr& tile, const Point& dest, float scale
         }
     }
 
-    // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them	
+    // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them
     if(redrawPreviousTopH > 0 || redrawPreviousTopW > 0) {
-        // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them	
+        // after we render 2x2 lying corpses, we must redraw previous creatures/ontop above them
         if(redrawPreviousTopH > 0 || redrawPreviousTopW > 0) {
             for(int x = -redrawPreviousTopW; x <= 0; ++x) {
                 for(int y = -redrawPreviousTopH; y <= 0; ++y) {

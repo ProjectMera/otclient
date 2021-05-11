@@ -427,8 +427,6 @@ void ThingType::unserializeOtml(const OTMLNodePtr& node)
     }
 }
 
-
-
 const TexturePtr& ThingType::getTexture(int animationPhase, bool allBlank)
 {
     TexturePtr& animationPhaseTexture = (allBlank ? m_blankTextures : m_textures)[animationPhase];

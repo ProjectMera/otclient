@@ -27,11 +27,11 @@
 
 #include "painterogl.h"
 
-/**
- * Painter using OpenGL 2.0 programmable rendering pipeline,
- * compatible with OpenGL ES 2.0. Only recent cards support
- * this painter engine.
- */
+ /**
+  * Painter using OpenGL 2.0 programmable rendering pipeline,
+  * compatible with OpenGL ES 2.0. Only recent cards support
+  * this painter engine.
+  */
 class PainterOGL2 : public PainterOGL
 {
 public:
@@ -50,16 +50,16 @@ public:
     void drawFilledTriangle(const Point& a, const Point& b, const Point& c);
     void drawBoundingRect(const Rect& dest, int innerLineWidth = 1);
 
-    void setDrawProgram(PainterShaderProgram *drawProgram) { m_drawProgram = drawProgram; }
+    void setDrawProgram(PainterShaderProgram* drawProgram) { m_drawProgram = drawProgram; }
 
     bool hasShaders() { return true; }
 
 private:
-    PainterShaderProgram *m_drawProgram;
+    PainterShaderProgram* m_drawProgram;
     PainterShaderProgramPtr m_drawTexturedProgram;
     PainterShaderProgramPtr m_drawSolidColorProgram;
 };
 
-extern PainterOGL2 *g_painterOGL2;
+extern PainterOGL2* g_painterOGL2;
 
 #endif

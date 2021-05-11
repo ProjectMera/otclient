@@ -56,7 +56,7 @@ private:
     bool fillBufferAndQueue(uint buffer);
 
     SoundFilePtr m_soundFile;
-    std::array<SoundBufferPtr,STREAM_FRAGMENTS> m_buffers;
+    std::array<SoundBufferPtr, STREAM_FRAGMENTS> m_buffers;
     DownMix m_downMix;
     stdext::boolean<false> m_looping;
     stdext::boolean<false> m_playing;
