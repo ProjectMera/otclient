@@ -23,6 +23,7 @@
 #include "soundchannel.h"
 #include "streamsoundsource.h"
 #include "soundmanager.h"
+#include <random>
 
 SoundSourcePtr SoundChannel::play(const std::string& filename, float fadetime, float gain)
 {
@@ -32,7 +33,7 @@ SoundSourcePtr SoundChannel::play(const std::string& filename, float fadetime, f
     if(m_currentSource)
         m_currentSource->stop();
 
-    m_currentSource = g_sounds.play(filename, fadetime, m_gain*gain);
+    m_currentSource = g_sounds.play(filename, fadetime, m_gain * gain);
     return m_currentSource;
 }
 
@@ -54,8 +55,9 @@ void SoundChannel::enqueue(const std::string& filename, float fadetime, float ga
 {
     if(gain == 0)
         gain = 1.0f;
-    m_queue.push_back(QueueEntry{g_sounds.resolveSoundFile(filename), fadetime, gain});
-    std::random_shuffle(m_queue.begin(), m_queue.end());
+    m_queue.push_back(QueueEntry{ g_sounds.resolveSoundFile(filename), fadetime, gain });
+
+    std::shuffle(m_queue.begin(), m_queue.end(), std::mt19937(std::random_device()()));
     //update();
 }
 
