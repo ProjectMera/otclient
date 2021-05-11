@@ -158,10 +158,6 @@ protected:
     friend class MapViewPainter;
 
 private:
-    struct ViewPort {
-        uint8 top, right, bottom, left;
-    };
-
     struct FrameCache {
         FrameBufferPtr tile, staticText, dynamicText, creatureInformation;
 
@@ -196,8 +192,6 @@ private:
                      (m_virtualCenterOffset.y + (position.y - relativePosition.y) - (relativePosition.z - position.z)) * m_tileSize);
     }
 
-    bool canRenderTile(const TilePtr& tile, const ViewPort& viewPort, LightView* lightView);
-
     uint8 m_lockedFirstVisibleFloor,
         m_cachedFirstVisibleFloor,
         m_cachedLastVisibleFloor,
@@ -227,8 +221,8 @@ private:
         m_lastCameraPosition,
         m_mousePosition;
 
-    std::array<ViewPort, Otc::InvalidDirection + 1> m_viewPortDirection;
-    ViewPort m_viewport;
+    std::array<AwareRange, Otc::InvalidDirection + 1> m_viewPortDirection;
+    AwareRange m_viewport;
 
     stdext::boolean<true>
         m_mustUpdateVisibleTilesCache,

@@ -96,7 +96,7 @@ void MapViewPainter::draw(const MapViewPtr& mapView, const Rect& rect)
             for(const auto& tile : mapView->m_cachedVisibleTiles[z]) {
                 const auto hasLight = redrawLight && tile->hasLight();
 
-                if((!redrawThing && !hasLight) || !mapView->canRenderTile(tile, mapView->m_viewport, lightView)) continue;
+                if((!redrawThing && !hasLight) || !canRenderTile(mapView, tile, mapView->m_viewport, lightView)) continue;
 
                 TilePainter::drawStart(tile, mapView);
                 TilePainter::draw(tile, mapView->transformPositionTo2D(tile->getPosition(), cameraPosition), mapView->m_scaleFactor, mapView->m_frameCache.flags, lightView);
@@ -194,10 +194,8 @@ void MapViewPainter::drawCreatureInformation(const MapViewPtr& mapView)
         for(const auto& creature : mapView->m_visibleCreatures) {
             CreaturePainter::drawInformation(creature, mapView->m_rectCache.rect, mapView->transformPositionTo2D(creature->getPosition(), cameraPosition), mapView->m_scaleFactor, mapView->m_rectCache.drawOffset, mapView->m_rectCache.horizontalStretchFactor, mapView->m_rectCache.verticalStretchFactor, flags);
         }
-
         mapView->m_frameCache.creatureInformation->release();
     }
-
     mapView->m_frameCache.creatureInformation->draw();
 }
 
@@ -292,3 +290,28 @@ void MapViewPainter::drawSeparately(const MapViewPtr& mapView, const uint8 floor
     }
 }
 #endif
+
+bool MapViewPainter::canRenderTile(const MapViewPtr& mapView, const TilePtr& tile, const AwareRange& viewPort, LightView* lightView)
+{
+    if(mapView->m_drawViewportEdge || (lightView && lightView->isDark() && tile->hasLight())) return true;
+
+    const Position cameraPosition = mapView->getCameraPosition();
+    const Position& tilePos = tile->getPosition();
+
+    const int8 dz = tilePos.z - cameraPosition.z;
+    const Position checkPos = tilePos.translated(dz, dz);
+
+    // Check for non-visible tiles on the screen and ignore them
+    {
+        if((cameraPosition.x - checkPos.x >= viewPort.left) || (checkPos.x - cameraPosition.x == viewPort.right && !tile->hasWideThings() && !tile->hasDisplacement()))
+            return false;
+
+        if((cameraPosition.y - checkPos.y >= viewPort.top) || (checkPos.y - cameraPosition.y == viewPort.bottom && !tile->hasTallThings() && !tile->hasDisplacement()))
+            return false;
+
+        if((checkPos.x - cameraPosition.x > viewPort.right && (!tile->hasWideThings() || !tile->hasDisplacement())) || (checkPos.y - cameraPosition.y > viewPort.bottom))
+            return false;
+    }
+
+    return true;
+}

@@ -113,6 +113,8 @@ public:
     int getTotalAnimationPhase();
     int getCurrentAnimationPhase(bool mount = false);
 
+    uint32 getTotalWalkedPixels() { return m_totalWalkedPixels; }
+
     void updateShield();
 
     // walk related
@@ -129,6 +131,7 @@ public:
     bool canBeSeen() { return !isInvisible() || isPlayer(); }
     bool isCreature() override { return true; }
     bool isParalyzed() const { return m_speed < 10; }
+    bool isStartedWalking() const { return m_walking && m_totalWalkedPixels == 0; }
 
     const ThingTypePtr& getThingType() override;
     ThingType* rawGetThingType() override;
@@ -192,7 +195,8 @@ protected:
 
     // walk related
     int m_walkAnimationPhase;
-    int m_walkedPixels;
+    uint8 m_walkedPixels;
+    uint32 m_totalWalkedPixels;
     uint m_footStep;
     Timer m_walkTimer;
     Timer m_footTimer;

@@ -53,6 +53,7 @@ Creature::Creature() : Thing()
     m_direction = Otc::South;
     m_walkAnimationPhase = 0;
     m_walkedPixels = 0;
+    m_totalWalkedPixels = 0;
     m_walkTurnDirection = Otc::InvalidDirection;
     m_skull = Otc::SkullNone;
     m_shield = Otc::ShieldNone;
@@ -315,6 +316,8 @@ void Creature::nextWalkUpdate()
     // do the update
     updateWalk();
 
+    g_map.notificateCreatureUpdate(this, MOVING);
+
     if(!m_walking) return;
 
     // schedules next update
@@ -330,6 +333,12 @@ void Creature::updateWalk()
     int stepDuration = getStepDuration(true);
     stepDuration += (20 - stepDuration * .05);
 
+    // terminate walk only when client and server side walk are completed
+    if(m_walking && m_walkTimer.ticksElapsed() >= stepDuration) {
+        terminateWalk();
+        return;
+    }
+
     const float walkTicksPerPixel = stepDuration / Otc::TILE_PIXELS;
     const int totalPixelsWalked = std::min<int>(m_walkTimer.ticksElapsed() / walkTicksPerPixel, Otc::TILE_PIXELS);
 
@@ -339,15 +348,11 @@ void Creature::updateWalk()
     // needed for paralyze effect
     m_walkedPixels = std::max<int>(m_walkedPixels, totalPixelsWalked);
 
+    m_totalWalkedPixels += m_walkedPixels;
+
     // update offsets
     updateWalkOffset(m_walkedPixels);
-
     updateWalkingTile();
-
-    // terminate walk only when client and server side walk are completed
-    if(m_walking && m_walkTimer.ticksElapsed() >= stepDuration) {
-        terminateWalk();
-    }
 }
 
 void Creature::terminateWalk()
@@ -370,14 +375,15 @@ void Creature::terminateWalk()
     }
 
     m_walkedPixels = 0;
-    m_walkOffset = Point();
     m_walking = false;
 
     const auto self = static_self_cast<Creature>();
     m_walkFinishAnimEvent = g_dispatcher.scheduleEvent([self] {
+        self->m_walkOffset = Point();
         self->m_walkAnimationPhase = 0;
+        self->m_totalWalkedPixels = 0;
         self->m_walkFinishAnimEvent = nullptr;
-    }, g_game.getServerBeat());
+    }, 50);
 }
 
 void Creature::setName(const std::string& name)
@@ -562,6 +568,19 @@ void Creature::setShieldTexture(const std::string& filename, bool blink)
     m_shieldBlink = blink;
 }
 
+void Creature::updateShield()
+{
+    m_showShieldTexture = !m_showShieldTexture;
+
+    if(m_shield != Otc::ShieldNone && m_shieldBlink) {
+        auto self = static_self_cast<Creature>();
+        g_dispatcher.scheduleEvent([self]() {
+            self->updateShield();
+        }, SHIELD_BLINK_TICKS);
+    } else if(!m_shieldBlink)
+        m_showShieldTexture = true;
+}
+
 void Creature::setEmblemTexture(const std::string& filename)
 {
     m_emblemTexture = g_textures.getTexture(filename);
@@ -587,19 +606,6 @@ void Creature::addTimedSquare(uint8 color)
     g_dispatcher.scheduleEvent([self]() {
         self->removeTimedSquare();
     }, VOLATILE_SQUARE_DURATION);
-}
-
-void Creature::updateShield()
-{
-    m_showShieldTexture = !m_showShieldTexture;
-
-    if(m_shield != Otc::ShieldNone && m_shieldBlink) {
-        auto self = static_self_cast<Creature>();
-        g_dispatcher.scheduleEvent([self]() {
-            self->updateShield();
-        }, SHIELD_BLINK_TICKS);
-    } else if(!m_shieldBlink)
-        m_showShieldTexture = true;
 }
 
 Point Creature::getDrawOffset()

@@ -23,7 +23,7 @@
 #ifndef MAPVIEWPAINTERPAINTER_H
 #define MAPVIEWPAINTERPAINTER_H
 
-#include "../mapview.h"
+#include "../declarations.h"
 
 class MapViewPainter
 {
@@ -31,6 +31,8 @@ public:
     static void draw(const MapViewPtr& mapView, const Rect& rect);
     static void drawText(const MapViewPtr& mapView);
     static void drawCreatureInformation(const MapViewPtr& mapView);
+
+    static bool canRenderTile(const MapViewPtr& mapView, const TilePtr& tile, const AwareRange& viewPort, LightView* lightView);
 
 #if DRAW_ALL_GROUND_FIRST == 1
     static void drawSeparately(const MapViewPtr& mapView, const uint8 floor, const ViewPort& viewPort, LightView* lightView);

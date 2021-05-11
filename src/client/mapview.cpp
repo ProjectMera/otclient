@@ -232,7 +232,7 @@ void MapView::updateGeometry(const Size& visibleDimension, const Size& optimized
     m_frameCache.tile->resize(bufferSize);
     if(m_drawLights) m_lightView->resize();
 
-    for(const auto& frame : { m_frameCache.staticText, m_frameCache.creatureInformation, m_frameCache.dynamicText })
+    for(const auto& frame : { m_frameCache.creatureInformation, m_frameCache.staticText, m_frameCache.dynamicText })
         frame->resize(g_graphics.getViewportSize());
 
     m_awareRange.left = std::min<uint16>(g_map.getAwareRange().left, (m_drawDimension.width() / 2) - 1);
@@ -318,26 +318,7 @@ void MapView::onFloorDrawingEnd(const uint8 /*floor*/)
     }
 }
 
-void MapView::onCreatureUpdate(const CreaturePtr& creature, const uint8 status)
-{
-    if(m_frameCache.creatureInformation->canUpdate()) return;
-    if(creature->isDead()) {
-        m_frameCache.creatureInformation->update();
-        return;
-    }
-
-    uint32 flag = 0;
-    if(status == Creature::HEALTH_CHANGE) {
-        flag = Otc::DrawBars;
-    } else if(status == Creature::MANA_CHANGE) {
-        flag = Otc::DrawManaBar;
-    }
-
-    m_frameCache.creatureInformation->bind();
-    CreaturePainter::drawInformation(creature, m_rectCache.rect, transformPositionTo2D(creature->getPosition(), getCameraPosition()), m_scaleFactor, m_rectCache.drawOffset, m_rectCache.horizontalStretchFactor, m_rectCache.verticalStretchFactor, flag);
-    m_frameCache.creatureInformation->release();
-    m_frameCache.creatureInformation->draw();
-}
+void MapView::onCreatureUpdate(const CreaturePtr& creature, const uint8 status) {}
 
 void MapView::onTileUpdate(const Position&)
 {
@@ -656,7 +637,7 @@ void MapView::setDrawLights(bool enable)
 void MapView::updateViewportDirectionCache()
 {
     for(uint8 dir = Otc::North; dir <= Otc::InvalidDirection; ++dir) {
-        ViewPort& vp = m_viewPortDirection[dir];
+        AwareRange& vp = m_viewPortDirection[dir];
         vp.top = m_awareRange.top;
         vp.right = m_awareRange.right;
         vp.bottom = vp.top;
@@ -694,31 +675,6 @@ void MapView::updateViewportDirectionCache()
             break;
         }
     }
-}
-
-bool MapView::canRenderTile(const TilePtr& tile, const ViewPort& viewPort, LightView* lightView)
-{
-    if(m_drawViewportEdge || (lightView && lightView->isDark() && tile->hasLight())) return true;
-
-    const Position cameraPosition = getCameraPosition();
-    const Position& tilePos = tile->getPosition();
-
-    const int8 dz = tilePos.z - cameraPosition.z;
-    const Position checkPos = tilePos.translated(dz, dz);
-
-    // Check for non-visible tiles on the screen and ignore them
-    {
-        if((cameraPosition.x - checkPos.x >= viewPort.left) || (checkPos.x - cameraPosition.x == viewPort.right && !tile->hasWideThings() && !tile->hasDisplacement()))
-            return false;
-
-        if((cameraPosition.y - checkPos.y >= viewPort.top) || (checkPos.y - cameraPosition.y == viewPort.bottom && !tile->hasTallThings() && !tile->hasDisplacement()))
-            return false;
-
-        if((checkPos.x - cameraPosition.x > viewPort.right && (!tile->hasWideThings() || !tile->hasDisplacement())) || (checkPos.y - cameraPosition.y > viewPort.bottom))
-            return false;
-    }
-
-    return true;
 }
 
 std::vector<CreaturePtr> MapView::getSightSpectators(const Position& centerPos, bool multiFloor)

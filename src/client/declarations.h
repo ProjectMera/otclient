@@ -55,6 +55,7 @@ class Spawn;
 class TileBlock;
 
 struct Highlight;
+struct AwareRange;
 
 typedef stdext::shared_object_ptr<MapView> MapViewPtr;
 typedef stdext::shared_object_ptr<LightView> LightViewPtr;
