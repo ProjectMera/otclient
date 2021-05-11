@@ -21,9 +21,9 @@
  */
 
 #include "uiminimap.h"
-#include "game.h"
-#include "luavaluecasts.h"
-#include "minimap.h"
+#include "../game.h"
+#include "../luavaluecasts.h"
+#include "../minimap.h"
 #include "uimapanchorlayout.h"
 
 #include <framework/graphics/painter.h>

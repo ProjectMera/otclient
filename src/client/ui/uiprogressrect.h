@@ -24,8 +24,8 @@
 #define UIPROGRESSRECT_H
 
 #include <framework/ui/uiwidget.h>
-#include "declarations.h"
-#include "item.h"
+#include "../declarations.h"
+#include "../item.h"
 
 class UIProgressRect : public UIWidget
 {

@@ -109,6 +109,12 @@
     <Filter Include="Header Files\client\painter">
       <UniqueIdentifier>{61febdfc-31dc-4985-824e-3fabd2c898b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\client\ui">
+      <UniqueIdentifier>{25156442-7b5e-4457-a488-371771b65d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\ui">
+      <UniqueIdentifier>{41ca747c-0247-47bb-8666-a001c08b433a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\framework\luafunctions.cpp">
@@ -507,27 +513,6 @@
     <ClCompile Include="..\src\client\towns.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\uicreature.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uiitem.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uimap.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uimapanchorlayout.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uiminimap.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uiprogressrect.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\uisprite.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -548,6 +533,27 @@
     </ClCompile>
     <ClCompile Include="..\src\client\painter\thingpainter.cpp">
       <Filter>Source Files\client\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uisprite.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uicreature.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uiitem.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uimap.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uimapanchorlayout.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uiminimap.cpp">
+      <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\ui\uiprogressrect.cpp">
+      <Filter>Source Files\client\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1043,27 +1049,6 @@
     <ClInclude Include="..\src\client\towns.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\uicreature.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uiitem.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uimap.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uimapanchorlayout.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uiminimap.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uiprogressrect.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uisprite.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\framework\core\config.h">
       <Filter>Header Files\framework\core</Filter>
     </ClInclude>
@@ -1084,6 +1069,27 @@
     </ClInclude>
     <ClInclude Include="..\src\client\painter\thingpainter.h">
       <Filter>Header Files\client\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uisprite.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uicreature.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uiitem.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uimap.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uimapanchorlayout.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uiminimap.h">
+      <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\ui\uiprogressrect.h">
+      <Filter>Header Files\client\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

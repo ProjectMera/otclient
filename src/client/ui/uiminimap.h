@@ -24,7 +24,7 @@
 #define UIMINIMAP_H
 
 #include <framework/ui/uiwidget.h>
-#include "declarations.h"
+#include "../declarations.h"
 
 class UIMinimap : public UIWidget
 {

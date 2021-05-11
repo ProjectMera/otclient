@@ -20,40 +20,37 @@
  * THE SOFTWARE.
  */
 
-#ifndef UIMAPANCHORLAYOUT_H
-#define UIMAPANCHORLAYOUT_H
+#ifndef UISPRITE_H
+#define UISPRITE_H
 
-#include <framework/ui/uianchorlayout.h>
-#include "declarations.h"
+#include <framework/ui/uiwidget.h>
+#include "../declarations.h"
 
-#include <utility>
-
-class UIPositionAnchor : public UIAnchor
+class UISprite : public UIWidget
 {
 public:
-    UIPositionAnchor(Fw::AnchorEdge anchoredEdge, const Position& hookedPosition, Fw::AnchorEdge hookedEdge) :
-        UIAnchor(anchoredEdge, std::string(), hookedEdge), m_hookedPosition(hookedPosition)
-    {
-    }
+    UISprite();
+    void drawSelf(Fw::DrawPane drawPane) override;
 
-    UIWidgetPtr getHookedWidget(const UIWidgetPtr& /*widget*/, const UIWidgetPtr& parentWidget) override { return parentWidget; }
-    int getHookedPoint(const UIWidgetPtr& hookedWidget, const UIWidgetPtr& parentWidget) override;
+    void setSpriteId(int id);
+    int getSpriteId() { return m_spriteId; }
+    void clearSprite() { setSpriteId(0); }
 
-private:
-    Position m_hookedPosition;
-};
+    void setSpriteColor(Color color) { m_spriteColor = color; }
 
-class UIMapAnchorLayout : public UIAnchorLayout
-{
-public:
-    UIMapAnchorLayout(UIWidgetPtr parentWidget) : UIAnchorLayout(std::move(parentWidget)) {}
+    bool isSpriteVisible() { return m_spriteVisible; }
+    void setSpriteVisible(bool visible) { m_spriteVisible = visible; }
 
-    void addPositionAnchor(const UIWidgetPtr& anchoredWidget, Fw::AnchorEdge anchoredEdge,
-                           const Position& hookedPosition, Fw::AnchorEdge hookedEdge);
-    void centerInPosition(const UIWidgetPtr& anchoredWidget, const Position& hookedPosition);
-    void fillPosition(const UIWidgetPtr& anchoredWidget, const Position& hookedPosition);
+    bool hasSprite() { return m_sprite != nullptr; }
 
 protected:
+    void onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode) override;
+
+    TexturePtr m_sprite;
+    uint16 m_spriteId;
+    Color m_spriteColor;
+
+    stdext::boolean<true> m_spriteVisible;
 };
 
 #endif

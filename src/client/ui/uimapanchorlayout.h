@@ -20,41 +20,40 @@
  * THE SOFTWARE.
  */
 
-#ifndef UIITEM_H
-#define UIITEM_H
+#ifndef UIMAPANCHORLAYOUT_H
+#define UIMAPANCHORLAYOUT_H
 
-#include <framework/ui/uiwidget.h>
-#include "declarations.h"
-#include "item.h"
+#include <framework/ui/uianchorlayout.h>
+#include "../declarations.h"
 
-class UIItem : public UIWidget
+#include <utility>
+
+class UIPositionAnchor : public UIAnchor
 {
 public:
-    UIItem();
-    void drawSelf(Fw::DrawPane drawPane) override;
+    UIPositionAnchor(Fw::AnchorEdge anchoredEdge, const Position& hookedPosition, Fw::AnchorEdge hookedEdge) :
+        UIAnchor(anchoredEdge, std::string(), hookedEdge), m_hookedPosition(hookedPosition)
+    {
+    }
 
-    void setItemId(int id);
-    void setItemCount(int count) { if(m_item) m_item->setCount(count); }
-    void setItemSubType(int subType) { if(m_item) m_item->setSubType(subType); }
-    void setItemVisible(bool visible) { m_itemVisible = visible; }
-    void setItem(const ItemPtr& item) { m_item = item; }
-    void setVirtual(bool virt) { m_virtual = virt; }
-    void clearItem() { setItemId(0); }
+    UIWidgetPtr getHookedWidget(const UIWidgetPtr& /*widget*/, const UIWidgetPtr& parentWidget) override { return parentWidget; }
+    int getHookedPoint(const UIWidgetPtr& hookedWidget, const UIWidgetPtr& parentWidget) override;
 
-    int getItemId() { return m_item ? m_item->getId() : 0; }
-    int getItemCount() { return m_item ? m_item->getCount() : 0; }
-    int getItemSubType() { return m_item ? m_item->getSubType() : 0; }
-    ItemPtr getItem() { return m_item; }
-    bool isVirtual() { return m_virtual; }
-    bool isItemVisible() { return m_itemVisible; }
+private:
+    Position m_hookedPosition;
+};
+
+class UIMapAnchorLayout : public UIAnchorLayout
+{
+public:
+    UIMapAnchorLayout(UIWidgetPtr parentWidget) : UIAnchorLayout(std::move(parentWidget)) {}
+
+    void addPositionAnchor(const UIWidgetPtr& anchoredWidget, Fw::AnchorEdge anchoredEdge,
+                           const Position& hookedPosition, Fw::AnchorEdge hookedEdge);
+    void centerInPosition(const UIWidgetPtr& anchoredWidget, const Position& hookedPosition);
+    void fillPosition(const UIWidgetPtr& anchoredWidget, const Position& hookedPosition);
 
 protected:
-    void onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode) override;
-
-    ItemPtr m_item;
-    stdext::boolean<false> m_virtual;
-    stdext::boolean<true> m_itemVisible;
-    stdext::boolean<false> m_showId;
 };
 
 #endif

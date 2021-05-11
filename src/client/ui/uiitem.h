@@ -20,30 +20,41 @@
  * THE SOFTWARE.
  */
 
-#ifndef UICREATURE_H
-#define UICREATURE_H
+#ifndef UIITEM_H
+#define UIITEM_H
 
 #include <framework/ui/uiwidget.h>
-#include "creature.h"
-#include "declarations.h"
+#include "../declarations.h"
+#include "../item.h"
 
-class UICreature : public UIWidget
+class UIItem : public UIWidget
 {
 public:
+    UIItem();
     void drawSelf(Fw::DrawPane drawPane) override;
 
-    void setCreature(const CreaturePtr& creature) { m_creature = creature; }
-    void setFixedCreatureSize(bool fixed) { m_fixedCreatureSize = fixed; }
-    void setOutfit(const Outfit& outfit);
+    void setItemId(int id);
+    void setItemCount(int count) { if(m_item) m_item->setCount(count); }
+    void setItemSubType(int subType) { if(m_item) m_item->setSubType(subType); }
+    void setItemVisible(bool visible) { m_itemVisible = visible; }
+    void setItem(const ItemPtr& item) { m_item = item; }
+    void setVirtual(bool virt) { m_virtual = virt; }
+    void clearItem() { setItemId(0); }
 
-    CreaturePtr getCreature() { return m_creature; }
-    bool isFixedCreatureSize() { return m_fixedCreatureSize; }
+    int getItemId() { return m_item ? m_item->getId() : 0; }
+    int getItemCount() { return m_item ? m_item->getCount() : 0; }
+    int getItemSubType() { return m_item ? m_item->getSubType() : 0; }
+    ItemPtr getItem() { return m_item; }
+    bool isVirtual() { return m_virtual; }
+    bool isItemVisible() { return m_itemVisible; }
 
 protected:
     void onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode) override;
 
-    CreaturePtr m_creature;
-    stdext::boolean<false> m_fixedCreatureSize;
+    ItemPtr m_item;
+    stdext::boolean<false> m_virtual;
+    stdext::boolean<true> m_itemVisible;
+    stdext::boolean<false> m_showId;
 };
 
 #endif

@@ -21,7 +21,7 @@
  */
 
 #include "uiitem.h"
-#include "painter/thingpainter.h"
+#include "../painter/thingpainter.h"
 #include <framework/graphics/fontmanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>

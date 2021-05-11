@@ -21,7 +21,7 @@
  */
 
 #include "uicreature.h"
-#include "painter/creaturepainter.h"
+#include "../painter/creaturepainter.h"
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>
 

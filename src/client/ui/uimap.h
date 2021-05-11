@@ -24,10 +24,10 @@
 #define UIMAP_H
 
 #include <framework/ui/uiwidget.h>
-#include "declarations.h"
-#include "tile.h"
+#include "../declarations.h"
+#include "../tile.h"
 
-#include "mapview.h"
+#include "../mapview.h"
 
 class UIMap : public UIWidget
 {

@@ -20,37 +20,30 @@
  * THE SOFTWARE.
  */
 
-#ifndef UISPRITE_H
-#define UISPRITE_H
+#ifndef UICREATURE_H
+#define UICREATURE_H
 
 #include <framework/ui/uiwidget.h>
-#include "declarations.h"
+#include "../creature.h"
+#include "../declarations.h"
 
-class UISprite : public UIWidget
+class UICreature : public UIWidget
 {
 public:
-    UISprite();
     void drawSelf(Fw::DrawPane drawPane) override;
 
-    void setSpriteId(int id);
-    int getSpriteId() { return m_spriteId; }
-    void clearSprite() { setSpriteId(0); }
+    void setCreature(const CreaturePtr& creature) { m_creature = creature; }
+    void setFixedCreatureSize(bool fixed) { m_fixedCreatureSize = fixed; }
+    void setOutfit(const Outfit& outfit);
 
-    void setSpriteColor(Color color) { m_spriteColor = color; }
-
-    bool isSpriteVisible() { return m_spriteVisible; }
-    void setSpriteVisible(bool visible) { m_spriteVisible = visible; }
-
-    bool hasSprite() { return m_sprite != nullptr; }
+    CreaturePtr getCreature() { return m_creature; }
+    bool isFixedCreatureSize() { return m_fixedCreatureSize; }
 
 protected:
     void onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode) override;
 
-    TexturePtr m_sprite;
-    uint16 m_spriteId;
-    Color m_spriteColor;
-
-    stdext::boolean<true> m_spriteVisible;
+    CreaturePtr m_creature;
+    stdext::boolean<false> m_fixedCreatureSize;
 };
 
 #endif

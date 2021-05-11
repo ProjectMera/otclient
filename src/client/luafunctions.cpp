@@ -42,13 +42,13 @@
 #include "thingtypemanager.h"
 #include "tile.h"
 #include "towns.h"
-#include "uicreature.h"
-#include "uiitem.h"
-#include "uimap.h"
-#include "uimapanchorlayout.h"
-#include "uiminimap.h"
-#include "uiprogressrect.h"
-#include "uisprite.h"
+#include "ui/uicreature.h"
+#include "ui/uiitem.h"
+#include "ui/uimap.h"
+#include "ui/uimapanchorlayout.h"
+#include "ui/uiminimap.h"
+#include "ui/uiprogressrect.h"
+#include "ui/uisprite.h"
 
 #include <framework/luaengine/luainterface.h>
 
