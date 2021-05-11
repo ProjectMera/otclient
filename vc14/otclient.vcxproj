@@ -170,10 +170,10 @@
     <ClCompile Include="..\src\client\painter\mapviewpainter.cpp" />
     <ClCompile Include="..\src\client\painter\tilepainter.cpp" />
     <ClCompile Include="..\src\client\player.cpp" />
-    <ClCompile Include="..\src\client\protocolcodes.cpp" />
-    <ClCompile Include="..\src\client\protocolgame.cpp" />
-    <ClCompile Include="..\src\client\protocolgameparse.cpp" />
-    <ClCompile Include="..\src\client\protocolgamesend.cpp" />
+    <ClCompile Include="..\src\client\protocol\protocolcodes.cpp" />
+    <ClCompile Include="..\src\client\protocol\protocolgame.cpp" />
+    <ClCompile Include="..\src\client\protocol\protocolgameparse.cpp" />
+    <ClCompile Include="..\src\client\protocol\protocolgamesend.cpp" />
     <ClCompile Include="..\src\client\shadermanager.cpp" />
     <ClCompile Include="..\src\client\spritemanager.cpp" />
     <ClCompile Include="..\src\client\statictext.cpp" />
@@ -326,8 +326,8 @@
     <ClInclude Include="..\src\client\painter\tilepainter.h" />
     <ClInclude Include="..\src\client\player.h" />
     <ClInclude Include="..\src\client\position.h" />
-    <ClInclude Include="..\src\client\protocolcodes.h" />
-    <ClInclude Include="..\src\client\protocolgame.h" />
+    <ClInclude Include="..\src\client\protocol\protocolcodes.h" />
+    <ClInclude Include="..\src\client\protocol\protocolgame.h" />
     <ClInclude Include="..\src\client\shadermanager.h" />
     <ClInclude Include="..\src\client\spritemanager.h" />
     <ClInclude Include="..\src\client\statictext.h" />

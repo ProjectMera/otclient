@@ -23,7 +23,7 @@
 #ifndef PROTOCOLCODES_H
 #define PROTOCOLCODES_H
 
-#include "global.h"
+#include "../global.h"
 
 namespace Proto {
     enum LoginServerOpts {

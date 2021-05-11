@@ -115,11 +115,17 @@
     <Filter Include="Source Files\client\ui">
       <UniqueIdentifier>{41ca747c-0247-47bb-8666-a001c08b433a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\client\editor">
-      <UniqueIdentifier>{6a382eff-6a22-4819-a9ae-6e045cf1b5ae}</UniqueIdentifier>
+    <Filter Include="Header Files\client\protocol">
+      <UniqueIdentifier>{156d1c53-e308-4a8b-9c6b-d190265b14bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\protocol">
+      <UniqueIdentifier>{81117ecc-3e89-4b76-91f1-8992695ddcea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\client\editor">
-      <UniqueIdentifier>{a872cb28-f1e0-49da-87d3-318afc59a23a}</UniqueIdentifier>
+      <UniqueIdentifier>{d7b1545d-6b48-47e5-abfb-42a70567afba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\editor">
+      <UniqueIdentifier>{2ed2b27a-0e0b-4cad-ba46-82fa18619137}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -474,18 +480,6 @@
     <ClCompile Include="..\src\client\player.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\protocolcodes.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\protocolgame.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\protocolgameparse.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\protocolgamesend.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\shadermanager.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
@@ -546,19 +540,31 @@
     <ClCompile Include="..\src\client\ui\uiprogressrect.cpp">
       <Filter>Source Files\client\ui</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\houses.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\protocol\protocolcodes.cpp">
+      <Filter>Source Files\client\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\protocol\protocolgame.cpp">
+      <Filter>Source Files\client\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\protocol\protocolgameparse.cpp">
+      <Filter>Source Files\client\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\protocol\protocolgamesend.cpp">
+      <Filter>Source Files\client\protocol</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\editor\creatures.cpp">
       <Filter>Source Files\client\editor</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\mapio.cpp">
+    <ClCompile Include="..\src\client\editor\thingtypemanager.cpp">
       <Filter>Source Files\client\editor</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\editor\towns.cpp">
       <Filter>Source Files\client\editor</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\thingtypemanager.cpp">
+    <ClCompile Include="..\src\client\editor\mapio.cpp">
+      <Filter>Source Files\client\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\houses.cpp">
       <Filter>Source Files\client\editor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1016,16 +1022,7 @@
     <ClInclude Include="..\src\client\position.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\protocolcodes.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\protocolgame.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\shadermanager.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\spritemanager.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\statictext.h">
@@ -1085,8 +1082,11 @@
     <ClInclude Include="..\src\client\ui\uiprogressrect.h">
       <Filter>Header Files\client\ui</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\editor\creatures.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\protocol\protocolcodes.h">
+      <Filter>Header Files\client\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\protocol\protocolgame.h">
+      <Filter>Header Files\client\protocol</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\editor\houses.h">
       <Filter>Header Files\client\editor</Filter>
@@ -1095,6 +1095,12 @@
       <Filter>Header Files\client\editor</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\editor\towns.h">
+      <Filter>Header Files\client\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\spritemanager.h">
+      <Filter>Header Files\client\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\editor\creatures.h">
       <Filter>Header Files\client\editor</Filter>
     </ClInclude>
   </ItemGroup>
