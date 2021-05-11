@@ -333,7 +333,6 @@ void Creature::updateWalk()
     int stepDuration = getStepDuration(true);
     stepDuration += (20 - stepDuration * .05);
 
-    // terminate walk only when client and server side walk are completed
     if(m_walking && m_walkTimer.ticksElapsed() >= stepDuration) {
         terminateWalk();
         return;
@@ -342,17 +341,14 @@ void Creature::updateWalk()
     const float walkTicksPerPixel = static_cast<float>(stepDuration) / Otc::TILE_PIXELS;
     const int totalPixelsWalked = std::min<int>(m_walkTimer.ticksElapsed() / walkTicksPerPixel, Otc::TILE_PIXELS);
 
-    // update walk animation
-    updateWalkAnimation();
-
     // needed for paralyze effect
     m_walkedPixels = std::max<int>(m_walkedPixels, totalPixelsWalked);
 
     m_totalWalkedPixels += m_walkedPixels;
 
-    // update offsets
-    updateWalkOffset(m_walkedPixels);
     updateWalkingTile();
+    updateWalkAnimation();
+    updateWalkOffset(m_walkedPixels);
 }
 
 void Creature::terminateWalk()
