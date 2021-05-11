@@ -27,6 +27,7 @@
 #include "localplayer.h"
 #include "map.h"
 #include "mapview.h"
+#include "painter/mapviewpainter.h"
 
 UIMap::UIMap()
 {
@@ -66,7 +67,7 @@ void UIMap::drawSelf(Fw::DrawPane drawPane)
 
     if(drawPane & Fw::BackgroundPane) {
         g_painter->resetColor();
-        m_mapView->draw(m_mapRect);
+        MapViewPainter::draw(m_mapView, m_mapRect);
     }
 }
 

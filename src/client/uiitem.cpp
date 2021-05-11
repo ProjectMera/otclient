@@ -21,6 +21,7 @@
  */
 
 #include "uiitem.h"
+#include "painter/thingpainter.h"
 #include <framework/graphics/fontmanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>
@@ -56,7 +57,7 @@ void UIItem::drawSelf(Fw::DrawPane drawPane)
         dest += (m_item->getDisplacement() - Point(Otc::TILE_PIXELS)) * scaleFactor;
 
         g_painter->setColor(m_color);
-        m_item->draw(dest, scaleFactor, true, Highlight());
+        ThingPainter::draw(m_item, dest, scaleFactor, true, Highlight());
 
         if(m_font && (m_item->isStackable() || m_item->isChargeable()) && m_item->getCountOrSubType() > 1) {
             const std::string count = stdext::to_string(m_item->getCountOrSubType());

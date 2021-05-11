@@ -20,38 +20,18 @@
  * THE SOFTWARE.
  */
 
-#ifndef SHOT_H
-#define SHOT_H
+#ifndef CREATUREPAINTER_H
+#define CREATUREPAINTER_H
 
-#include <framework/global.h>
-#include <framework/core/timer.h>
-#include "thing.h"
-#include "painter/thingpainter.h"
+#include "../creature.h"
 
- // @bindclass
-class Missile : public Thing
+class CreaturePainter
 {
 public:
-    void setId(uint32 id) override;
-    void setPath(const Position& fromPosition, const Position& toPosition);
-
-    uint32 getId() override { return m_id; }
-
-    MissilePtr asMissile() { return static_self_cast<Missile>(); }
-    bool isMissile() override { return true; }
-
-    const ThingTypePtr& getThingType() override;
-    ThingType* rawGetThingType() override;
-
-private:
-    Timer m_animationTimer;
-    Point m_delta;
-    uint8 m_distance;
-    float m_duration;
-    uint16 m_id;
-    Otc::Direction m_direction;
-
-    friend class ThingPainter;
+    static void draw(const CreaturePtr& creature, const Point& dest, float scaleFactor, bool animate, const Highlight& highLight, int frameFlags, LightView* lightView);
+    static void internalDrawOutfit(const CreaturePtr& creature, Point dest, float scaleFactor, bool animateWalk, bool useBlank, Otc::Direction direction);
+    static void drawOutfit(const CreaturePtr& creature, const Rect& destRect, bool resize);
+    static void drawInformation(const CreaturePtr& creature, const Rect& parentRect, const Point& dest, float scaleFactor, Point drawOffset, const float horizontalStretchFactor, const float verticalStretchFactor, int drawFlags);
 };
 
 #endif

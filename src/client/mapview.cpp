@@ -85,224 +85,6 @@ MapView::~MapView()
 #endif
 }
 
-void MapView::draw(const Rect& rect)
-{
-    // update visible tiles cache when needed
-    if(m_mustUpdateVisibleTilesCache)
-        updateVisibleTilesCache();
-
-    const Position cameraPosition = getCameraPosition();
-    const auto redrawThing = m_frameCache.tile->canUpdate();
-    const auto redrawLight = m_drawLights && m_lightView->canUpdate();
-
-    if(m_rectCache.rect != rect) {
-        m_rectCache.rect = rect;
-        m_rectCache.srcRect = calcFramebufferSource(rect.size());
-        m_rectCache.drawOffset = m_rectCache.srcRect.topLeft();
-        m_rectCache.horizontalStretchFactor = rect.width() / static_cast<float>(m_rectCache.srcRect.width());
-        m_rectCache.verticalStretchFactor = rect.height() / static_cast<float>(m_rectCache.srcRect.height());
-    }
-
-    if(redrawThing || redrawLight) {
-        if(redrawLight) m_frameCache.flags |= Otc::FUpdateLight;
-
-        if(redrawThing) {
-            m_frameCache.tile->bind();
-            m_frameCache.flags |= Otc::FUpdateThing;
-        }
-
-        const auto& lightView = redrawLight ? m_lightView.get() : nullptr;
-        for(int_fast8_t z = m_floorMax; z >= m_floorMin; --z) {
-            if(lightView) {
-                const int8 nextFloor = z - 1;
-                if(nextFloor >= m_floorMin) {
-                    lightView->setFloor(nextFloor);
-                    for(const auto& tile : m_cachedVisibleTiles[nextFloor]) {
-                        const auto& ground = tile->getGround();
-                        if(ground && !ground->isTranslucent()) {
-                            auto pos2D = transformPositionTo2D(tile->getPosition(), cameraPosition);
-                            if(ground->isTopGround()) {
-                                const auto currentPos = tile->getPosition();
-                                for(const auto& pos : currentPos.translatedToDirections({ Otc::South, Otc::East })) {
-                                    const auto& nextDownTile = g_map.getTile(pos);
-                                    if(nextDownTile && nextDownTile->hasGround() && !nextDownTile->isTopGround()) {
-                                        lightView->setShade(pos2D);
-                                        break;
-                                    }
-                                }
-
-                                pos2D -= m_tileSize;
-                            }
-
-                            lightView->setShade(pos2D);
-                        }
-                    }
-                }
-            }
-
-            onFloorDrawingStart(z);
-
-#if DRAW_ALL_GROUND_FIRST == 1
-            drawSeparately(z, viewPort, lightView);
-#else
-            if(lightView) lightView->setFloor(z);
-            for(const auto& tile : m_cachedVisibleTiles[z]) {
-                const auto hasLight = redrawLight && tile->hasLight();
-
-                if((!redrawThing && !hasLight) || !canRenderTile(tile, m_viewport, lightView)) continue;
-
-                tile->drawStart(this);
-                tile->draw(transformPositionTo2D(tile->getPosition(), cameraPosition), m_scaleFactor, m_frameCache.flags, lightView);
-                tile->drawEnd(this);
-            }
-#endif
-            for(const MissilePtr& missile : g_map.getFloorMissiles(z)) {
-                missile->draw(transformPositionTo2D(missile->getPosition(), cameraPosition), m_scaleFactor, m_frameCache.flags, lightView);
-            }
-
-            onFloorDrawingEnd(z);
-        }
-
-        if(redrawThing) {
-            if(m_crosshairTexture && m_mousePosition.isValid()) {
-                const Point& point = transformPositionTo2D(m_mousePosition, cameraPosition);
-                const Rect crosshairRect = Rect(point, m_tileSize, m_tileSize);
-                g_painter->drawTexturedRect(crosshairRect, m_crosshairTexture);
-            }
-
-            m_frameCache.tile->release();
-        }
-    }
-
-    // generating mipmaps each frame can be slow in older cards
-    //m_framebuffer->getTexture()->buildHardwareMipmaps();
-
-    float fadeOpacity = 1.0f;
-    if(!m_shaderSwitchDone && m_fadeOutTime > 0) {
-        fadeOpacity = 1.0f - (m_fadeTimer.timeElapsed() / m_fadeOutTime);
-        if(fadeOpacity < 0.0f) {
-            m_shader = m_nextShader;
-            m_nextShader = nullptr;
-            m_shaderSwitchDone = true;
-            m_fadeTimer.restart();
-        }
-    }
-
-    if(m_shaderSwitchDone && m_shader && m_fadeInTime > 0)
-        fadeOpacity = std::min<float>(m_fadeTimer.timeElapsed() / m_fadeInTime, 1.0f);
-
-    if(m_shader && g_painter->hasShaders() && g_graphics.shouldUseShaders() && m_viewMode == NEAR_VIEW) {
-        const Point center = m_rectCache.srcRect.center();
-        const Point globalCoord = Point(cameraPosition.x - m_drawDimension.width() / 2, -(cameraPosition.y - m_drawDimension.height() / 2)) * m_tileSize;
-        m_shader->bind();
-        m_shader->setUniformValue(ShaderManager::MAP_CENTER_COORD, center.x / static_cast<float>(m_rectDimension.width()), 1.0f - center.y / static_cast<float>(m_rectDimension.height()));
-        m_shader->setUniformValue(ShaderManager::MAP_GLOBAL_COORD, globalCoord.x / static_cast<float>(m_rectDimension.height()), globalCoord.y / static_cast<float>(m_rectDimension.height()));
-        m_shader->setUniformValue(ShaderManager::MAP_ZOOM, m_scaleFactor);
-        g_painter->setShaderProgram(m_shader);
-    }
-
-    g_painter->setOpacity(fadeOpacity);
-    glDisable(GL_BLEND);
-    m_frameCache.tile->draw(rect, m_rectCache.srcRect);
-    g_painter->resetShaderProgram();
-    g_painter->resetOpacity();
-    glEnable(GL_BLEND);
-
-    // this could happen if the player position is not known yet
-    if(!cameraPosition.isValid())
-        return;
-
-    // avoid drawing texts on map in far zoom outs
-#if DRAW_CREATURE_INFORMATION_AFTER_LIGHT == 0
-    drawCreatureInformation();
-#endif
-
-    // lights are drawn after names and before texts
-    if(m_drawLights) {
-        m_lightView->draw(rect, m_rectCache.srcRect);
-    }
-
-#if DRAW_CREATURE_INFORMATION_AFTER_LIGHT == 1
-    drawCreatureInformation();
-#endif
-
-    drawText();
-
-    m_frameCache.flags = 0;
-}
-
-void MapView::drawCreatureInformation()
-{
-    if(!m_drawNames && !m_drawHealthBars && !m_drawManaBar) return;
-
-    if(m_frameCache.creatureInformation->canUpdate()) {
-        const Position cameraPosition = getCameraPosition();
-
-        uint32_t flags = 0;
-        if(m_drawNames) { flags = Otc::DrawNames; }
-        if(m_drawHealthBars) { flags |= Otc::DrawBars; }
-        if(m_drawManaBar) { flags |= Otc::DrawManaBar; }
-
-        m_frameCache.creatureInformation->bind();
-        for(const auto& creature : m_visibleCreatures) {
-            creature->drawInformation(m_rectCache.rect, transformPositionTo2D(creature->getPosition(), cameraPosition), m_scaleFactor, m_rectCache.drawOffset, m_rectCache.horizontalStretchFactor, m_rectCache.verticalStretchFactor, flags);
-        }
-        m_frameCache.creatureInformation->release();
-    }
-
-    m_frameCache.creatureInformation->draw();
-}
-
-void MapView::drawText()
-{
-    if(!m_drawTexts) return;
-
-    const Position cameraPosition = getCameraPosition();
-
-    if(!g_map.getStaticTexts().empty()) {
-        if(m_frameCache.staticText->canUpdate()) {
-            m_frameCache.staticText->bind();
-            for(const StaticTextPtr& staticText : g_map.getStaticTexts()) {
-                const Position pos = staticText->getPosition();
-
-                if(pos.z != cameraPosition.z && staticText->getMessageMode() == Otc::MessageNone)
-                    continue;
-
-                Point p = transformPositionTo2D(pos, cameraPosition) - m_rectCache.drawOffset;
-                p.x *= m_rectCache.horizontalStretchFactor;
-                p.y *= m_rectCache.verticalStretchFactor;
-                p += m_rectCache.rect.topLeft();
-                staticText->drawText(p, m_rectCache.rect);
-            }
-            m_frameCache.staticText->release();
-        }
-
-        m_frameCache.staticText->draw();
-    }
-
-    if(!g_map.getAnimatedTexts().empty()) {
-        if(m_frameCache.dynamicText->canUpdate()) {
-            m_frameCache.dynamicText->bind();
-
-            for(const AnimatedTextPtr& animatedText : g_map.getAnimatedTexts()) {
-                const Position pos = animatedText->getPosition();
-
-                if(pos.z != cameraPosition.z)
-                    continue;
-
-                Point p = transformPositionTo2D(pos, cameraPosition) - m_rectCache.drawOffset;
-                p.x *= m_rectCache.horizontalStretchFactor;
-                p.y *= m_rectCache.verticalStretchFactor;
-                p += m_rectCache.rect.topLeft();
-
-                animatedText->drawText(p, m_rectCache.rect);
-            }
-            m_frameCache.dynamicText->release();
-        }
-        m_frameCache.dynamicText->draw();
-    }
-}
-
 void MapView::updateVisibleTilesCache()
 {
     // there is no tile to render on invalid positions
@@ -537,7 +319,7 @@ void MapView::onFloorDrawingEnd(const uint8 /*floor*/)
     }
 }
 
-void MapView::onCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags)
+void MapView::onCreatureUpdate(const CreaturePtr& creature, const uint8 status)
 {
     if(m_frameCache.creatureInformation->canUpdate()) return;
     if(creature->isDead()) {
@@ -545,8 +327,15 @@ void MapView::onCreatureInformationUpdate(const CreaturePtr& creature, const Otc
         return;
     }
 
+    uint32 flag = 0;
+    if(status == Creature::HEALTH_CHANGE) {
+        flag = Otc::DrawBars;
+    } else if(status == Creature::MANA_CHANGE) {
+        flag = Otc::DrawManaBar;
+    }
+
     m_frameCache.creatureInformation->bind();
-    creature->drawInformation(m_rectCache.rect, transformPositionTo2D(creature->getPosition(), getCameraPosition()), m_scaleFactor, m_rectCache.drawOffset, m_rectCache.horizontalStretchFactor, m_rectCache.verticalStretchFactor, flags);
+    CreaturePainter::drawInformation(creature, m_rectCache.rect, transformPositionTo2D(creature->getPosition(), getCameraPosition()), m_scaleFactor, m_rectCache.drawOffset, m_rectCache.horizontalStretchFactor, m_rectCache.verticalStretchFactor, flag);
     m_frameCache.creatureInformation->release();
     m_frameCache.creatureInformation->draw();
 }
@@ -968,45 +757,5 @@ void MapView::removeVisibleCreature(const CreaturePtr& creature)
         m_visibleCreatures.erase(it);
 }
 
-#if DRAW_ALL_GROUND_FIRST == 1
-void MapView::drawSeparately(const uint8 floor, const ViewPort& viewPort, LightView* lightView)
-{
-    const Position cameraPosition = getCameraPosition();
-    const auto& tiles = m_cachedVisibleTiles[floor];
-    const auto redrawThing = m_frameCache.flags & Otc::FUpdateThing;
-    const auto redrawLight = m_drawLights && m_frameCache.flags & Otc::FUpdateLight;
 
-    for(const auto& tile : tiles) {
-        if(!tile->hasGroundToDraw()) continue;
-
-        const auto hasLight = redrawLight && tile->hasLight();
-
-        if(!redrawThing && !hasLight || !canRenderTile(tile, viewPort, lightView)) continue;
-
-        const Position& tilePos = tile->getPosition();
-        tile->drawStart(this);
-        tile->drawGround(transformPositionTo2D(tilePos, cameraPosition), m_scaleFactor, m_frameCache.flags, lightView);
-        tile->drawEnd(this);
-    }
-
-    for(const auto& tile : tiles) {
-        if(!tile->hasBottomToDraw() && !tile->hasTopToDraw()) continue;
-
-        const auto hasLight = redrawLight && tile->hasLight();
-
-        if(!redrawThing && !hasLight || !canRenderTile(tile, viewPort, lightView)) continue;
-
-        const Position& tilePos = tile->getPosition();
-
-        const Point pos2d = transformPositionTo2D(tilePos, cameraPosition);
-
-        if(!tile->hasGroundToDraw()) tile->drawStart(this);
-
-        tile->drawBottom(pos2d, m_scaleFactor, m_frameCache.flags, lightView);
-        tile->drawTop(pos2d, m_scaleFactor, m_frameCache.flags, lightView);
-
-        if(!tile->hasGroundToDraw()) tile->drawEnd(this);
-    }
-}
-#endif
 /* vim: set ts=4 sw=4 et: */

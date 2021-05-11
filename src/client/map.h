@@ -137,7 +137,9 @@ public:
     void addMapView(const MapViewPtr& mapView);
     void removeMapView(const MapViewPtr& mapView);
     void notificateTileUpdate(const Position& pos);
-    void notificateCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags);
+
+    void notificateCreatureUpdate(const CreaturePtr& creature, const Creature::InformationUpdate status);
+
     void notificateCameraMove(const Point& offset);
 
     bool loadOtcm(const std::string& fileName);
@@ -220,8 +222,6 @@ public:
     bool isCovered(const Position& pos, uint8 firstFloor = 0);
     bool isCompletelyCovered(const Position& pos, uint8 firstFloor = 0);
     bool isAwareOfPosition(const Position& pos);
-
-    void resetLastCamera();
 
     void setAwareRange(const AwareRange& range);
     void resetAwareRange();

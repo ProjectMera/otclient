@@ -29,6 +29,7 @@
 #include "effect.h"
 #include "item.h"
 #include "mapview.h"
+#include "painter/tilepainter.h"
 
 enum tileflags_t : uint32
 {
@@ -62,14 +63,7 @@ public:
 
     Tile(const Position& position);
 
-    void drawStart(const MapViewPtr& mapView);
-    void drawEnd(const MapViewPtr& mapView);
     void onAddVisibleTileList(const MapViewPtr& mapView);
-    void draw(const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
-    void drawGround(const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
-    void drawBottom(const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
-    void drawTop(const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
-    void drawThing(const ThingPtr& thing, const Point& dest, float scaleFactor, bool animate, int frameFlag, LightView* lightView);
 
     void clean();
 
@@ -185,7 +179,7 @@ private:
         int hasGroundOrBorder = 0;
     };
 
-    void drawCreature(const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+
     void checkForDetachableThing();
     void checkTranslucentLight();
 
@@ -210,7 +204,7 @@ private:
         m_completelyCovered,
         m_isBorder;
 
-
+    friend class TilePainter;
 };
 
 #endif

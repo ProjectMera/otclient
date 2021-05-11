@@ -35,20 +35,6 @@ StaticText::StaticText()
     m_cachedText.setAlign(Fw::AlignCenter);
 }
 
-void StaticText::drawText(const Point& dest, const Rect& parentRect)
-{
-    const Size textSize = m_cachedText.getTextSize();
-    const Rect rect = Rect(dest - Point(textSize.width() / 2, textSize.height()) + Point(20, 5), textSize);
-    Rect boundRect = rect;
-    boundRect.bind(parentRect);
-
-    // draw only if the real center is not too far from the parent center, or its a yell
-    //if(g_map.isAwareOfPosition(m_position) || isYell()) {
-    g_painter->setColor(m_color);
-    m_cachedText.draw(boundRect);
-    //}
-}
-
 void StaticText::setFont(const std::string& fontName)
 {
     m_cachedText.setFont(g_fonts.getFont(fontName));
@@ -133,7 +119,7 @@ void StaticText::compose()
         text += " yells:\n";
         m_color = Color(239, 239, 0);
     } else if(m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageSpell
-               || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
+              || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
         m_color = Color(254, 101, 0);
     } else if(m_mode == Otc::MessageNpcFrom || m_mode == Otc::MessageNpcFromStartBlock) {
         text += m_name;

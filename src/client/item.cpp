@@ -67,36 +67,6 @@ std::string Item::getName()
     return g_things.findItemTypeByClientId(m_clientId)->getName();
 }
 
-void Item::draw(const Point& dest, float scaleFactor, bool animate, const Highlight& highLight, int frameFlag, LightView* lightView)
-{
-    if(m_clientId == 0 || !canDraw())
-        return;
-
-    // determine animation phase
-    const int animationPhase = calculateAnimationPhase(animate);
-
-    // determine x,y,z patterns
-    int xPattern = 0, yPattern = 0, zPattern = 0;
-    calculatePatterns(xPattern, yPattern, zPattern);
-
-    if(m_color != Color::alpha)
-        g_painter->setColor(m_color);
-
-    rawGetThingType()->draw(dest, scaleFactor, 0, xPattern, yPattern, zPattern, animationPhase, false, frameFlag, lightView);
-
-    /// Sanity check
-    /// This is just to ensure that we don't overwrite some color and
-    /// screw up the whole rendering.
-    if(m_color != Color::alpha)
-        g_painter->resetColor();
-
-    if(highLight.enabled && this == highLight.thing) {
-        g_painter->setColor(highLight.rgbColor);
-        rawGetThingType()->draw(dest, scaleFactor, 0, xPattern, yPattern, zPattern, animationPhase, true, frameFlag);
-        g_painter->resetColor();
-    }
-}
-
 void Item::setId(uint32 id)
 {
     if(!g_things.isValidDatId(id, ThingCategoryItem))

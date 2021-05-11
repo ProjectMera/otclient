@@ -25,6 +25,7 @@
 
 #include "animator.h"
 #include "declarations.h"
+#include "painter/thingpainter.h"
 
 #include <framework/core/declarations.h>
 #include <framework/graphics/coordsbuffer.h>
@@ -137,8 +138,6 @@ public:
     void serialize(const FileStreamPtr& fin);
     void exportImage(const std::string& fileName);
 
-    void draw(const Point& dest, float scaleFactor, int layer, int xPattern, int yPattern, int zPattern, int animationPhase, bool useBlankTexture, int frameFlags = Otc::FUpdateThing, LightView* lightView = nullptr);
-
     uint16 getId() { return m_id; }
     ThingCategory getCategory() { return m_category; }
     bool isNull() { return m_null; }
@@ -220,6 +219,8 @@ public:
     void setPathable(bool var);
     int getExactHeight();
     const TexturePtr& getTexture(int animationPhase, bool allBlank = false);
+
+    friend class ThingPainter;
 
 private:
     bool hasTexture() const { return !m_textures.empty(); }

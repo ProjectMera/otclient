@@ -20,51 +20,13 @@
  * THE SOFTWARE.
  */
 
+#include "map.h"
+#include "tile.h"
 #include "missile.h"
+#include "thingtypemanager.h"
+
 #include <framework/core/clock.h>
 #include <framework/core/eventdispatcher.h>
-#include "map.h"
-#include "thingtypemanager.h"
-#include "tile.h"
-
-void Missile::draw(const Point& dest, float scaleFactor, int frameFlag, LightView* lightView)
-{
-    if(m_id == 0)
-        return;
-
-    int xPattern = 0, yPattern = 0;
-    if(m_direction == Otc::NorthWest) {
-        xPattern = 0;
-        yPattern = 0;
-    } else if(m_direction == Otc::North) {
-        xPattern = 1;
-        yPattern = 0;
-    } else if(m_direction == Otc::NorthEast) {
-        xPattern = 2;
-        yPattern = 0;
-    } else if(m_direction == Otc::East) {
-        xPattern = 2;
-        yPattern = 1;
-    } else if(m_direction == Otc::SouthEast) {
-        xPattern = 2;
-        yPattern = 2;
-    } else if(m_direction == Otc::South) {
-        xPattern = 1;
-        yPattern = 2;
-    } else if(m_direction == Otc::SouthWest) {
-        xPattern = 0;
-        yPattern = 2;
-    } else if(m_direction == Otc::West) {
-        xPattern = 0;
-        yPattern = 1;
-    } else {
-        xPattern = 1;
-        yPattern = 1;
-    }
-
-    const float fraction = m_animationTimer.ticksElapsed() / m_duration;
-    rawGetThingType()->draw(dest + m_delta * fraction * scaleFactor, scaleFactor, 0, xPattern, yPattern, 0, 0, false, frameFlag, lightView);
-}
 
 void Missile::setPath(const Position& fromPosition, const Position& toPosition)
 {

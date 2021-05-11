@@ -52,6 +52,7 @@ public:
 
 protected:
     void onAppear() override;
+    friend class ThingPainter;
 
 private:
     Color m_color;

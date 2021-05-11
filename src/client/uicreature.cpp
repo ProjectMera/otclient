@@ -21,6 +21,7 @@
  */
 
 #include "uicreature.h"
+#include "painter/creaturepainter.h"
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>
 
@@ -34,7 +35,7 @@ void UICreature::drawSelf(Fw::DrawPane drawPane)
     if(m_creature) {
         const Rect drawRect = getPaddingRect();
         g_painter->setColor(m_imageColor);
-        m_creature->drawOutfit(drawRect, !m_fixedCreatureSize);
+        CreaturePainter::drawOutfit(m_creature, drawRect, !m_fixedCreatureSize);
     }
 }
 

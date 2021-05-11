@@ -427,54 +427,7 @@ void ThingType::unserializeOtml(const OTMLNodePtr& node)
     }
 }
 
-void ThingType::draw(const Point& dest, float scaleFactor, int layer, int xPattern, int yPattern, int zPattern, int animationPhase, bool useBlankTexture, int frameFlags, LightView* lightView)
-{
-    if(m_null)
-        return;
 
-    if(animationPhase >= m_animationPhases)
-        return;
-
-    const TexturePtr& texture = getTexture(animationPhase, useBlankTexture); // texture might not exists, neither its rects.
-    if(!texture)
-        return;
-
-    const uint frameIndex = getTextureIndex(layer, xPattern, yPattern, zPattern);
-    if(frameIndex >= m_texturesFramesRects[animationPhase].size())
-        return;
-
-    Point textureOffset;
-    Rect textureRect;
-
-    if(scaleFactor != 1.0f) {
-        textureRect = m_texturesFramesOriginRects[animationPhase][frameIndex];
-    } else {
-        textureOffset = m_texturesFramesOffsets[animationPhase][frameIndex];
-        textureRect = m_texturesFramesRects[animationPhase][frameIndex];
-    }
-
-    const Rect screenRect(dest + (textureOffset - m_displacement - (m_size.toPoint() - Point(1)) * Otc::TILE_PIXELS) * scaleFactor,
-                          textureRect.size() * scaleFactor);
-
-    if(frameFlags & Otc::FUpdateThing) {
-        const bool useOpacity = m_opacity < 1.0f;
-
-        if(useOpacity)
-            g_painter->setColor(Color(1.0f, 1.0f, 1.0f, m_opacity));
-
-        g_painter->drawTexturedRect(screenRect, texture, textureRect);
-
-        if(useOpacity)
-            g_painter->resetColor();
-    }
-
-    if(lightView && hasLight() && frameFlags & Otc::FUpdateLight) {
-        const Light light = getLight();
-        if(light.intensity > 0) {
-            lightView->addLightSource(screenRect.center(), light);
-        }
-    }
-}
 
 const TexturePtr& ThingType::getTexture(int animationPhase, bool allBlank)
 {

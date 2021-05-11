@@ -27,6 +27,7 @@
 #include "effect.h"
 #include "itemtype.h"
 #include "thing.h"
+#include "painter/thingpainter.h"
 
 enum ItemAttr : uint8
 {
@@ -80,8 +81,6 @@ public:
 
     static ItemPtr create(int id);
     static ItemPtr createFromOtb(int id);
-
-    void draw(const Point& dest, float scaleFactor, bool animate, const Highlight& highLight, int frameFlag = Otc::FUpdateThing, LightView* lightView = nullptr) override;
 
     void setId(uint32 id) override;
     void setOtbId(uint16 id);
@@ -160,6 +159,8 @@ private:
     ticks_t m_lastPhase;
 
     stdext::boolean<true> m_async;
+
+    friend class ThingPainter;
 };
 
 #pragma pack(pop)

@@ -54,6 +54,8 @@ class CreatureType;
 class Spawn;
 class TileBlock;
 
+struct Highlight;
+
 typedef stdext::shared_object_ptr<MapView> MapViewPtr;
 typedef stdext::shared_object_ptr<LightView> LightViewPtr;
 typedef stdext::shared_object_ptr<Tile> TilePtr;

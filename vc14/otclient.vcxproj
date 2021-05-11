@@ -166,6 +166,9 @@
     <ClCompile Include="..\src\client\minimap.cpp" />
     <ClCompile Include="..\src\client\missile.cpp" />
     <ClCompile Include="..\src\client\outfit.cpp" />
+    <ClCompile Include="..\src\client\painter\creaturepainter.cpp" />
+    <ClCompile Include="..\src\client\painter\mapviewpainter.cpp" />
+    <ClCompile Include="..\src\client\painter\tilepainter.cpp" />
     <ClCompile Include="..\src\client\player.cpp" />
     <ClCompile Include="..\src\client\protocolcodes.cpp" />
     <ClCompile Include="..\src\client\protocolgame.cpp" />
@@ -293,6 +296,7 @@
     <ClCompile Include="..\src\framework\xml\tinyxmlerror.cpp" />
     <ClCompile Include="..\src\framework\xml\tinyxmlparser.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\client\painter\thingpainter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\client\animatedtext.h" />
@@ -317,6 +321,9 @@
     <ClInclude Include="..\src\client\minimap.h" />
     <ClInclude Include="..\src\client\missile.h" />
     <ClInclude Include="..\src\client\outfit.h" />
+    <ClInclude Include="..\src\client\painter\creaturepainter.h" />
+    <ClInclude Include="..\src\client\painter\mapviewpainter.h" />
+    <ClInclude Include="..\src\client\painter\tilepainter.h" />
     <ClInclude Include="..\src\client\player.h" />
     <ClInclude Include="..\src\client\position.h" />
     <ClInclude Include="..\src\client\protocolcodes.h" />
@@ -469,6 +476,7 @@
     <ClInclude Include="..\src\framework\util\size.h" />
     <ClInclude Include="..\src\framework\xml\tinystr.h" />
     <ClInclude Include="..\src\framework\xml\tinyxml.h" />
+    <ClInclude Include="..\src\client\painter\thingpainter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\otcicon.rc" />

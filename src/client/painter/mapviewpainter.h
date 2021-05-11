@@ -20,38 +20,21 @@
  * THE SOFTWARE.
  */
 
-#ifndef SHOT_H
-#define SHOT_H
+#ifndef MAPVIEWPAINTERPAINTER_H
+#define MAPVIEWPAINTERPAINTER_H
 
-#include <framework/global.h>
-#include <framework/core/timer.h>
-#include "thing.h"
-#include "painter/thingpainter.h"
+#include "../mapview.h"
 
- // @bindclass
-class Missile : public Thing
+class MapViewPainter
 {
 public:
-    void setId(uint32 id) override;
-    void setPath(const Position& fromPosition, const Position& toPosition);
+    static void draw(const MapViewPtr& mapView, const Rect& rect);
+    static void drawText(const MapViewPtr& mapView);
+    static void drawCreatureInformation(const MapViewPtr& mapView);
 
-    uint32 getId() override { return m_id; }
-
-    MissilePtr asMissile() { return static_self_cast<Missile>(); }
-    bool isMissile() override { return true; }
-
-    const ThingTypePtr& getThingType() override;
-    ThingType* rawGetThingType() override;
-
-private:
-    Timer m_animationTimer;
-    Point m_delta;
-    uint8 m_distance;
-    float m_duration;
-    uint16 m_id;
-    Otc::Direction m_direction;
-
-    friend class ThingPainter;
+#if DRAW_ALL_GROUND_FIRST == 1
+    static void drawSeparately(const MapViewPtr& mapView, const uint8 floor, const ViewPort& viewPort, LightView* lightView);
+#endif
 };
 
 #endif

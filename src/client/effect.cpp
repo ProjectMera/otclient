@@ -27,22 +27,6 @@
 
 Effect::Effect() : m_timeToStartDrawing(0) {}
 
-void Effect::drawEffect(const Point& dest, float scaleFactor, int frameFlag, LightView* lightView)
-{
-    if(m_id == 0) return;
-
-    // It only starts to draw when the first effect as it is about to end.
-    if(m_animationTimer.ticksElapsed() < m_timeToStartDrawing) return;
-
-    // This requires a separate getPhaseAt method as using getPhase would make all magic effects use the same phase regardless of their appearance time
-    int animationPhase = rawGetThingType()->getAnimator()->getPhaseAt(m_animationTimer.ticksElapsed());
-
-    const int xPattern = m_position.x % getNumPatternX();
-    const int yPattern = m_position.y % getNumPatternY();
-
-    rawGetThingType()->draw(dest, scaleFactor, 0, xPattern, yPattern, 0, animationPhase, false, frameFlag, lightView);
-}
-
 void Effect::onAppear()
 {
     m_animationTimer.restart();

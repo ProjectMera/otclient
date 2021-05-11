@@ -26,14 +26,13 @@
 #include <framework/core/timer.h>
 #include <framework/graphics/cachedtext.h>
 #include "thing.h"
+#include "painter/thingpainter.h"
 
  // @bindclass
 class StaticText : public Thing
 {
 public:
     StaticText();
-
-    void drawText(const Point& dest, const Rect& parentRect);
 
     std::string getName() { return m_name; }
     Otc::MessageMode getMessageMode() { return m_mode; }
@@ -63,6 +62,8 @@ private:
     Color m_color;
     CachedText m_cachedText;
     ScheduledEventPtr m_updateEvent;
+
+    friend class ThingPainter;
 };
 
 #endif

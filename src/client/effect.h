@@ -26,14 +26,13 @@
 #include <framework/global.h>
 #include <framework/core/timer.h>
 #include "thing.h"
+#include "painter/thingpainter.h"
 
  // @bindclass
 class Effect : public Thing
 {
 public:
     Effect();
-
-    void drawEffect(const Point& dest, float scaleFactor, int frameFlag, LightView* lightView = nullptr);
 
     void setId(uint32 id) override;
     uint32 getId() override { return m_id; }
@@ -48,6 +47,7 @@ public:
 
 protected:
     void onAppear() override;
+    friend class ThingPainter;
 
 private:
     Timer m_animationTimer;

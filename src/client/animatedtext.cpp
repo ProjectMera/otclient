@@ -33,37 +33,6 @@ AnimatedText::AnimatedText()
     m_cachedText.setAlign(Fw::AlignLeft);
 }
 
-void AnimatedText::drawText(const Point& dest, const Rect& visibleRect)
-{
-    const static float tf = Otc::ANIMATED_TEXT_DURATION;
-    const static float tftf = Otc::ANIMATED_TEXT_DURATION * Otc::ANIMATED_TEXT_DURATION;
-
-    Point p = dest;
-    const Size textSize = m_cachedText.getTextSize();
-    const float t = m_animationTimer.ticksElapsed();
-    p.x += (24 - textSize.width() / 2);
-
-    if(g_game.getFeature(Otc::GameDiagonalAnimatedText)) {
-        p.x -= (4 * t / tf) + (8 * t * t / tftf);
-    }
-
-    p.y += 8 + (-48 * t) / tf;
-    p += m_offset;
-    const Rect rect(p, textSize);
-
-    if(visibleRect.contains(rect)) {
-        //TODO: cache into a framebuffer
-        const float t0 = tf / 1.2;
-        if(t > t0) {
-            Color color = m_color;
-            color.setAlpha(static_cast<float>(1 - (t - t0) / (tf - t0)));
-            g_painter->setColor(color);
-        } else
-            g_painter->setColor(m_color);
-        m_cachedText.draw(rect);
-    }
-}
-
 void AnimatedText::onAppear()
 {
     m_animationTimer.restart();

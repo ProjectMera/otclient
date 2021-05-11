@@ -29,6 +29,7 @@
 #include <framework/graphics/paintershaderprogram.h>
 #include <framework/luaengine/luaobject.h>
 #include "lightview.h"
+#include "painter/mapviewpainter.h"
 
 struct AwareRange
 {
@@ -50,21 +51,7 @@ public:
 
     MapView();
     ~MapView();
-    void draw(const Rect& rect);
 
-protected:
-    void onGlobalLightChange(const Light& light);
-    void onFloorDrawingStart(const uint8 floor);
-    void onFloorDrawingEnd(const uint8 floor);
-    void onFloorChange(const uint8 floor, const uint8 previousFloor);
-    void onTileUpdate(const Position& pos);
-    void onCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags);
-    void onMapCenterChange(const Position& pos);
-    void onCameraMove(const Point& offset);
-
-    friend class Map;
-    friend class Tile;
-    friend class LightView;
 
 public:
     // floor visibility related
@@ -136,8 +123,6 @@ public:
 
     MapViewPtr asMapView() { return static_self_cast<MapView>(); }
 
-    void resetLastCamera() { m_lastCameraPosition = Position(); }
-
     std::vector<CreaturePtr>& getVisibleCreatures() { return m_visibleCreatures; }
     std::vector<CreaturePtr> getSpectators(const Position& centerPos, bool multiFloor);
     std::vector<CreaturePtr> getSightSpectators(const Position& centerPos, bool multiFloor);
@@ -146,9 +131,6 @@ public:
 
     void setCrosshairTexture(const std::string& texturePath);
 
-    void onPositionChange(const Position& newPos, const Position& oldPos);
-    void onMouseMove(const Position& mousePos, const bool isVirtualMove = false);
-
     void setMousePosition(const Position& mousePos) { m_mousePosition = mousePos; }
     const Position& getMousePosition() { return m_mousePosition; }
 
@@ -156,6 +138,25 @@ public:
 
     void setAntiAliasing(const bool enable);
     void setRenderScale(const uint8 scale);
+
+    void onMouseMove(const Position& mousePos, const bool isVirtualMove = false);
+
+protected:
+    void onCameraMove(const Point& offset);
+    void onTileUpdate(const Position& pos);
+    void onFloorDrawingEnd(const uint8 floor);
+    void onFloorDrawingStart(const uint8 floor);
+    void onMapCenterChange(const Position& pos);
+    void onGlobalLightChange(const Light& light);
+    void onFloorChange(const uint8 floor, const uint8 previousFloor);
+    void onPositionChange(const Position& newPos, const Position& oldPos);
+
+    void onCreatureUpdate(const CreaturePtr& creature, const uint8 status);
+
+    friend class Map;
+    friend class Tile;
+    friend class LightView;
+    friend class MapViewPainter;
 
 private:
     struct ViewPort {
@@ -184,16 +185,11 @@ private:
 
     void updateLight();
     void updateViewportDirectionCache();
-    void drawCreatureInformation();
-    void drawText();
+
+
 
     void addVisibleCreature(const CreaturePtr& creature);
     void removeVisibleCreature(const CreaturePtr& creature);
-
-
-#if DRAW_ALL_GROUND_FIRST == 1
-    void drawSeparately(const uint8 floor, const ViewPort& viewPort, LightView* lightView);
-#endif
 
     Rect calcFramebufferSource(const Size& destSize);
 

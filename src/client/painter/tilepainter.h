@@ -20,38 +20,23 @@
  * THE SOFTWARE.
  */
 
-#ifndef SHOT_H
-#define SHOT_H
+#ifndef TILEPAINTER_H
+#define TILEPAINTER_H
 
-#include <framework/global.h>
-#include <framework/core/timer.h>
-#include "thing.h"
-#include "painter/thingpainter.h"
+#include "../tile.h"
 
- // @bindclass
-class Missile : public Thing
+class TilePainter
 {
 public:
-    void setId(uint32 id) override;
-    void setPath(const Position& fromPosition, const Position& toPosition);
+    static void drawCreature(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+    static void drawStart(const TilePtr& tile, const MapViewPtr& mapView);
+    static void drawEnd(const TilePtr& tile, const MapViewPtr& mapView);
 
-    uint32 getId() override { return m_id; }
-
-    MissilePtr asMissile() { return static_self_cast<Missile>(); }
-    bool isMissile() override { return true; }
-
-    const ThingTypePtr& getThingType() override;
-    ThingType* rawGetThingType() override;
-
-private:
-    Timer m_animationTimer;
-    Point m_delta;
-    uint8 m_distance;
-    float m_duration;
-    uint16 m_id;
-    Otc::Direction m_direction;
-
-    friend class ThingPainter;
+    static void draw(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+    static void drawGround(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+    static void drawBottom(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+    static void drawTop(const TilePtr& tile, const Point& dest, float scaleFactor, int frameFlags, LightView* lightView = nullptr);
+    static void drawThing(const TilePtr& tile, const ThingPtr& thing, const Point& dest, float scaleFactor, bool animate, int frameFlag, LightView* lightView);
 };
 
 #endif

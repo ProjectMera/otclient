@@ -69,10 +69,10 @@ void Map::resetAwareRange()
     setAwareRange(range);
 }
 
-void Map::notificateCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags)
+void Map::notificateCreatureUpdate(const CreaturePtr& creature, const Creature::InformationUpdate status)
 {
     for(const MapViewPtr& mapView : m_mapViews) {
-        mapView->onCreatureInformationUpdate(creature, flags);
+        mapView->onCreatureUpdate(creature, static_cast<uint8>(status));
     }
 }
 
@@ -940,10 +940,4 @@ std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const
         delete it.second;
 
     return ret;
-}
-
-void  Map::resetLastCamera()
-{
-    for(const MapViewPtr& mapView : m_mapViews)
-        mapView->resetLastCamera();
 }

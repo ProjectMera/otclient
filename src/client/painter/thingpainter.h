@@ -20,38 +20,22 @@
  * THE SOFTWARE.
  */
 
-#ifndef SHOT_H
-#define SHOT_H
+#ifndef THINGPAINTER_H
+#define THINGPAINTER_H
 
-#include <framework/global.h>
-#include <framework/core/timer.h>
-#include "thing.h"
-#include "painter/thingpainter.h"
+#include <framework/core/declarations.h>
+#include "../declarations.h"
 
- // @bindclass
-class Missile : public Thing
+class ThingPainter
 {
 public:
-    void setId(uint32 id) override;
-    void setPath(const Position& fromPosition, const Position& toPosition);
+    static void drawText(const StaticTextPtr& text, const Point& dest, const Rect& parentRect);
+    static void drawText(const AnimatedTextPtr& text, const Point& dest, const Rect& parentRect);
 
-    uint32 getId() override { return m_id; }
-
-    MissilePtr asMissile() { return static_self_cast<Missile>(); }
-    bool isMissile() override { return true; }
-
-    const ThingTypePtr& getThingType() override;
-    ThingType* rawGetThingType() override;
-
-private:
-    Timer m_animationTimer;
-    Point m_delta;
-    uint8 m_distance;
-    float m_duration;
-    uint16 m_id;
-    Otc::Direction m_direction;
-
-    friend class ThingPainter;
+    static void draw(const ItemPtr& item, const Point& dest, float scaleFactor, bool animate, const Highlight& highLight, int frameFlag = Otc::FUpdateThing, LightView* lightView = nullptr);
+    static void draw(const EffectPtr& effect, const Point& dest, float scaleFactor, int frameFlag, LightView* lightView);
+    static void draw(const MissilePtr& missile, const Point& dest, float scaleFactor, int frameFlag, LightView* lightView);
+    static void draw(const ThingTypePtr& thingType, const Point& dest, float scaleFactor, int layer, int xPattern, int yPattern, int zPattern, int animationPhase, bool useBlankTexture, int frameFlags = Otc::FUpdateThing, LightView* lightView = nullptr);
 };
 
 #endif

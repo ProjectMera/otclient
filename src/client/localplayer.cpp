@@ -407,7 +407,7 @@ void LocalPlayer::setMana(double mana, double maxMana)
 
         callLuaField("onManaChange", mana, maxMana, oldMana, oldMaxMana);
 
-        g_map.notificateCreatureInformationUpdate(this, Otc::DrawManaBar);
+        g_map.notificateCreatureUpdate(this, MANA_CHANGE);
     }
 }
 

@@ -33,25 +33,27 @@
 #include "thing.h"
 #include "tile.h"
 
+#include "painter/creaturepainter.h"
+
  // @bindclass
 class Creature : public Thing
 {
 public:
+    enum InformationUpdate : uint8 {
+        MANA_CHANGE,
+        HEALTH_CHANGE,
+        MOVING
+    };
+
     enum {
         SHIELD_BLINK_TICKS = 500,
         VOLATILE_SQUARE_DURATION = 1000
     };
 
+
     static double speedA, speedB, speedC;
 
     Creature();
-
-    virtual void draw(const Point& dest, float scaleFactor, bool animate, const Highlight& highLight, int frameFlags, LightView* lightView = nullptr) override;
-
-    void internalDrawOutfit(Point dest, float scaleFactor, bool animateWalk, bool useBlank, Otc::Direction direction);
-
-    void drawOutfit(const Rect& destRect, bool resize);
-    void drawInformation(const Rect& parentRect, const Point& dest, float scaleFactor, Point drawOffset, const float horizontalStretchFactor, const float verticalStretchFactor, int drawFlags);
 
     void setId(uint32 id) override { m_id = id; }
     void setName(const std::string& name);
@@ -214,6 +216,8 @@ protected:
     float m_jumpDuration;
     PointF m_jumpOffset;
     Timer m_jumpTimer;
+
+    friend class CreaturePainter;
 
 private:
     struct DrawCache {
