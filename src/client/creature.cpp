@@ -246,7 +246,7 @@ void Creature::updateWalkAnimation()
         return;
     }
 
-    const int footDelay = std::max<int>(m_stepCache.getDuration(m_lastStepDirection) / footAnimPhases, 50);
+    const int footDelay = std::max<int>(m_stepCache.getDuration(m_lastStepDirection) / footAnimPhases, 20);
 
     if(m_footTimer.ticksElapsed() >= footDelay) {
         if(m_walkAnimationPhase == footAnimPhases) m_walkAnimationPhase = 1;
@@ -339,7 +339,7 @@ void Creature::updateWalk()
         return;
     }
 
-    const float walkTicksPerPixel = stepDuration / Otc::TILE_PIXELS;
+    const float walkTicksPerPixel = static_cast<float>(stepDuration) / Otc::TILE_PIXELS;
     const int totalPixelsWalked = std::min<int>(m_walkTimer.ticksElapsed() / walkTicksPerPixel, Otc::TILE_PIXELS);
 
     // update walk animation
@@ -374,12 +374,12 @@ void Creature::terminateWalk()
         m_walkingTile = nullptr;
     }
 
+    m_walkOffset = Point();
     m_walkedPixels = 0;
     m_walking = false;
 
     const auto self = static_self_cast<Creature>();
     m_walkFinishAnimEvent = g_dispatcher.scheduleEvent([self] {
-        self->m_walkOffset = Point();
         self->m_walkAnimationPhase = 0;
         self->m_totalWalkedPixels = 0;
         self->m_walkFinishAnimEvent = nullptr;
