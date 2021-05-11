@@ -57,7 +57,7 @@ protected:
     void onFloorDrawingStart(const uint8 floor);
     void onFloorDrawingEnd(const uint8 floor);
     void onFloorChange(const uint8 floor, const uint8 previousFloor);
-    void onTileUpdate(const Position& pos, const ThingPtr& thing, const Otc::Operation operation);
+    void onTileUpdate(const Position& pos);
     void onCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags);
     void onMapCenterChange(const Position& pos);
     void onCameraMove(const Point& offset);
@@ -174,9 +174,10 @@ private:
         float horizontalStretchFactor, verticalStretchFactor;
     };
 
+    void updateStaticTextFrame() { m_frameCache.staticText->update(); }
+    void requestVisibleTilesCacheUpdate() { m_mustUpdateVisibleTilesCache = true; }
     void updateGeometry(const Size& visibleDimension, const Size& optimizedSize);
     void updateVisibleTilesCache();
-    void requestVisibleTilesCacheUpdate() { m_mustUpdateVisibleTilesCache = true; }
 
     uint8 calcFirstVisibleFloor();
     uint8 calcLastVisibleFloor();
@@ -185,6 +186,10 @@ private:
     void updateViewportDirectionCache();
     void drawCreatureInformation();
     void drawText();
+
+    void addVisibleCreature(const CreaturePtr& creature);
+    void removeVisibleCreature(const CreaturePtr& creature);
+
 
 #if DRAW_ALL_GROUND_FIRST == 1
     void drawSeparately(const uint8 floor, const ViewPort& viewPort, LightView* lightView);
@@ -234,6 +239,7 @@ private:
 
     stdext::boolean<true>
         m_mustUpdateVisibleTilesCache,
+        m_mustUpdateVisibleCreaturesCache,
         m_shaderSwitchDone,
         m_drawHealthBars,
         m_drawManaBar,

@@ -83,13 +83,13 @@ void Map::notificateCameraMove(const Point& offset)
     }
 }
 
-void Map::notificateTileUpdate(const Position& pos, const ThingPtr& thing, const Otc::Operation operation)
+void Map::notificateTileUpdate(const Position& pos)
 {
     if(!pos.isMapPosition())
         return;
 
     for(const MapViewPtr& mapView : m_mapViews) {
-        mapView->onTileUpdate(pos, thing, operation);
+        mapView->onTileUpdate(pos);
     }
 
     g_minimap.updateTile(pos, getTile(pos));
@@ -138,57 +138,71 @@ void Map::addThing(const ThingPtr& thing, const Position& pos, int16 stackPos)
     if(thing->isItem() || thing->isCreature() || thing->isEffect()) {
         const TilePtr& tile = getOrCreateTile(pos);
         if(tile && (m_floatingEffect || !thing->isEffect() || tile->getGround())) {
+            if(thing->isCreature()) {
+                const auto& creature = thing->static_self_cast<Creature>();
+                for(const MapViewPtr& mapView : m_mapViews)
+                    mapView->addVisibleCreature(creature);
+            }
+
             tile->addThing(thing, stackPos);
         }
-    } else {
-        if(thing->isMissile()) {
-            m_floorMissiles[pos.z].push_back(thing->static_self_cast<Missile>());
-        } else if(thing->isAnimatedText()) {
-            // this code will stack animated texts of the same color
-            const AnimatedTextPtr animatedText = thing->static_self_cast<AnimatedText>();
-            AnimatedTextPtr prevAnimatedText;
+        return;
+    }
 
-            bool merged = false;
-            for(const auto& other : m_animatedTexts) {
-                if(other->getPosition() == pos) {
-                    prevAnimatedText = other;
-                    if(other->merge(animatedText)) {
-                        merged = true;
-                        break;
-                    }
+    if(thing->isMissile()) {
+        m_floorMissiles[pos.z].push_back(thing->static_self_cast<Missile>());
+        return;
+    }
+
+    bool merged = false;
+    if(thing->isAnimatedText()) {
+        // this code will stack animated texts of the same color
+        const AnimatedTextPtr animatedText = thing->static_self_cast<AnimatedText>();
+        AnimatedTextPtr prevAnimatedText;
+
+        for(const auto& other : m_animatedTexts) {
+            if(other->getPosition() == pos) {
+                prevAnimatedText = other;
+                if(other->merge(animatedText)) {
+                    merged = true;
+                    break;
                 }
             }
+        }
 
-            if(!merged) {
-                if(prevAnimatedText) {
-                    Point offset = prevAnimatedText->getOffset();
-                    const float t = prevAnimatedText->getTimer().ticksElapsed();
-                    if(t < Otc::ANIMATED_TEXT_DURATION / 4.0) { // didnt move 12 pixels
-                        const int32 y = 12 - 48 * t / static_cast<float>(Otc::ANIMATED_TEXT_DURATION);
-                        offset += Point(0, y);
-                    }
-                    offset.y = std::min<int32>(offset.y, 12);
-                    animatedText->setOffset(offset);
+        if(!merged) {
+            if(prevAnimatedText) {
+                Point offset = prevAnimatedText->getOffset();
+                const float t = prevAnimatedText->getTimer().ticksElapsed();
+                if(t < Otc::ANIMATED_TEXT_DURATION / 4.0) { // didnt move 12 pixels
+                    const int32 y = 12 - 48 * t / static_cast<float>(Otc::ANIMATED_TEXT_DURATION);
+                    offset += Point(0, y);
                 }
-                m_animatedTexts.push_back(animatedText);
+                offset.y = std::min<int32>(offset.y, 12);
+                animatedText->setOffset(offset);
             }
-        } else if(thing->isStaticText()) {
-            const StaticTextPtr staticText = thing->static_self_cast<StaticText>();
-            for(const auto& other : m_staticTexts) {
-                // try to combine messages
-                if(other->getPosition() == pos && other->addMessage(staticText->getName(), staticText->getMessageMode(), staticText->getFirstMessage())) {
-                    return;
-                }
+            m_animatedTexts.push_back(animatedText);
+        }
+    } else if(thing->isStaticText()) {
+        const StaticTextPtr staticText = thing->static_self_cast<StaticText>();
+        for(const auto& other : m_staticTexts) {
+            // try to combine messages
+            if(other->getPosition() == pos && other->addMessage(staticText->getName(), staticText->getMessageMode(), staticText->getFirstMessage())) {
+                merged = true;
+                break;
             }
+        }
 
+        if(!merged) {
             m_staticTexts.push_back(staticText);
         }
 
-        thing->setPosition(pos);
-        thing->onAppear();
+        for(const MapViewPtr& mapView : m_mapViews)
+            mapView->updateStaticTextFrame();
     }
 
-    notificateTileUpdate(pos, thing, Otc::OPERATION_ADD);
+    thing->setPosition(pos);
+    thing->onAppear();
 }
 
 ThingPtr Map::getThing(const Position& pos, int16 stackPos)
@@ -204,43 +218,46 @@ bool Map::removeThing(const ThingPtr& thing)
     if(!thing)
         return false;
 
-    bool ret = false;
     if(thing->isAnimatedText()) {
-        const AnimatedTextPtr animatedText = thing->static_self_cast<AnimatedText>();
-        const auto it = std::find(m_animatedTexts.begin(), m_animatedTexts.end(), animatedText);
-        if(it != m_animatedTexts.end()) {
-            m_animatedTexts.erase(it);
-            ret = true;
+        const auto it = std::find(m_animatedTexts.begin(), m_animatedTexts.end(), thing->static_self_cast<AnimatedText>());
+        if(it == m_animatedTexts.end())
+            return false;
+
+        m_animatedTexts.erase(it);
+    } else  if(thing->isStaticText()) {
+        const auto it = std::find(m_staticTexts.begin(), m_staticTexts.end(), thing->static_self_cast<StaticText>());
+        if(it == m_staticTexts.end())
+            return false;
+
+        m_staticTexts.erase(it);
+
+        for(const MapViewPtr& mapView : m_mapViews)
+            mapView->updateStaticTextFrame();
+    } else if(thing->isMissile()) {
+        const MissilePtr& missile = thing->static_self_cast<Missile>();
+        auto& floorMissile = m_floorMissiles[missile->getPosition().z];
+
+        const auto it = std::find(floorMissile.begin(), floorMissile.end(), missile);
+        if(it == floorMissile.end())
+            return false;
+
+        floorMissile.erase(it);
+    } else if(const TilePtr& tile = thing->getTile()) {
+        if(thing->isCreature()) {
+            const auto& creature = thing->static_self_cast<Creature>();
+            for(const MapViewPtr& mapView : m_mapViews)
+                mapView->removeVisibleCreature(creature);
         }
-    } else if(thing->isStaticText()) {
-        const StaticTextPtr staticText = thing->static_self_cast<StaticText>();
-        const auto it = std::find(m_staticTexts.begin(), m_staticTexts.end(), staticText);
-        if(it != m_staticTexts.end()) {
-            m_staticTexts.erase(it);
-            ret = true;
-        }
-    } else {
-        if(thing->isMissile()) {
-            MissilePtr missile = thing->static_self_cast<Missile>();
-            const uint8 z = missile->getPosition().z;
-            const auto it = std::find(m_floorMissiles[z].begin(), m_floorMissiles[z].end(), missile);
-            if(it != m_floorMissiles[z].end()) {
-                m_floorMissiles[z].erase(it);
-                ret = true;
-            }
-        } else if(const TilePtr& tile = thing->getTile()) {
-            ret = tile->removeThing(thing);
-        }
+
+        return tile->removeThing(thing);
     }
 
-    notificateTileUpdate(thing->getPosition(), thing, Otc::OPERATION_REMOVE);
-
-    return ret;
+    return true;
 }
 
 bool Map::removeThingByPos(const Position& pos, int16 stackPos)
 {
-    if(TilePtr tile = getTile(pos))
+    if(const TilePtr& tile = getTile(pos))
         return removeThing(tile->getThing(stackPos));
 
     return false;
@@ -266,31 +283,7 @@ void Map::colorizeThing(const ThingPtr& thing, const Color& color)
 
 void Map::removeThingColor(const ThingPtr& thing)
 {
-    if(!thing)
-        return;
-
-    if(thing->isItem())
-        thing->static_self_cast<Item>()->setColor(Color::alpha);
-    else if(thing->isCreature()) {
-        const TilePtr& tile = thing->getTile();
-        assert(tile);
-
-        const ThingPtr& topThing = tile->getTopThing();
-        assert(topThing);
-
-        topThing->static_self_cast<Item>()->setColor(Color::alpha);
-    }
-}
-
-StaticTextPtr Map::getStaticText(const Position& pos)
-{
-    for(auto staticText : m_staticTexts) {
-        // try to combine messages
-        if(staticText->getPosition() == pos)
-            return staticText;
-    }
-
-    return nullptr;
+    colorizeThing(thing, Color::alpha);
 }
 
 const TilePtr& Map::createTile(const Position& pos)
@@ -321,8 +314,7 @@ const TilePtr& Map::createTileEx(const Position& pos, const Items&... items)
         return m_nulltile;
 
     const TilePtr& tile = getOrCreateTile(pos);
-    auto vec = { items... };
-    for(auto it : vec)
+    for(auto it : { items... })
         addThing(it, pos);
 
     return tile;
@@ -361,7 +353,7 @@ const TilePtr& Map::getTile(const Position& pos)
     return m_nulltile;
 }
 
-const TileList Map::getTiles(int8 floor/* = -1*/)
+const TileList Map::getTiles(const int8 floor/* = -1*/)
 {
     TileList tiles;
     if(floor > Otc::MAX_Z) return tiles;
@@ -403,7 +395,7 @@ void Map::cleanTile(const Position& pos)
             if(tile->canErase())
                 block.remove(pos);
 
-            notificateTileUpdate(pos, nullptr, Otc::OPERATION_CLEAN);
+            notificateTileUpdate(pos);
         }
     }
 
@@ -567,11 +559,6 @@ void Map::removeUnawareThings()
                         blockEmpty = false;
                         continue;
                     }
-
-                    //TODO: review
-                    /*for(const auto& creature : tile->getCreatures()) {
-                        notificateTileUpdate(tile->getPosition(), creature, Otc::OPERATION_REMOVE);
-                    }*/
 
                     block.remove(pos);
                 }

@@ -48,10 +48,6 @@ namespace Otc
         MAX_AUTOWALK_DIST = 127,
     };
 
-    enum Operation : uint8 {
-        OPERATION_ADD, OPERATION_REMOVE, OPERATION_CLEAN
-    };
-
     enum ShadowFloor : uint8 {
         SHADOWFLOOR_DISABLED = 0,
         SHADOWFLOOR_BOTTOM = 1 << 0,

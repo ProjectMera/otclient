@@ -61,17 +61,6 @@ void Tile::onAddVisibleTileList(const MapViewPtr& mapView)
             break;
         }
     }
-
-    if(hasCreature()) {
-        auto& visibleCreatures = mapView->getVisibleCreatures();
-        for(const auto& thing : m_things) {
-            if(!thing->isCreature() || thing->isLocalPlayer()) continue;
-
-            const auto it = std::find(visibleCreatures.begin(), visibleCreatures.end(), thing);
-            if(it == visibleCreatures.end())
-                mapView->onTileUpdate(m_position, thing, Otc::OPERATION_ADD);
-        }
-    }
 }
 
 bool Tile::isCompletelyCovered(int8 firstFloor)
@@ -360,14 +349,14 @@ void Tile::addThing(const ThingPtr& thing, int stackPos)
 
     if(thing->isTranslucent())
         checkTranslucentLight();
+
+    g_map.notificateTileUpdate(thing->getPosition());
 }
 
 // TODO: Need refactoring
-bool Tile::removeThing(const ThingPtr& thing)
+bool Tile::removeThing(const ThingPtr thing)
 {
     if(!thing) return false;
-
-    ThingPtr temporaryReference = thing;
 
     if(thing->isEffect()) {
         const EffectPtr& effect = thing->static_self_cast<Effect>();
@@ -396,7 +385,8 @@ bool Tile::removeThing(const ThingPtr& thing)
     if(thing->isTranslucent())
         checkTranslucentLight();
 
-    temporaryReference = nullptr;
+    g_map.notificateTileUpdate(thing->getPosition());
+
     return true;
 }
 

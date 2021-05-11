@@ -96,7 +96,7 @@ void StaticText::update()
     m_messages.pop_front();
     if(m_messages.empty()) {
         // schedule removal
-        auto self = asStaticText();
+        const auto& self = asStaticText();
         g_dispatcher.addEvent([self]() { g_map.removeThing(self); });
     } else {
         compose();

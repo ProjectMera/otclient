@@ -136,7 +136,7 @@ public:
 
     void addMapView(const MapViewPtr& mapView);
     void removeMapView(const MapViewPtr& mapView);
-    void notificateTileUpdate(const Position& pos, const ThingPtr& thing, const Otc::Operation operation);
+    void notificateTileUpdate(const Position& pos);
     void notificateCreatureInformationUpdate(const CreaturePtr& creature, const Otc::DrawFlags flags);
     void notificateCameraMove(const Point& offset);
 
@@ -172,15 +172,13 @@ public:
     void colorizeThing(const ThingPtr& thing, const Color& color);
     void removeThingColor(const ThingPtr& thing);
 
-    StaticTextPtr getStaticText(const Position& pos);
-
     // tile related
     const TilePtr& createTile(const Position& pos);
     template <typename... Items>
     const TilePtr& createTileEx(const Position& pos, const Items&... items);
     const TilePtr& getOrCreateTile(const Position& pos);
     const TilePtr& getTile(const Position& pos);
-    const TileList getTiles(int8 floor = -1);
+    const TileList getTiles(const int8 floor = -1);
     void cleanTile(const Position& pos);
 
     // tile zone related

@@ -575,7 +575,7 @@ void Creature::updateWalkingTile()
 
         // recache visible tiles in map views
         if(newWalkingTile->isEmpty()) {
-            g_map.notificateTileUpdate(newWalkingTile->getPosition(), this, Otc::OPERATION_CLEAN);
+            g_map.notificateTileUpdate(newWalkingTile->getPosition());
         }
     }
 
