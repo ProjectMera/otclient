@@ -1,5 +1,10 @@
 EnterGame = { }
 
+serverConfig = {
+  ip = "127.0.0.1",
+  port = 7171
+}
+
 -- private variables
 local loadBox
 local enterGame
@@ -146,6 +151,7 @@ function EnterGame.init()
   if g_app.isRunning() and not g_game.isOnline() then
     enterGame:show()
   end
+  EnterGame.setUniqueServer(serverConfig.ip, serverConfig.port, 270, 210)
 end
 
 function EnterGame.firstShow()
@@ -211,8 +217,8 @@ end
 
 function EnterGame.setAccountName(account)
   local account = g_crypt.decrypt(account)
-  enterGame:getChildById('accountNameTextEdit'):setText(account)
-  enterGame:getChildById('accountNameTextEdit'):setCursorPos(-1)
+  enterGame:getChildById('accountEmailTextEdit'):setText(account)
+  enterGame:getChildById('accountEmailTextEdit'):setCursorPos(-1)
   enterGame:getChildById('rememberPasswordBox'):setChecked(#account > 0)
 end
 
@@ -222,10 +228,10 @@ function EnterGame.setPassword(password)
 end
 
 function EnterGame.clearAccountFields()
-  enterGame:getChildById('accountNameTextEdit'):clearText()
+  enterGame:getChildById('accountEmailTextEdit'):clearText()
   enterGame:getChildById('accountPasswordTextEdit'):clearText()
   enterGame:getChildById('authenticatorTokenTextEdit'):clearText()
-  enterGame:getChildById('accountNameTextEdit'):focus()
+  enterGame:getChildById('accountEmailTextEdit'):focus()
   g_settings.remove('account')
   g_settings.remove('password')
 end
@@ -294,7 +300,7 @@ function EnterGame.onClientVersionChange(comboBox, text, data)
 end
 
 function EnterGame.doLogin()
-  G.account = enterGame:getChildById('accountNameTextEdit'):getText()
+  G.account = enterGame:getChildById('accountEmailTextEdit'):getText()
   G.password = enterGame:getChildById('accountPasswordTextEdit'):getText()
   G.authenticatorToken = enterGame:getChildById('authenticatorTokenTextEdit'):getText()
   G.stayLogged = enterGame:getChildById('stayLoggedBox'):isChecked()
@@ -351,7 +357,7 @@ function EnterGame.setDefaultServer(host, port, protocol)
   local hostTextEdit = enterGame:getChildById('serverHostTextEdit')
   local portTextEdit = enterGame:getChildById('serverPortTextEdit')
   local clientLabel = enterGame:getChildById('clientLabel')
-  local accountTextEdit = enterGame:getChildById('accountNameTextEdit')
+  local emailTextEdit = enterGame:getChildById('accountEmailTextEdit')
   local passwordTextEdit = enterGame:getChildById('accountPasswordTextEdit')
   local authenticatorTokenTextEdit = enterGame:getChildById('authenticatorTokenTextEdit')
 
@@ -359,7 +365,7 @@ function EnterGame.setDefaultServer(host, port, protocol)
     hostTextEdit:setText(host)
     portTextEdit:setText(port)
     clientBox:setCurrentOption(protocol)
-    accountTextEdit:setText('')
+    emailTextEdit:setText('')
     passwordTextEdit:setText('')
     authenticatorTokenTextEdit:setText('')
   end
