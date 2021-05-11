@@ -24,7 +24,7 @@
 #define TOWNS_H
 
 #include <framework/luaengine/luaobject.h>
-#include "declarations.h"
+#include "../declarations.h"
 
 class Town : public LuaObject
 {

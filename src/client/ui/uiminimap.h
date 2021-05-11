@@ -63,8 +63,6 @@ protected:
     void onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode) override;
 
 private:
-    void update();
-
     Rect m_mapArea;
     Position m_cameraPosition;
     float m_scale;

@@ -23,7 +23,7 @@
 #include "protocolgame.h"
 
 #include "localplayer.h"
-#include "thingtypemanager.h"
+#include "editor/thingtypemanager.h"
 #include "game.h"
 #include "map.h"
 #include "item.h"

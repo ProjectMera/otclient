@@ -27,7 +27,7 @@
 #include <framework/luaengine/luaobject.h>
 #include "declarations.h"
 #include "thingtype.h"
-#include "thingtypemanager.h"
+#include "editor/thingtypemanager.h"
 
 struct Highlight {
     int fadeLevel;

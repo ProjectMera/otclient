@@ -21,8 +21,8 @@
  */
 
 #include "creatures.h"
-#include "creature.h"
-#include "map.h"
+#include "../creature.h"
+#include "../map.h"
 
 #include <framework/core/resourcemanager.h>
 #include <framework/xml/tinyxml.h>

@@ -24,7 +24,7 @@
 #define OUTFIT_H
 
 #include <framework/util/color.h>
-#include "thingtypemanager.h"
+#include "editor/thingtypemanager.h"
 
 class Outfit
 {

@@ -115,6 +115,12 @@
     <Filter Include="Source Files\client\ui">
       <UniqueIdentifier>{41ca747c-0247-47bb-8666-a001c08b433a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\client\editor">
+      <UniqueIdentifier>{6a382eff-6a22-4819-a9ae-6e045cf1b5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\editor">
+      <UniqueIdentifier>{a872cb28-f1e0-49da-87d3-318afc59a23a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\framework\luafunctions.cpp">
@@ -426,16 +432,10 @@
     <ClCompile Include="..\src\client\creature.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\creatures.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\effect.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\game.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\houses.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\item.cpp">
@@ -457,9 +457,6 @@
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\map.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\mapio.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\mapview.cpp">
@@ -504,13 +501,7 @@
     <ClCompile Include="..\src\client\thingtype.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\thingtypemanager.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\tile.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\towns.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\main.cpp">
@@ -554,6 +545,21 @@
     </ClCompile>
     <ClCompile Include="..\src\client\ui\uiprogressrect.cpp">
       <Filter>Source Files\client\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\houses.cpp">
+      <Filter>Source Files\client\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\creatures.cpp">
+      <Filter>Source Files\client\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\mapio.cpp">
+      <Filter>Source Files\client\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\towns.cpp">
+      <Filter>Source Files\client\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\editor\thingtypemanager.cpp">
+      <Filter>Source Files\client\editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -962,9 +968,6 @@
     <ClInclude Include="..\src\client\creature.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\creatures.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\declarations.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
@@ -975,9 +978,6 @@
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\global.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\houses.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\item.h">
@@ -1040,13 +1040,7 @@
     <ClInclude Include="..\src\client\thingtype.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\thingtypemanager.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\tile.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\towns.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\framework\core\config.h">
@@ -1090,6 +1084,18 @@
     </ClInclude>
     <ClInclude Include="..\src\client\ui\uiprogressrect.h">
       <Filter>Header Files\client\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\editor\creatures.h">
+      <Filter>Header Files\client\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\editor\houses.h">
+      <Filter>Header Files\client\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\editor\thingtypemanager.h">
+      <Filter>Header Files\client\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\editor\towns.h">
+      <Filter>Header Files\client\editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

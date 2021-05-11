@@ -23,8 +23,8 @@
 #ifndef HOUSES_H
 #define HOUSES_H
 
-#include "declarations.h"
-#include "tile.h"
+#include "../declarations.h"
+#include "../tile.h"
 
 #include <framework/luaengine/luaobject.h>
 

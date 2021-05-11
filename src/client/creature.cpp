@@ -28,7 +28,7 @@
 #include "localplayer.h"
 #include "luavaluecasts.h"
 #include "map.h"
-#include "thingtypemanager.h"
+#include "editor/thingtypemanager.h"
 #include "tile.h"
 
 #include <framework/core/clock.h>

@@ -21,13 +21,13 @@
  */
 
 #include "thingtypemanager.h"
-#include "creature.h"
+#include "../creature.h"
 #include "creatures.h"
-#include "game.h"
-#include "itemtype.h"
-#include "spritemanager.h"
-#include "thing.h"
-#include "thingtype.h"
+#include "../game.h"
+#include "../itemtype.h"
+#include "../spritemanager.h"
+#include "../thing.h"
+#include "../thingtype.h"
 
 #include <framework/core/binarytree.h>
 #include <framework/core/filestream.h>
