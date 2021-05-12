@@ -318,8 +318,6 @@ void MapView::onFloorDrawingEnd(const uint8 /*floor*/)
     }
 }
 
-void MapView::onCreatureUpdate(const CreaturePtr& creature, const uint8 status) {}
-
 void MapView::onTileUpdate(const Position&)
 {
     requestVisibleTilesCacheUpdate();

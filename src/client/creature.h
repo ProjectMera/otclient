@@ -39,12 +39,6 @@
 class Creature : public Thing
 {
 public:
-    enum InformationUpdate : uint8 {
-        MANA_CHANGE,
-        HEALTH_CHANGE,
-        MOVING
-    };
-
     enum {
         SHIELD_BLINK_TICKS = 500,
         VOLATILE_SQUARE_DURATION = 1000

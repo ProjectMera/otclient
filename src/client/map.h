@@ -137,9 +137,6 @@ public:
     void addMapView(const MapViewPtr& mapView);
     void removeMapView(const MapViewPtr& mapView);
     void notificateTileUpdate(const Position& pos);
-
-    void notificateCreatureUpdate(const CreaturePtr& creature, const Creature::InformationUpdate status);
-
     void notificateCameraMove(const Point& offset);
 
     bool loadOtcm(const std::string& fileName);

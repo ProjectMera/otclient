@@ -150,8 +150,6 @@ protected:
     void onFloorChange(const uint8 floor, const uint8 previousFloor);
     void onPositionChange(const Position& newPos, const Position& oldPos);
 
-    void onCreatureUpdate(const CreaturePtr& creature, const uint8 status);
-
     friend class Map;
     friend class Tile;
     friend class LightView;

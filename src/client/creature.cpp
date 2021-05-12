@@ -316,8 +316,6 @@ void Creature::nextWalkUpdate()
     // do the update
     updateWalk();
 
-    g_map.notificateCreatureUpdate(this, MOVING);
-
     if(!m_walking) return;
 
     // schedules next update
@@ -411,8 +409,6 @@ void Creature::setHealthPercent(uint8 healthPercent)
 
     if(healthPercent <= 0)
         onDeath();
-
-    g_map.notificateCreatureUpdate(this, HEALTH_CHANGE);
 }
 
 void Creature::setDirection(Otc::Direction direction)

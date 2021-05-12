@@ -69,13 +69,6 @@ void Map::resetAwareRange()
     setAwareRange(range);
 }
 
-void Map::notificateCreatureUpdate(const CreaturePtr& creature, const Creature::InformationUpdate status)
-{
-    for(const MapViewPtr& mapView : m_mapViews) {
-        mapView->onCreatureUpdate(creature, static_cast<uint8>(status));
-    }
-}
-
 void Map::notificateCameraMove(const Point& offset)
 {
     for(const MapViewPtr& mapView : m_mapViews) {
