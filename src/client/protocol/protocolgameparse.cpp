@@ -35,8 +35,8 @@
 
 void ProtocolGame::parseMessage(const InputMessagePtr& msg)
 {
-    uint8 opcode = -1;
-    uint8 prevOpcode = -1;
+    int16 opcode = -1;
+    int16 prevOpcode = -1;
 
     try
     {
@@ -1138,7 +1138,7 @@ void ProtocolGame::parseMagicEffect(const InputMessagePtr& msg)
 
 void ProtocolGame::parseAnimatedText(const InputMessagePtr& msg)
 {
-    Position& position = getPosition(msg);
+    const Position& position = getPosition(msg);
     const auto& animatedText = AnimatedTextPtr(new AnimatedText);
 
     animatedText->setColor(msg->getU8());
