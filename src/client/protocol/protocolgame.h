@@ -279,9 +279,9 @@ public:
     Outfit getOutfit(const InputMessagePtr& msg, const bool addMount = true);
     ThingPtr getThing(const InputMessagePtr& msg);
     ThingPtr getMappedThing(const InputMessagePtr& msg);
-    CreaturePtr getCreature(const InputMessagePtr& msg, int type = 0);
-    StaticTextPtr getStaticText(const InputMessagePtr& msg, int type = 0);
-    ItemPtr getItem(const InputMessagePtr& msg, int id = 0);
+    CreaturePtr getCreature(const InputMessagePtr& msg, uint16 type = 0);
+    StaticTextPtr getStaticText(const InputMessagePtr& msg, uint16 type = 0);
+    ItemPtr getItem(const InputMessagePtr& msg, uint16 id = 0);
     Position getPosition(const InputMessagePtr& msg);
 
 private:

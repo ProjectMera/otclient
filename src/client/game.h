@@ -110,7 +110,7 @@ protected:
     void processContainerRemoveItem(int containerId, int slot, const ItemPtr& lastItem);
 
     // channel related
-    static void processChannelList(const std::vector<std::tuple<int, std::string> >& channelList);
+    static void processChannelList(const std::vector<std::tuple<uint8, std::string> >& channelList);
     static void processOpenChannel(int channelId, const std::string& name);
     static void processOpenPrivateChannel(const std::string& name);
     static void processOpenOwnPrivateChannel(int channelId, const std::string& name);
@@ -150,7 +150,7 @@ protected:
     static void processEditList(uint id, int doorId, const std::string& text);
 
     // questlog
-    static void processQuestLog(const std::vector<std::tuple<int, std::string, bool> >& questList);
+    static void processQuestLog(const std::vector<std::tuple<uint16, std::string, bool> >& questList);
     static void processQuestLine(int questId, const std::vector<std::tuple<std::string, std::string> >& questMissions);
 
     // modal dialogs >= 970

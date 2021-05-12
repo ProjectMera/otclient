@@ -478,12 +478,14 @@ void LocalPlayer::setVocation(int vocation)
     callLuaField("onVocationChange", vocation, oldVocation);
 }
 
-void LocalPlayer::setPremium(bool premium)
+void LocalPlayer::setPremium(bool premium, uint32 premiumExpiration)
 {
-    if(m_premium == premium) return;
+    if(m_premium == premium && m_premiumExpiration == premiumExpiration) return;
 
     m_premium = premium;
-    callLuaField("onPremiumChange", premium);
+    m_premiumExpiration = premiumExpiration;
+
+    callLuaField("onPremiumChange", premium, m_premiumExpiration);
 }
 
 void LocalPlayer::setRegenerationTime(double regenerationTime)

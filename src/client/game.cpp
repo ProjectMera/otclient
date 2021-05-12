@@ -354,7 +354,7 @@ void Game::processInventoryChange(int slot, const ItemPtr& item)
     m_localPlayer->setInventoryItem(static_cast<Otc::InventorySlot>(slot), item);
 }
 
-void Game::processChannelList(const std::vector<std::tuple<int, std::string> >& channelList)
+void Game::processChannelList(const std::vector<std::tuple<uint8, std::string> >& channelList)
 {
     g_lua.callGlobalField("g_game", "onChannelList", channelList);
 }
@@ -493,7 +493,7 @@ void Game::processEditList(uint id, int doorId, const std::string& text)
     g_lua.callGlobalField("g_game", "onEditList", id, doorId, text);
 }
 
-void Game::processQuestLog(const std::vector<std::tuple<int, std::string, bool> >& questList)
+void Game::processQuestLog(const std::vector<std::tuple<uint16, std::string, bool> >& questList)
 {
     g_lua.callGlobalField("g_game", "onQuestLog", questList);
 }

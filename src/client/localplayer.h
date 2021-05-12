@@ -58,11 +58,17 @@ public:
     void setPendingGame(bool pending) { m_pending = pending; }
     void setInventoryItem(Otc::InventorySlot inventory, const ItemPtr& item);
     void setVocation(int vocation);
-    void setPremium(bool premium);
+    void setPremium(bool premium, uint32 premiumExpiration);
     void setRegenerationTime(double regenerationTime);
     void setOfflineTrainingTime(double offlineTrainingTime);
     void setSpells(const std::vector<uint8>& spells);
     void setBlessings(int blessings);
+
+    void setOpenPreyWindow(const bool can) { m_openPreyWindow = can; }
+    bool canOpenPreyWindow() { return m_openPreyWindow; }
+
+    void setMagicShield(const bool v) { m_magicShield = v; }
+    bool hasMagicShield() { return m_magicShield; }
 
     int getIcons() { return m_icons; }
     uint16 getSkillLevel(const Otc::skills_t skill) { return m_skills[skill].level; }
@@ -137,7 +143,11 @@ private:
         m_knownCompletePath,
         m_premium,
         m_known,
-        m_pending;
+        m_pending,
+        m_openPreyWindow,
+        m_magicShield;
+
+    uint32_t m_premiumExpiration;
 
     ItemPtr m_inventoryItems[Otc::LastInventorySlot];
 
