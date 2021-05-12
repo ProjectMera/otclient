@@ -497,7 +497,7 @@ void LocalPlayer::setRegenerationTime(double regenerationTime)
 
 void LocalPlayer::setOfflineTrainingTime(double offlineTrainingTime)
 {
-    if(m_offlineTrainingTime = offlineTrainingTime) return;
+    if(m_offlineTrainingTime == offlineTrainingTime) return;
 
     const double oldOfflineTrainingTime = m_offlineTrainingTime;
     m_offlineTrainingTime = offlineTrainingTime;
