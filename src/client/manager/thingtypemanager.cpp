@@ -276,19 +276,8 @@ void ThingTypeManager::parseItemType(uint16 serverId, TiXmlElement* elem)
 {
     ItemTypePtr itemType = nullptr;
 
-    bool s;
-    int d;
-
-    if(g_game.getClientVersion() < 960) {
-        s = serverId > 20000 && serverId < 20100;
-        d = 20000;
-    } else {
-        s = serverId > 30000 && serverId < 30100;
-        d = 30000;
-    }
-
-    if(s) {
-        serverId -= d;
+    if(serverId > 30000 && serverId < 30100) {
+        serverId -= 30000;
         itemType = ItemTypePtr(new ItemType);
         itemType->setServerId(serverId);
         addItemType(itemType);
@@ -333,86 +322,101 @@ void ThingTypeManager::addItemType(const ItemTypePtr& itemType)
     const uint16 id = itemType->getServerId();
     if(unlikely(id >= m_itemTypes.size()))
         m_itemTypes.resize(id + 1, m_nullItemType);
+
     m_itemTypes[id] = itemType;
 }
 
-const ItemTypePtr& ThingTypeManager::findItemTypeByClientId(uint16 id)
+const ItemTypePtr& ThingTypeManager::findItemTypeByClientId(const uint16 id)
 {
     if(id == 0 || id >= m_reverseItemTypes.size())
         return m_nullItemType;
 
-    if(m_reverseItemTypes[id])
-        return m_reverseItemTypes[id];
+    if(const auto& itemType = m_reverseItemTypes[id])
+        return itemType;
+
     return m_nullItemType;
 }
 
 const ItemTypePtr& ThingTypeManager::findItemTypeByName(const std::string& name)
 {
-    for(const ItemTypePtr& it : m_itemTypes)
+    for(const ItemTypePtr& it : m_itemTypes) {
         if(it->getName() == name)
             return it;
+    }
+
     return m_nullItemType;
 }
 
 ItemTypeList ThingTypeManager::findItemTypesByName(const std::string& name)
 {
     ItemTypeList ret;
-    for(const ItemTypePtr& it : m_itemTypes)
+
+    for(const ItemTypePtr& it : m_itemTypes) {
         if(it->getName() == name)
             ret.push_back(it);
+    }
+
     return ret;
 }
 
 ItemTypeList ThingTypeManager::findItemTypesByString(const std::string& name)
 {
     ItemTypeList ret;
-    for(const ItemTypePtr& it : m_itemTypes)
+    for(const ItemTypePtr& it : m_itemTypes) {
         if(it->getName().find(name) != std::string::npos)
             ret.push_back(it);
+    }
+
     return ret;
 }
 
-const ThingTypePtr& ThingTypeManager::getThingType(uint16 id, ThingCategory category)
+const ThingTypePtr& ThingTypeManager::getThingType(const uint16 id, const ThingCategory category)
 {
     if(category >= ThingLastCategory || id >= m_thingTypes[category].size()) {
         g_logger.error(stdext::format("invalid thing type client id %d in category %d", id, category));
         return m_nullThingType;
     }
+
     return m_thingTypes[category][id];
 }
 
-const ItemTypePtr& ThingTypeManager::getItemType(uint16 id)
+const ItemTypePtr& ThingTypeManager::getItemType(const uint16 id)
 {
     if(id >= m_itemTypes.size() || m_itemTypes[id] == m_nullItemType) {
         g_logger.error(stdext::format("invalid thing type, server id: %d", id));
         return m_nullItemType;
     }
+
     return m_itemTypes[id];
 }
 
-ThingTypeList ThingTypeManager::findThingTypeByAttr(ThingAttr attr, ThingCategory category)
+ThingTypeList ThingTypeManager::findThingTypeByAttr(const ThingAttr attr, const ThingCategory category)
 {
     ThingTypeList ret;
-    for(const ThingTypePtr& type : m_thingTypes[category])
+    for(const ThingTypePtr& type : m_thingTypes[category]) {
         if(type->hasAttr(attr))
             ret.push_back(type);
+    }
+
     return ret;
 }
 
-ItemTypeList ThingTypeManager::findItemTypeByCategory(ItemCategory category)
+ItemTypeList ThingTypeManager::findItemTypeByCategory(const ItemCategory category)
 {
     ItemTypeList ret;
-    for(const ItemTypePtr& type : m_itemTypes)
+    for(const ItemTypePtr& type : m_itemTypes) {
         if(type->getCategory() == category)
             ret.push_back(type);
+    }
+
     return ret;
 }
 
-const ThingTypeList& ThingTypeManager::getThingTypes(ThingCategory category)
+const ThingTypeList& ThingTypeManager::getThingTypes(const ThingCategory category)
 {
-    ThingTypeList ret;
     if(category >= ThingLastCategory)
         stdext::throw_exception(stdext::format("invalid thing type category %d", category));
+
     return m_thingTypes[category];
 }
 

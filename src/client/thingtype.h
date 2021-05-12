@@ -121,10 +121,9 @@ struct MarketData {
 };
 
 struct Light {
-    Light() { intensity = 0; color = 215; brightness = 1.f; }
-    uint8 intensity;
-    uint8 color;
-    float brightness;
+    uint8 intensity = 0;
+    uint8 color = 215;
+    float brightness = 1.f;
 };
 
 class ThingType : public LuaObject
@@ -140,8 +139,9 @@ public:
 
     uint16 getId() { return m_id; }
     ThingCategory getCategory() { return m_category; }
-    bool isNull() { return m_null; }
-    bool hasAttr(ThingAttr attr) { return m_attribs.has(attr); }
+
+    Light getLight() { return m_attribs.get<Light>(ThingAttrLight); }
+    MarketData getMarketData() { return m_attribs.get<MarketData>(ThingAttrMarket); }
 
     Size getSize() { return m_size; }
     int getWidth() { return m_size.width(); }
@@ -152,6 +152,7 @@ public:
     int getNumPatternX() { return m_numPatternX; }
     int getNumPatternY() { return m_numPatternY; }
     int getNumPatternZ() { return m_numPatternZ; }
+
     int getAnimationPhases();
     AnimatorPtr getAnimator() { return m_animator; }
     AnimatorPtr getIdleAnimator() { return m_idleAnimator; }
@@ -163,11 +164,14 @@ public:
 
     int getGroundSpeed() { return m_attribs.get<uint16>(ThingAttrGround); }
     int getMaxTextLength() { return m_attribs.has(ThingAttrWritableOnce) ? m_attribs.get<uint16>(ThingAttrWritableOnce) : m_attribs.get<uint16>(ThingAttrWritable); }
-    Light getLight() { return m_attribs.get<Light>(ThingAttrLight); }
+
     int getMinimapColor() { return m_attribs.get<uint16>(ThingAttrMinimapColor); }
     int getLensHelp() { return m_attribs.get<uint16>(ThingAttrLensHelp); }
     int getClothSlot() { return m_attribs.get<uint16>(ThingAttrCloth); }
-    MarketData getMarketData() { return m_attribs.get<MarketData>(ThingAttrMarket); }
+
+    bool hasAttr(ThingAttr attr) { return m_attribs.has(attr); }
+
+    bool isNull() { return m_null; }
     bool isGround() { return m_attribs.has(ThingAttrGround); }
     bool isGroundBorder() { return m_attribs.has(ThingAttrGroundBorder); }
     bool isOnBottom() { return m_attribs.has(ThingAttrOnBottom); }
@@ -223,9 +227,10 @@ public:
     friend class ThingPainter;
 
 private:
+    static Size getBestTextureDimension(int w, int h, int count);
+
     bool hasTexture() const { return !m_textures.empty(); }
 
-    static Size getBestTextureDimension(int w, int h, int count);
     uint getSpriteIndex(int w, int h, int l, int x, int y, int z, int a);
     uint getTextureIndex(int l, int x, int y, int z);
 
@@ -236,8 +241,10 @@ private:
 
     Size m_size;
     Point m_displacement;
-    AnimatorPtr m_animator;
-    AnimatorPtr m_idleAnimator;
+
+    AnimatorPtr m_animator,
+        m_idleAnimator;
+
     int m_animationPhases;
     int m_exactSize;
     int m_realSize;
@@ -246,17 +253,18 @@ private:
     int m_elevation;
     int m_exactHeight;
     float m_opacity;
+
     std::string m_customImage;
 
     std::vector<int> m_spritesIndex;
-    std::vector<TexturePtr> m_textures;
-    std::vector<TexturePtr> m_blankTextures;
-    std::vector<std::vector<Rect>> m_texturesFramesRects;
-    std::vector<std::vector<Rect>> m_texturesFramesOriginRects;
-    std::vector<std::vector<Point>> m_texturesFramesOffsets;
 
-    uint_fast8_t m_countPainterListeningRef;
-    ScheduledEventPtr m_painterListeningEvent;
+    std::vector<TexturePtr> m_textures,
+        m_blankTextures;
+
+    std::vector<std::vector<Rect>> m_texturesFramesRects,
+        m_texturesFramesOriginRects;
+
+    std::vector<std::vector<Point>> m_texturesFramesOffsets;
 };
 
 #endif

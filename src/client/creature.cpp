@@ -69,12 +69,14 @@ Creature::Creature() : Thing()
 
 void Creature::turn(Otc::Direction direction)
 {
-    // if is not walking change the direction right away
-    if(!m_walking)
-        setDirection(direction);
     // schedules to set the new direction when walk ends
-    else
+    if(m_walking) {
         m_walkTurnDirection = direction;
+        return;
+    }
+
+    // if is not walking change the direction right away
+    setDirection(direction);
 }
 
 void Creature::walk(const Position& oldPos, const Position& newPos)
@@ -84,16 +86,16 @@ void Creature::walk(const Position& oldPos, const Position& newPos)
 
     // get walk direction
     m_lastStepDirection = oldPos.getDirectionFromPosition(newPos);
-    m_lastStepFromPosition = oldPos;
     m_lastStepToPosition = newPos;
+    m_lastStepFromPosition = oldPos;
 
     // set current walking direction
     setDirection(m_lastStepDirection);
 
     // starts counting walk
     m_walking = true;
-    m_walkTimer.restart();
     m_walkedPixels = 0;
+    m_walkTimer.restart();
 
     // no direction need to be changed when the walk ends
     m_walkTurnDirection = Otc::InvalidDirection;
@@ -135,13 +137,14 @@ void Creature::updateJump()
         return;
     }
 
-    const int t = m_jumpTimer.ticksElapsed();
-    const double a = -4 * m_jumpHeight / (m_jumpDuration * m_jumpDuration);
-    const double b = +4 * m_jumpHeight / m_jumpDuration;
+    const int t = m_jumpTimer.ticksElapsed(),
+        halfJumpDuration = m_jumpDuration / 2;
 
-    const double height = a * t * t + b * t;
+    const double a = -4 * m_jumpHeight / (m_jumpDuration * m_jumpDuration),
+        b = +4 * m_jumpHeight / m_jumpDuration,
+        height = a * t * t + b * t;
+
     const int roundHeight = stdext::round(height);
-    const int halfJumpDuration = m_jumpDuration / 2;
 
     m_jumpOffset = PointF(height, height);
 
@@ -149,7 +152,7 @@ void Creature::updateJump()
         g_map.notificateCameraMove(m_walkOffset);
     }
 
-    int diff = 0;
+    int8 diff = 0;
     if(m_jumpTimer.ticksElapsed() < halfJumpDuration)
         diff = 1;
     else if(m_jumpTimer.ticksElapsed() > halfJumpDuration)
@@ -188,8 +191,8 @@ void Creature::onAppear()
 
     // creature appeared the first time or wasn't seen for a long time
     if(m_removed) {
-        stopWalk();
         m_removed = false;
+        stopWalk();
         callLuaField("onAppear");
     } // walk
     else if(m_oldPosition != m_position && m_oldPosition.isInRange(m_position, 1, 1) && m_allowAppearWalk) {
@@ -240,13 +243,13 @@ void Creature::updateWalkAnimation()
         return;
 
     const int footAnimPhases = getTotalAnimationPhase();
+
+    // looktype has no animations
     if(footAnimPhases == 0) {
-        // looktype has no animations
         return;
     }
 
     const int footDelay = std::max<int>(m_stepCache.getDuration(m_lastStepDirection) / footAnimPhases, 20);
-
     if(m_footTimer.ticksElapsed() >= footDelay) {
         if(m_walkAnimationPhase == footAnimPhases) m_walkAnimationPhase = 1;
         else ++m_walkAnimationPhase;
@@ -341,6 +344,7 @@ void Creature::updateWalk()
     // needed for paralyze effect
     m_walkedPixels = std::max<int>(m_walkedPixels, totalPixelsWalked);
 
+    // total number of pixels walked
     m_totalWalkedPixels += m_walkedPixels;
 
     updateWalkingTile();
@@ -367,14 +371,14 @@ void Creature::terminateWalk()
         m_walkingTile = nullptr;
     }
 
+    m_walking = false;
     m_walkOffset = Point();
     m_walkedPixels = 0;
-    m_walking = false;
 
     const auto self = static_self_cast<Creature>();
     m_walkFinishAnimEvent = g_dispatcher.scheduleEvent([self] {
-        self->m_walkAnimationPhase = 0;
         self->m_totalWalkedPixels = 0;
+        self->m_walkAnimationPhase = 0;
         self->m_walkFinishAnimEvent = nullptr;
     }, 50);
 }
@@ -406,8 +410,7 @@ void Creature::setHealthPercent(uint8 healthPercent)
     m_healthPercent = healthPercent;
     callLuaField("onHealthPercentChange", healthPercent, oldHealthPercent);
 
-    if(healthPercent <= 0)
-        onDeath();
+    if(isDead()) onDeath();
 }
 
 void Creature::setDirection(Otc::Direction direction)

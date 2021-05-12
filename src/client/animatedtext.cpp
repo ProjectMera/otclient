@@ -42,7 +42,7 @@ void AnimatedText::onAppear()
     g_dispatcher.scheduleEvent([self]() { g_map.removeThing(self); }, Otc::ANIMATED_TEXT_DURATION);
 }
 
-void AnimatedText::setColor(int color)
+void AnimatedText::setColor(uint8 color)
 {
     m_color = Color::from8bit(color);
 }

@@ -48,7 +48,7 @@ void ProtocolGame::sendExtendedOpcode(uint8 opcode, const std::string& buffer)
     }
 }
 
-void ProtocolGame::sendLoginPacket(uint challengeTimestamp, uint8 challengeRandom)
+void ProtocolGame::sendLoginPacket(uint32 challengeTimestamp, uint8 challengeRandom)
 {
     OutputMessagePtr msg(new OutputMessage);
 

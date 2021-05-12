@@ -35,7 +35,7 @@ public:
     void send(const OutputMessagePtr& outputMessage) override;
 
     void sendExtendedOpcode(uint8 opcode, const std::string& buffer);
-    void sendLoginPacket(uint challengeTimestamp, uint8 challengeRandom);
+    void sendLoginPacket(uint32 challengeTimestamp, uint8 challengeRandom);
     void sendEnterGame();
     void sendLogout();
     void sendPing();
@@ -274,7 +274,7 @@ private:
 public:
     void setMapDescription(const InputMessagePtr& msg, int x, int y, int z, int width, int height);
     int setFloorDescription(const InputMessagePtr& msg, int x, int y, int z, int width, int height, int offset, int skip);
-    int setTileDescription(const InputMessagePtr& msg, Position position);
+    int setTileDescription(const InputMessagePtr& msg, const Position& position);
 
     Outfit getOutfit(const InputMessagePtr& msg, const bool addMount = true);
     ThingPtr getThing(const InputMessagePtr& msg);

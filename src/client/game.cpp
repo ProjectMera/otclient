@@ -153,7 +153,7 @@ void Game::processLoginAdvice(const std::string& message)
     g_lua.callGlobalField("g_game", "onLoginAdvice", message);
 }
 
-void Game::processLoginWait(const std::string& message, int time)
+void Game::processLoginWait(const std::string& message, uint8 time)
 {
     g_lua.callGlobalField("g_game", "onLoginWait", message, time);
 }
@@ -228,12 +228,12 @@ void Game::processGameEnd()
     g_map.cleanDynamicThings();
 }
 
-void Game::processDeath(int deathType, int penality)
+void Game::processDeath(uint8 deathType, uint8 penality, bool deathRedemption)
 {
     m_dead = true;
     m_localPlayer->stopWalk();
 
-    g_lua.callGlobalField("g_game", "onDeath", deathType, penality);
+    g_lua.callGlobalField("g_game", "onDeath", deathType, penality, deathRedemption);
 }
 
 void Game::processGMActions(const std::vector<uint8>& actions)
@@ -305,9 +305,9 @@ void Game::processOpenContainer(int containerId, const ItemPtr& containerItem, c
         previousContainer->onClose();
 }
 
-void Game::processCloseContainer(int containerId)
+void Game::processCloseContainer(uint8 containerId)
 {
-    ContainerPtr container = getContainer(containerId);
+    const ContainerPtr& container = getContainer(containerId);
     if(!container) {
         return;
     }
@@ -318,7 +318,7 @@ void Game::processCloseContainer(int containerId)
 
 void Game::processContainerAddItem(int containerId, const ItemPtr& item, int slot)
 {
-    ContainerPtr container = getContainer(containerId);
+    const ContainerPtr& container = getContainer(containerId);
     if(!container) {
         return;
     }
@@ -328,7 +328,7 @@ void Game::processContainerAddItem(int containerId, const ItemPtr& item, int slo
 
 void Game::processContainerUpdateItem(int containerId, int slot, const ItemPtr& item)
 {
-    ContainerPtr container = getContainer(containerId);
+    const ContainerPtr& container = getContainer(containerId);
     if(!container) {
         return;
     }
@@ -338,7 +338,7 @@ void Game::processContainerUpdateItem(int containerId, int slot, const ItemPtr& 
 
 void Game::processContainerRemoveItem(int containerId, int slot, const ItemPtr& lastItem)
 {
-    ContainerPtr container = getContainer(containerId);
+    const ContainerPtr& container = getContainer(containerId);
     if(!container) {
         return;
     }
@@ -458,7 +458,7 @@ void Game::processOpenNpcTrade(const std::vector<std::tuple<ItemPtr, std::string
     g_lua.callGlobalField("g_game", "onOpenNpcTrade", items);
 }
 
-void Game::processPlayerGoods(int money, const std::vector<std::tuple<ItemPtr, int> >& goods)
+void Game::processPlayerGoods(uint64 money, const std::vector<std::tuple<ItemPtr, uint16> >& goods)
 {
     g_lua.callGlobalField("g_game", "onPlayerGoods", money, goods);
 }

@@ -47,7 +47,6 @@ ThingType::ThingType()
     m_layers = 0;
     m_elevation = 0;
     m_opacity = 1.0f;
-    m_countPainterListeningRef = 0;
 }
 
 void ThingType::serialize(const FileStreamPtr& fin)

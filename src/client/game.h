@@ -47,6 +47,7 @@ struct UnjustifiedPoints {
             killsMonthRemaining == other.killsMonthRemaining &&
             skullTime == other.skullTime;
     }
+
     uint8 killsDay;
     uint8 killsDayRemaining;
     uint8 killsWeek;
@@ -79,7 +80,7 @@ protected:
     static void processUpdateNeeded(const std::string& signature);
     static void processLoginError(const std::string& error);
     static void processLoginAdvice(const std::string& message);
-    static void processLoginWait(const std::string& message, int time);
+    static void processLoginWait(const std::string& message, uint8 time);
     static void processLoginToken(bool unknown);
     static void processLogin();
     void processPendingGame();
@@ -87,7 +88,7 @@ protected:
 
     void processGameStart();
     void processGameEnd();
-    void processDeath(int deathType, int penality);
+    void processDeath(uint8 deathType, uint8 penality, bool deathRedemption);
 
     void processGMActions(const std::vector<uint8>& actions);
     void processInventoryChange(int slot, const ItemPtr& item);
@@ -103,7 +104,7 @@ protected:
 
     // container related
     void processOpenContainer(int containerId, const ItemPtr& containerItem, const std::string& name, int capacity, bool hasParent, const std::vector<ItemPtr>& items, bool isUnlocked, bool hasPages, int containerSize, int firstIndex);
-    void processCloseContainer(int containerId);
+    void processCloseContainer(uint8 containerId);
     void processContainerAddItem(int containerId, const ItemPtr& item, int slot);
     void processContainerUpdateItem(int containerId, int slot, const ItemPtr& item);
     void processContainerRemoveItem(int containerId, int slot, const ItemPtr& lastItem);
@@ -136,7 +137,7 @@ protected:
 
     // npc trade
     static void processOpenNpcTrade(const std::vector<std::tuple<ItemPtr, std::string, int, int, int> >& items);
-    static void processPlayerGoods(int money, const std::vector<std::tuple<ItemPtr, int> >& goods);
+    static void processPlayerGoods(uint64 money, const std::vector<std::tuple<ItemPtr, uint16> >& goods);
     static void processCloseNpcTrade();
 
     // player trade
@@ -331,13 +332,13 @@ public:
     bool isConnectionOk() { return m_protocolGame && m_protocolGame->getElapsedTicksSinceLastRead() < 5000; }
 
     int getPing() { return m_ping; }
-    ContainerPtr getContainer(int index) { return m_containers[index]; }
-    std::map<int, ContainerPtr> getContainers() { return m_containers; }
+    ContainerPtr getContainer(uint8 index) { return m_containers[index]; }
+    std::map<uint8, ContainerPtr> getContainers() { return m_containers; }
     std::map<int, Vip> getVips() { return m_vips; }
     CreaturePtr getAttackingCreature() { return m_attackingCreature; }
     CreaturePtr getFollowingCreature() { return m_followingCreature; }
-    void setServerBeat(int beat) { m_serverBeat = beat; }
-    int getServerBeat() { return m_serverBeat; }
+    void setServerBeat(uint16 beat) { m_serverBeat = beat; }
+    uint16 getServerBeat() { return m_serverBeat; }
     void setCanReportBugs(bool enable) { m_canReportBugs = enable; }
     bool canReportBugs() { return m_canReportBugs; }
     void setExpertPvpMode(bool enable) { m_expertPvpMode = enable; }
@@ -365,14 +366,14 @@ private:
     CreaturePtr m_attackingCreature;
     CreaturePtr m_followingCreature;
     ProtocolGamePtr m_protocolGame;
-    std::map<int, ContainerPtr> m_containers;
+    std::map<uint8, ContainerPtr> m_containers;
     std::map<int, Vip> m_vips;
 
     bool m_online;
     bool m_denyBotCall;
     bool m_dead;
     bool m_expertPvpMode;
-    int m_serverBeat;
+    uint16 m_serverBeat;
     ticks_t m_ping;
     uint m_pingSent;
     uint m_pingReceived;

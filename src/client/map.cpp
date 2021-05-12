@@ -506,6 +506,7 @@ CreaturePtr Map::getCreatureById(uint32 id)
     const auto it = m_knownCreatures.find(id);
     if(it == m_knownCreatures.end())
         return nullptr;
+
     return it->second;
 }
 

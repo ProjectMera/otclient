@@ -36,7 +36,7 @@ public:
 
     void drawText(const Point& dest, const Rect& visibleRect);
 
-    void setColor(int color);
+    void setColor(uint8 color);
     void setText(const std::string& text);
     void setOffset(const Point& offset) { m_offset = offset; }
 

@@ -44,7 +44,7 @@ public:
     void saveDat(const std::string& fileName);
 
     void addItemType(const ItemTypePtr& itemType);
-    const ItemTypePtr& findItemTypeByClientId(uint16 id);
+    const ItemTypePtr& findItemTypeByClientId(const uint16 id);
     const ItemTypePtr& findItemTypeByName(const std::string& name);
     ItemTypeList findItemTypesByName(const std::string& name);
     ItemTypeList findItemTypesByString(const std::string& name);
@@ -52,15 +52,15 @@ public:
     const ThingTypePtr& getNullThingType() { return m_nullThingType; }
     const ItemTypePtr& getNullItemType() { return m_nullItemType; }
 
-    const ThingTypePtr& getThingType(uint16 id, ThingCategory category);
+    const ThingTypePtr& getThingType(const uint16 id, const ThingCategory category);
     const ItemTypePtr& getItemType(uint16 id);
-    ThingType* rawGetThingType(uint16 id, ThingCategory category) { return m_thingTypes[category][id].get(); }
+    ThingType* rawGetThingType(const uint16 id, const ThingCategory category) { return m_thingTypes[category][id].get(); }
     ItemType* rawGetItemType(uint16 id) { return m_itemTypes[id].get(); }
 
-    ThingTypeList findThingTypeByAttr(ThingAttr attr, ThingCategory category);
-    ItemTypeList findItemTypeByCategory(ItemCategory category);
+    ThingTypeList findThingTypeByAttr(const ThingAttr attr, const ThingCategory category);
+    ItemTypeList findItemTypeByCategory(const ItemCategory category);
 
-    const ThingTypeList& getThingTypes(ThingCategory category);
+    const ThingTypeList& getThingTypes(const ThingCategory category);
     const ItemTypeList& getItemTypes() { return m_itemTypes; }
 
     uint32 getDatSignature() { return m_datSignature; }
@@ -72,8 +72,8 @@ public:
     bool isXmlLoaded() { return m_xmlLoaded; }
     bool isOtbLoaded() { return m_otbLoaded; }
 
-    bool isValidDatId(uint16 id, ThingCategory category) { return id >= 1 && id < m_thingTypes[category].size(); }
-    bool isValidOtbId(uint16 id) { return id >= 1 && id < m_itemTypes.size(); }
+    bool isValidDatId(const uint16 id, const ThingCategory category) { return id >= 1 && id < m_thingTypes[category].size(); }
+    bool isValidOtbId(const uint16 id) { return id >= 1 && id < m_itemTypes.size(); }
 
 private:
     ThingTypeList m_thingTypes[ThingLastCategory];
