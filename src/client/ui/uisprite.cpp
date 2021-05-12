@@ -21,7 +21,7 @@
  */
 
 #include "uisprite.h"
-#include <client/spritemanager.h>
+#include <client/manager/spritemanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/graphics/texturemanager.h>
 #include <framework/otml/otml.h>

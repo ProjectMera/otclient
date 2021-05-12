@@ -24,7 +24,7 @@
 #include "game.h"
 #include "lightview.h"
 #include "map.h"
-#include "spritemanager.h"
+#include "manager/spritemanager.h"
 
 #include <framework/core/eventdispatcher.h>
 #include <framework/core/filestream.h>

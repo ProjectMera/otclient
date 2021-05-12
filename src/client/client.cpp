@@ -28,8 +28,8 @@
 #include "game.h"
 #include "map.h"
 #include "minimap.h"
-#include "shadermanager.h"
-#include "spritemanager.h"
+#include "manager/shadermanager.h"
+#include "manager/spritemanager.h"
 
 Client g_client;
 

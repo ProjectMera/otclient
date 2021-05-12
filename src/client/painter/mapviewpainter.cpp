@@ -26,7 +26,7 @@
 #include "../map.h"
 #include "../game.h"
 #include "../missile.h"
-#include "../shadermanager.h"
+#include "../manager/shadermanager.h"
 
 #include <framework/core/declarations.h>
 #include <framework/graphics/framebuffermanager.h>

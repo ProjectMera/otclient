@@ -23,7 +23,7 @@
 #include "map.h"
 #include "tile.h"
 #include "missile.h"
-#include "editor/thingtypemanager.h"
+#include "manager/thingtypemanager.h"
 
 #include <framework/core/clock.h>
 #include <framework/core/eventdispatcher.h>

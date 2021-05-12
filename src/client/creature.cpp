@@ -28,7 +28,7 @@
 #include "localplayer.h"
 #include "luavaluecasts.h"
 #include "map.h"
-#include "editor/thingtypemanager.h"
+#include "manager/thingtypemanager.h"
 #include "tile.h"
 
 #include <framework/core/clock.h>
@@ -39,7 +39,7 @@
 #include <framework/graphics/paintershaderprogram.h>
 #include <framework/graphics/texturemanager.h>
 #include <framework/graphics/ogl/painterogl2_shadersources.h>
-#include "spritemanager.h"
+#include "manager/spritemanager.h"
 
 double Creature::speedA = 0;
 double Creature::speedB = 0;

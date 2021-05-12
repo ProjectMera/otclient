@@ -24,7 +24,7 @@
 #define SHADERMANAGER_H
 
 #include <framework/graphics/paintershaderprogram.h>
-#include "declarations.h"
+#include "../declarations.h"
 
  //@bindsingleton g_shaders
 class ShaderManager

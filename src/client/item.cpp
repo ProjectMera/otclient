@@ -23,12 +23,12 @@
 #include "item.h"
 #include "container.h"
 #include "game.h"
-#include "editor/houses.h"
+#include "manager/houses.h"
 #include "map.h"
-#include "shadermanager.h"
-#include "spritemanager.h"
+#include "manager/shadermanager.h"
+#include "manager/spritemanager.h"
 #include "thing.h"
-#include "editor/thingtypemanager.h"
+#include "manager/thingtypemanager.h"
 #include "tile.h"
 
 #include <framework/core/binarytree.h>

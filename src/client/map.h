@@ -25,11 +25,11 @@
 
 #include "animatedtext.h"
 #include "creature.h"
-#include "editor/creatures.h"
-#include "editor/houses.h"
+#include "manager/creatures.h"
+#include "manager/houses.h"
 #include "statictext.h"
 #include "tile.h"
-#include "editor/towns.h"
+#include "manager/towns.h"
 
 #include <framework/core/clock.h>
 #include <framework/graphics/framebuffer.h>

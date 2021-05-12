@@ -29,7 +29,7 @@
 #include "localplayer.h"
 #include "protocol/protocolgame.h"
 #include "map.h"
-#include "editor/thingtypemanager.h"
+#include "manager/thingtypemanager.h"
 #include <framework/core/eventdispatcher.h>
 
 const static Color STATIC_SHADOWING_COLOR(static_cast<uint8>(215), static_cast<uint8>(1), 0.65f);

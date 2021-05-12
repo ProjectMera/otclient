@@ -28,7 +28,7 @@
 #include "lightview.h"
 #include "map.h"
 #include "missile.h"
-#include "shadermanager.h"
+#include "manager/shadermanager.h"
 #include "statictext.h"
 #include "tile.h"
 

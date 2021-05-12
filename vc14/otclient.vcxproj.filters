@@ -121,11 +121,11 @@
     <Filter Include="Source Files\client\protocol">
       <UniqueIdentifier>{81117ecc-3e89-4b76-91f1-8992695ddcea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\client\editor">
-      <UniqueIdentifier>{d7b1545d-6b48-47e5-abfb-42a70567afba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\client\editor">
+    <Filter Include="Source Files\client\manager">
       <UniqueIdentifier>{2ed2b27a-0e0b-4cad-ba46-82fa18619137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\manager">
+      <UniqueIdentifier>{d7b1545d-6b48-47e5-abfb-42a70567afba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -480,12 +480,6 @@
     <ClCompile Include="..\src\client\player.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\shadermanager.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\spritemanager.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\statictext.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
@@ -552,20 +546,26 @@
     <ClCompile Include="..\src\client\protocol\protocolgamesend.cpp">
       <Filter>Source Files\client\protocol</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\creatures.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\manager\creatures.cpp">
+      <Filter>Source Files\client\manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\thingtypemanager.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\manager\thingtypemanager.cpp">
+      <Filter>Source Files\client\manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\towns.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\manager\towns.cpp">
+      <Filter>Source Files\client\manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\mapio.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\manager\mapio.cpp">
+      <Filter>Source Files\client\manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\editor\houses.cpp">
-      <Filter>Source Files\client\editor</Filter>
+    <ClCompile Include="..\src\client\manager\houses.cpp">
+      <Filter>Source Files\client\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\manager\shadermanager.cpp">
+      <Filter>Source Files\client\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\manager\spritemanager.cpp">
+      <Filter>Source Files\client\manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1022,9 +1022,6 @@
     <ClInclude Include="..\src\client\position.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\shadermanager.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\statictext.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
@@ -1088,20 +1085,23 @@
     <ClInclude Include="..\src\client\protocol\protocolgame.h">
       <Filter>Header Files\client\protocol</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\editor\houses.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\manager\houses.h">
+      <Filter>Header Files\client\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\editor\thingtypemanager.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\manager\thingtypemanager.h">
+      <Filter>Header Files\client\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\editor\towns.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\manager\towns.h">
+      <Filter>Header Files\client\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\spritemanager.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\manager\spritemanager.h">
+      <Filter>Header Files\client\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\editor\creatures.h">
-      <Filter>Header Files\client\editor</Filter>
+    <ClInclude Include="..\src\client\manager\creatures.h">
+      <Filter>Header Files\client\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\manager\shadermanager.h">
+      <Filter>Header Files\client\manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

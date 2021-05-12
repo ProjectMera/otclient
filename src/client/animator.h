@@ -46,25 +46,25 @@ public:
     Animator();
 
     void unserialize(int animationPhases, const FileStreamPtr& fin);
-    void serialize(const FileStreamPtr& fin);
+    void serialize(const FileStreamPtr& fin) const;
     void setPhase(int phase);
     void resetAnimation();
 
     int getPhase();
+
     int getPhaseAt(ticks_t time);
     int getStartPhase() const;
-    int getAnimationPhases() { return m_animationPhases; }
-    int getAverageDuration() { return getTotalDuration() / getAnimationPhases(); }
+    int getTotalDuration() const;
+    int getAnimationPhases() const { return m_animationPhases; }
+    int getAverageDuration() const { return getTotalDuration() / getAnimationPhases(); }
 
     bool isAsync() { return m_async; }
     bool isComplete() { return m_isComplete; }
 
-    ticks_t getTotalDuration();
-
 private:
     int getPingPongPhase();
     int getLoopPhase();
-    int getPhaseDuration(int phase);
+    int getPhaseDuration(int phase) const;
 
     void calculateSynchronous();
 

@@ -25,8 +25,8 @@
 #include <framework/graphics/graphics.h>
 #include "game.h"
 #include "map.h"
-#include "spritemanager.h"
-#include "editor/thingtypemanager.h"
+#include "manager/spritemanager.h"
+#include "manager/thingtypemanager.h"
 #include "tile.h"
 
 Thing::Thing() : m_datId(0) {}
