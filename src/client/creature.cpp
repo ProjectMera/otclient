@@ -64,7 +64,6 @@ Creature::Creature() : Thing()
     m_nameCache.setFont(g_fonts.getFont("verdana-11px-rounded"));
     m_nameCache.setAlign(Fw::AlignTopCenter);
     m_footStep = 0;
-    m_speedFormula.fill(-1);
     m_outfitColor = Color::white;
 }
 

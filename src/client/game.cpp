@@ -426,8 +426,8 @@ void Game::processRemoveAutomapFlag(const Position& pos, int icon, const std::st
     g_lua.callGlobalField("g_game", "onRemoveAutomapFlag", pos, icon, message);
 }
 
-void Game::processOpenOutfitWindow(const Outfit& currentOutfit, const std::vector<std::tuple<int, std::string, int> >& outfitList,
-                                   const std::vector<std::tuple<int, std::string> >& mountList)
+void Game::processOpenOutfitWindow(const Outfit& currentOutfit, const std::vector<std::tuple<uint16, std::string, uint8> >& outfitList,
+                                   const std::vector<std::tuple<uint16, std::string> >& mountList)
 {
     // create virtual creature outfit
     CreaturePtr virtualOutfitCreature = CreaturePtr(new Creature);

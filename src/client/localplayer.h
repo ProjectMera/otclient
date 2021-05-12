@@ -42,7 +42,7 @@ public:
     bool canWalk(Otc::Direction direction);
 
     void setIcons(int icons);
-    void setSkill(Otc::skills_t skill, int level, int levelPercent);
+    void setSkill(const Otc::skills_t skill, const uint8 level, const uint8 levelPercent);
     void setBaseSkill(Otc::skills_t skill, int baseLevel);
     void setHealth(double health, double maxHealth);
     void setFreeCapacity(double freeCapacity);
@@ -61,13 +61,13 @@ public:
     void setPremium(bool premium);
     void setRegenerationTime(double regenerationTime);
     void setOfflineTrainingTime(double offlineTrainingTime);
-    void setSpells(const std::vector<int>& spells);
+    void setSpells(const std::vector<uint8>& spells);
     void setBlessings(int blessings);
 
     int getIcons() { return m_icons; }
-    int getSkillLevel(Otc::skills_t skill) { return m_skillsLevel[skill]; }
-    int getSkillBaseLevel(Otc::skills_t skill) { return m_skillsBaseLevel[skill]; }
-    int getSkillLevelPercent(Otc::skills_t skill) { return m_skillsLevelPercent[skill]; }
+    uint16 getSkillLevel(const Otc::skills_t skill) { return m_skills[skill].level; }
+    uint16 getSkillBaseLevel(const Otc::skills_t skill) { return m_skills[skill].baseLevel; }
+    uint16 getSkillLevelPercent(const Otc::skills_t skill) { return m_skills[skill].percent; }
     int getVocation() { return m_vocation; }
     double getHealth() { return m_health; }
     double getMaxHealth() { return m_maxHealth; }
@@ -85,8 +85,8 @@ public:
     double getStamina() { return m_stamina; }
     double getRegenerationTime() { return m_regenerationTime; }
     double getOfflineTrainingTime() { return m_offlineTrainingTime; }
-    std::vector<int> getSpells() { return m_spells; }
-    ItemPtr getInventoryItem(Otc::InventorySlot inventory) { return m_inventoryItems[inventory]; }
+    std::vector<uint8> getSpells() { return m_spells; }
+    ItemPtr getInventoryItem(const Otc::InventorySlot inventory) { return m_inventoryItems[inventory]; }
     int getBlessings() { return m_blessings; }
 
     bool hasSight(const Position& pos);
@@ -117,31 +117,36 @@ protected:
     void terminateWalk() override;
 
 private:
-    // walk related
-    Position m_lastPrewalkDestination;
-    Position m_autoWalkDestination;
-    Position m_lastAutoWalkPosition;
-    ScheduledEventPtr m_serverWalkEndEvent;
-    ScheduledEventPtr m_autoWalkContinueEvent;
-    ticks_t m_walkLockExpiration;
-    stdext::boolean<false> m_preWalking;
-    stdext::boolean<false> m_serverWalking;
-    stdext::boolean<false> m_knownCompletePath;
+    struct Skill {
+        uint16_t level = 0,
+            baseLevel = 0,
+            percent = 0;
+    };
 
-    stdext::boolean<false> m_premium;
-    stdext::boolean<false> m_known;
-    stdext::boolean<false> m_pending;
+    // walk related
+    Position m_lastPrewalkDestination,
+        m_autoWalkDestination,
+        m_lastAutoWalkPosition;
+    ScheduledEventPtr m_serverWalkEndEvent,
+        m_autoWalkContinueEvent;
+
+    ticks_t m_walkLockExpiration;
+
+    stdext::boolean<false> m_preWalking,
+        m_serverWalking,
+        m_knownCompletePath,
+        m_premium,
+        m_known,
+        m_pending;
 
     ItemPtr m_inventoryItems[Otc::LastInventorySlot];
 
-    std::array<int, Otc::SKILL_LAST + 1> m_skillsLevel;
-    std::array<int, Otc::SKILL_LAST + 1> m_skillsBaseLevel;
-    std::array<int, Otc::SKILL_LAST + 1> m_skillsLevelPercent;
-    std::vector<int> m_spells;
+    std::array<Skill, Otc::SKILL_LAST + 1> m_skills;
+    std::vector<uint8> m_spells;
 
-    int m_icons;
-    int m_vocation;
-    int m_blessings;
+    int m_icons,
+        m_vocation,
+        m_blessings;
 
     double m_health;
     double m_maxHealth;

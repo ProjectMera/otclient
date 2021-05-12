@@ -58,12 +58,7 @@ namespace Otc
     enum FrameUpdate : uint32 {
         FUpdateThing = 1 << 0,
         FUpdateLight = 1 << 1,
-        FUpdateStaticText = 1 << 2,
-        FUpdateCreatureInformation = 1 << 3,
-        FupdateCreature = FUpdateThing | FUpdateCreatureInformation,
-        FUpdateTextInformation = FUpdateStaticText | FUpdateCreatureInformation,
-
-        FUpdateAll = FUpdateThing | FUpdateLight | FUpdateStaticText | FUpdateCreatureInformation
+        FUpdateAll = FUpdateThing | FUpdateLight
     };
 
     enum DrawFlags : uint32 {
@@ -439,13 +434,6 @@ namespace Otc
         VipStateOffline = 0,
         VipStateOnline = 1,
         VipStatePending = 2
-    };
-
-    enum SpeedFormula : uint8 {
-        SpeedFormulaA = 0,
-        SpeedFormulaB,
-        SpeedFormulaC,
-        LastSpeedFormula
     };
 
     enum Blessings : uint32 {

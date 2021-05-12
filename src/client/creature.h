@@ -98,7 +98,6 @@ public:
     float getStepProgress() { return m_walkTimer.ticksElapsed() / getStepDuration(); }
     float getStepTicksLeft() { return getStepDuration() - m_walkTimer.ticksElapsed(); }
     ticks_t getWalkTicksElapsed() { return m_walkTimer.ticksElapsed(); }
-    std::array<double, Otc::LastSpeedFormula> getSpeedFormulaArray() { return m_speedFormula; }
     Point getDisplacement() override;
     int getDisplacementX() override;
     int getDisplacementY() override;
@@ -140,6 +139,7 @@ public:
 
 protected:
     void updateWalkingTile();
+
     virtual void updateWalkAnimation();
     virtual void updateWalkOffset(int totalPixelsWalked);
     virtual void updateWalk();
@@ -165,17 +165,20 @@ protected:
     uint8 m_emblem;
     uint8 m_type;
     uint8 m_icon;
-    TexturePtr m_skullTexture;
-    TexturePtr m_shieldTexture;
-    TexturePtr m_emblemTexture;
-    TexturePtr m_typeTexture;
-    TexturePtr m_iconTexture;
+
+    TexturePtr m_skullTexture,
+        m_shieldTexture,
+        m_emblemTexture,
+        m_typeTexture,
+        m_iconTexture;
+
+    stdext::boolean<false> m_shieldBlink,
+        m_passable,
+        m_showTimedSquare,
+        m_showStaticSquare,
+        m_forceWalk;
+
     stdext::boolean<true> m_showShieldTexture;
-    stdext::boolean<false> m_shieldBlink;
-    stdext::boolean<false> m_passable;
-    stdext::boolean<false> m_showTimedSquare;
-    stdext::boolean<false> m_showStaticSquare;
-    stdext::boolean<false> m_forceWalk;
     stdext::boolean<true> m_removed;
     Color m_timedSquareColor;
     Color m_staticSquareColor;
@@ -184,8 +187,6 @@ protected:
     CachedText m_nameCache;
     ScheduledEventPtr m_outfitColorUpdateEvent;
     Timer m_outfitColorTimer;
-
-    std::array<double, Otc::LastSpeedFormula> m_speedFormula;
 
     // walk related
     int m_walkAnimationPhase;
