@@ -271,6 +271,7 @@ void MapView::onGlobalLightChange(const Light&)
 
 void MapView::onFloorChange(const uint8 /*floor*/, const uint8 /*previousFloor*/)
 {
+    m_mustUpdateVisibleCreaturesCache = true;
     updateLight();
 }
 

@@ -349,6 +349,7 @@ void LocalPlayer::setHealth(double health, double maxHealth)
     if(health == 0) {
         if(isPreWalking())
             stopWalk();
+
         lockWalk();
     }
 }
