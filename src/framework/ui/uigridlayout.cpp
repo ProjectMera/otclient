@@ -25,7 +25,9 @@
 
 #include <framework/core/eventdispatcher.h>
 
-UIGridLayout::UIGridLayout(UIWidgetPtr parentWidget) : UILayout(parentWidget)
+#include <utility>
+
+UIGridLayout::UIGridLayout(UIWidgetPtr parentWidget) : UILayout(std::move(parentWidget))
 {
     m_cellSize = Size(16, 16);
     m_cellSpacing = 0;
@@ -78,8 +80,8 @@ bool UIGridLayout::internalUpdate()
 
     UIWidgetList widgets = parentWidget->getChildren();
 
-    Rect clippingRect = parentWidget->getPaddingRect();
-    Point topLeft = clippingRect.topLeft();
+    const Rect clippingRect = parentWidget->getPaddingRect();
+    const Point topLeft = clippingRect.topLeft();
 
     int numColumns = m_numColumns;
     if(m_flow && m_cellSize.width() > 0) {
@@ -103,12 +105,12 @@ bool UIGridLayout::internalUpdate()
         if(!widget->isExplicitlyVisible())
             continue;
 
-        int line = index / numColumns;
-        int column = index % numColumns;
-        Point virtualPos = Point(column * (m_cellSize.width() + cellSpacing), line * (m_cellSize.height() + cellSpacing));
+        const int line = index / numColumns;
+        const int column = index % numColumns;
+        auto virtualPos = Point(column * (m_cellSize.width() + cellSpacing), line * (m_cellSize.height() + cellSpacing));
         preferredHeight = virtualPos.y + m_cellSize.height();
         Point pos = topLeft + virtualPos - parentWidget->getVirtualOffset();
-        Rect dest = Rect(pos, m_cellSize);
+        auto dest = Rect(pos, m_cellSize);
         dest.expand(-widget->getMarginTop(), -widget->getMarginRight(), -widget->getMarginBottom(), -widget->getMarginLeft());
 
         if(widget->setRect(dest))

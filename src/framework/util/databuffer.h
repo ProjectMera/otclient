@@ -38,8 +38,9 @@ public:
         delete[] m_buffer;
     }
 
-    inline void reset() { m_size = 0; }
-    inline void clear()
+    void reset() { m_size = 0; }
+
+    void clear()
     {
         m_size = 0;
         m_capacity = 0;
@@ -47,17 +48,17 @@ public:
         m_buffer = nullptr;
     }
 
-    inline bool empty() const { return m_size == 0; }
-    inline uint size() const { return m_size; }
-    inline T* data() const { return m_buffer; }
+    bool empty() const { return m_size == 0; }
+    uint size() const { return m_size; }
+    T* data() const { return m_buffer; }
 
-    inline const T& at(uint i) const { return m_buffer[i]; }
-    inline const T& last() const { return m_buffer[m_size - 1]; }
-    inline const T& first() const { return m_buffer[0]; }
-    inline const T& operator[](uint i) const { return m_buffer[i]; }
-    inline T& operator[](uint i) { return m_buffer[i]; }
+    const T& at(uint i) const { return m_buffer[i]; }
+    const T& last() const { return m_buffer[m_size - 1]; }
+    const T& first() const { return m_buffer[0]; }
+    const T& operator[](uint i) const { return m_buffer[i]; }
+    T& operator[](uint i) { return m_buffer[i]; }
 
-    inline void reserve(uint n)
+    void reserve(uint n)
     {
         if(n > m_capacity) {
             T* buffer = new T[n];
@@ -70,7 +71,7 @@ public:
         }
     }
 
-    inline void resize(uint n, T def = T())
+    void resize(uint n, T def = T())
     {
         if(n == m_size)
             return;
@@ -80,7 +81,7 @@ public:
         m_size = n;
     }
 
-    inline void grow(uint n)
+    void grow(uint n)
     {
         if(n <= m_size)
             return;
@@ -92,13 +93,13 @@ public:
         m_size = n;
     }
 
-    inline void add(const T& v)
+    void add(const T& v)
     {
         grow(m_size + 1);
         m_buffer[m_size - 1] = v;
     }
 
-    inline DataBuffer& operator<<(const T& t) { add(t); return *this; }
+    DataBuffer& operator<<(const T& t) { add(t); return *this; }
 
 private:
     uint m_size;

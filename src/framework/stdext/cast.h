@@ -88,7 +88,7 @@ namespace stdext {
     {
         if(in.find_first_not_of("-0123456789") != std::string::npos)
             return false;
-        std::size_t t = in.find_last_of('-');
+        const std::size_t t = in.find_last_of('-');
         if(t != std::string::npos && t != 0)
             return false;
         l = atol(in.c_str());

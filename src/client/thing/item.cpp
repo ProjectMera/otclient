@@ -232,7 +232,7 @@ int Item::getCount()
 
 ItemPtr Item::clone()
 {
-    ItemPtr item = ItemPtr(new Item);
+    auto item = ItemPtr(new Item);
     *(item.get()) = *this;
     return item;
 }

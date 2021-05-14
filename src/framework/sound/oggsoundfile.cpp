@@ -34,7 +34,7 @@ OggSoundFile::~OggSoundFile()
 
 bool OggSoundFile::prepareOgg()
 {
-    ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
+    const ov_callbacks callbacks = { cb_read, cb_seek, cb_close, cb_tell };
     ov_open_callbacks(m_file.get(), &m_vorbisFile, nullptr, 0, callbacks);
 
     vorbis_info* vi = ov_info(&m_vorbisFile, -1);
@@ -53,13 +53,13 @@ bool OggSoundFile::prepareOgg()
 
 int OggSoundFile::read(void* buffer, int bufferSize)
 {
-    char* bytesBuffer = reinterpret_cast<char*>(buffer);
+    auto bytesBuffer = reinterpret_cast<char*>(buffer);
     int    section = 0;
     size_t totalBytesRead = 0;
 
     while(bufferSize > 0) {
-        size_t bytesToRead = bufferSize;
-        long bytesRead = ov_read(&m_vorbisFile, bytesBuffer, bytesToRead, 0, 2, 1, &section);
+        const size_t bytesToRead = bufferSize;
+        const long bytesRead = ov_read(&m_vorbisFile, bytesBuffer, bytesToRead, 0, 2, 1, &section);
         if(bytesRead == 0)
             break;
 
@@ -78,13 +78,13 @@ void OggSoundFile::reset()
 
 size_t OggSoundFile::cb_read(void* ptr, size_t size, size_t nmemb, void* source)
 {
-    FileStream* file = static_cast<FileStream*>(source);
+    auto file = static_cast<FileStream*>(source);
     return file->read(ptr, size, nmemb);
 }
 
 int OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 {
-    FileStream* file = static_cast<FileStream*>(source);
+    auto file = static_cast<FileStream*>(source);
     switch(whence) {
     case SEEK_SET:
         file->seek(offset);
@@ -101,13 +101,13 @@ int OggSoundFile::cb_seek(void* source, ogg_int64_t offset, int whence)
 
 int OggSoundFile::cb_close(void* source)
 {
-    FileStream* file = static_cast<FileStream*>(source);
+    auto file = static_cast<FileStream*>(source);
     file->close();
     return 0;
 }
 
 long OggSoundFile::cb_tell(void* source)
 {
-    FileStream* file = static_cast<FileStream*>(source);
+    auto file = static_cast<FileStream*>(source);
     return file->tell();
 }

@@ -113,7 +113,7 @@ void MapViewPainter::draw(const MapViewPtr& mapView, const Rect& rect)
         if(redrawThing) {
             if(mapView->m_crosshairTexture && mapView->m_mousePosition.isValid()) {
                 const Point& point = mapView->transformPositionTo2D(mapView->m_mousePosition, cameraPosition);
-                const Rect crosshairRect = Rect(point, mapView->m_tileSize, mapView->m_tileSize);
+                const auto crosshairRect = Rect(point, mapView->m_tileSize, mapView->m_tileSize);
                 g_painter->drawTexturedRect(crosshairRect, mapView->m_crosshairTexture);
             }
 

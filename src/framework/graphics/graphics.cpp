@@ -64,7 +64,7 @@ void Graphics::init()
     g_painterOGL1 = new PainterOGL1;
 #else
     // init GL extensions
-    GLenum err = glewInit();
+    const GLenum err = glewInit();
     if(err != GLEW_OK)
         g_logger.fatal(stdext::format("Unable to init GLEW: %s", glewGetErrorString(err)));
 
@@ -163,7 +163,7 @@ bool Graphics::parseOption(const std::string& option)
     return true;
 }
 
-bool Graphics::isPainterEngineAvailable(Graphics::PainterEngine painterEngine)
+bool Graphics::isPainterEngineAvailable(PainterEngine painterEngine)
 {
 #if defined(WIN32) && defined(DIRECTX)
     if(g_painterDX9 && painterEngine == Painter_DirectX9)

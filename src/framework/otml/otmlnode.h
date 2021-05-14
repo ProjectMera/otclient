@@ -30,8 +30,8 @@ class OTMLNode : public stdext::shared_object
 public:
     virtual ~OTMLNode() {}
 
-    static OTMLNodePtr create(std::string tag = "", bool unique = false);
-    static OTMLNodePtr create(std::string tag, std::string value);
+    static OTMLNodePtr create(const std::string& tag = "", bool unique = false);
+    static OTMLNodePtr create(const std::string& tag, const std::string& value);
 
     std::string tag() { return m_tag; }
     int size() { return m_children.size(); }
@@ -168,7 +168,7 @@ void OTMLNode::write(const T& v)
 template<typename T>
 void OTMLNode::writeAt(const std::string& childTag, const T& v)
 {
-    OTMLNodePtr child = OTMLNode::create(childTag);
+    OTMLNodePtr child = create(childTag);
     child->setUnique(true);
     child->write<T>(v);
     addChild(child);
@@ -177,7 +177,7 @@ void OTMLNode::writeAt(const std::string& childTag, const T& v)
 template<typename T>
 void OTMLNode::writeIn(const T& v)
 {
-    OTMLNodePtr child = OTMLNode::create();
+    OTMLNodePtr child = create();
     child->write<T>(v);
     addChild(child);
 }

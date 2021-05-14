@@ -82,12 +82,12 @@ protected:
 public:
     void addChild(const UIWidgetPtr& child);
     void insertChild(int index, const UIWidgetPtr& child);
-    void removeChild(UIWidgetPtr child);
+    void removeChild(const UIWidgetPtr& child);
     void focusChild(const UIWidgetPtr& child, Fw::FocusReason reason);
     void focusNextChild(Fw::FocusReason reason, bool rotate = false);
     void focusPreviousChild(Fw::FocusReason reason, bool rotate = false);
-    void lowerChild(UIWidgetPtr child);
-    void raiseChild(UIWidgetPtr child);
+    void lowerChild(const UIWidgetPtr& child);
+    void raiseChild(const UIWidgetPtr& child);
     void moveChildToIndex(const UIWidgetPtr& child, int index);
     void lockChild(const UIWidgetPtr& child);
     void unlockChild(const UIWidgetPtr& child);

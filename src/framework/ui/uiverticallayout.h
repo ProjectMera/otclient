@@ -23,13 +23,15 @@
 #ifndef UIVERTICALLAYOUT_H
 #define UIVERTICALLAYOUT_H
 
+#include <utility>
+
 #include "uiboxlayout.h"
 
  // @bindclass
 class UIVerticalLayout : public UIBoxLayout
 {
 public:
-    UIVerticalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) {}
+    UIVerticalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(std::move(parentWidget)) {}
 
     void applyStyle(const OTMLNodePtr& styleNode);
 

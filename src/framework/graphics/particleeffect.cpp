@@ -44,7 +44,7 @@ void ParticleEffect::load(const ParticleEffectTypePtr& effectType)
 
     for(const OTMLNodePtr& childNode : effectType->getNode()->children()) {
         if(childNode->tag() == "System") {
-            ParticleSystemPtr system = ParticleSystemPtr(new ParticleSystem);
+            auto system = ParticleSystemPtr(new ParticleSystem);
             system->load(childNode);
             m_systems.push_back(system);
         }

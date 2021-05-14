@@ -202,7 +202,7 @@ public:
     TiXmlBase(const TiXmlBase&) = delete;
     void operator=(const TiXmlBase& base) = delete;
 
-    TiXmlBase() : userData(0) {}
+    TiXmlBase() : userData(nullptr) {}
     virtual ~TiXmlBase() {}
 
     /**    All TinyXml classes can print themselves to a filestream
@@ -291,11 +291,12 @@ protected:
 
     static const char* SkipWhiteSpace(const char*, TiXmlEncoding encoding);
 
-    inline static bool IsWhiteSpace(char c)
+    static bool IsWhiteSpace(char c)
     {
         return (isspace(static_cast<unsigned char>(c)) || c == '\n' || c == '\r');
     }
-    inline static bool IsWhiteSpace(int c)
+
+    static bool IsWhiteSpace(int c)
     {
         if(c < 256)
             return IsWhiteSpace(static_cast<char>(c));
@@ -328,7 +329,7 @@ protected:
 
     // Get a character, while interpreting entities.
     // The length can be from 0 to 4 bytes.
-    inline static const char* GetChar(const char* p, char* _value, int* length, TiXmlEncoding encoding)
+    static const char* GetChar(const char* p, char* _value, int* length, TiXmlEncoding encoding)
     {
         assert(p);
         if(encoding == TIXML_ENCODING_UTF8)
@@ -346,19 +347,18 @@ protected:
                 return GetEntity(p, _value, length, encoding);
             *_value = *p;
             return p + 1;
-        } else if(*length)
+        }
+        if(*length)
         {
             //strncpy( _value, p, *length );    // lots of compilers don't like this function (unsafe),
-                                                // and the null terminator isn't needed
+            // and the null terminator isn't needed
             for(int i = 0; p[i] && i < *length; ++i) {
                 _value[i] = p[i];
             }
             return p + (*length);
-        } else
-        {
-            // Not valid text.
-            return 0;
         }
+        // Not valid text.
+        return nullptr;
     }
 
     // Return true if the next characters in the stream are any of the endTag sequences.
@@ -380,16 +380,15 @@ protected:
     // Good for approximation, not great for accuracy.
     static int IsAlpha(unsigned char anyByte, TiXmlEncoding encoding);
     static int IsAlphaNum(unsigned char anyByte, TiXmlEncoding encoding);
-    inline static int ToLower(int v, TiXmlEncoding encoding)
+
+    static int ToLower(int v, TiXmlEncoding encoding)
     {
         if(encoding == TIXML_ENCODING_UTF8)
         {
             if(v < 128) return tolower(v);
             return v;
-        } else
-        {
-            return tolower(v);
         }
+        return tolower(v);
     }
     static void ConvertUTF32ToUTF8(unsigned long input, char* output, int* length);
 
@@ -702,19 +701,19 @@ public:
     /// Returns true if this node has no children.
     bool NoChildren() const { return !firstChild; }
 
-    virtual const TiXmlDocument* ToDocument()    const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual const TiXmlElement* ToElement()     const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual const TiXmlComment* ToComment()     const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual const TiXmlUnknown* ToUnknown()     const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual const TiXmlText* ToText()        const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual const TiXmlDeclaration* ToDeclaration() const { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlDocument* ToDocument()    const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlElement* ToElement()     const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlComment* ToComment()     const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlUnknown* ToUnknown()     const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlText* ToText()        const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual const TiXmlDeclaration* ToDeclaration() const { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
 
-    virtual TiXmlDocument* ToDocument() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual TiXmlElement* ToElement() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual TiXmlComment* ToComment() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual TiXmlUnknown* ToUnknown() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual TiXmlText* ToText() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
-    virtual TiXmlDeclaration* ToDeclaration() { return 0; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlDocument* ToDocument() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlElement* ToElement() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlComment* ToComment() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlUnknown* ToUnknown() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlText* ToText() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
+    virtual TiXmlDeclaration* ToDeclaration() { return nullptr; } ///< Cast to a more defined type. Will return null if not of the requested type.
 
     /** Create an exact duplicate of this node and return it. The memory must be deleted
         by the caller.
@@ -787,8 +786,8 @@ public:
     /// Construct an empty attribute.
     TiXmlAttribute() : TiXmlBase()
     {
-        document = 0;
-        prev = next = 0;
+        document = nullptr;
+        prev = next = nullptr;
     }
 
 #ifdef TIXML_USE_STL
@@ -797,8 +796,8 @@ public:
     {
         name = _name;
         value = _value;
-        document = 0;
-        prev = next = 0;
+        document = nullptr;
+        prev = next = nullptr;
     }
 #endif
 
@@ -807,8 +806,8 @@ public:
     {
         name = _name;
         value = _value;
-        document = 0;
-        prev = next = 0;
+        document = nullptr;
+        prev = next = nullptr;
     }
 
     const char* Name()  const { return name.c_str(); }        ///< Return the name of this attribute.
@@ -874,7 +873,7 @@ public:
     // Prints this Attribute to a FILE stream.
     virtual void Print(FILE* cfile, int depth) const
     {
-        Print(cfile, depth, 0);
+        Print(cfile, depth, nullptr);
     }
     void Print(FILE* cfile, int depth, TIXML_STRING* str) const;
 
@@ -914,10 +913,10 @@ public:
     void Add(TiXmlAttribute* attribute);
     void Remove(TiXmlAttribute* attribute);
 
-    const TiXmlAttribute* First()    const { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
-    TiXmlAttribute* First() { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
-    const TiXmlAttribute* Last() const { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
-    TiXmlAttribute* Last() { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
+    const TiXmlAttribute* First()    const { return (sentinel.next == &sentinel) ? nullptr : sentinel.next; }
+    TiXmlAttribute* First() { return (sentinel.next == &sentinel) ? nullptr : sentinel.next; }
+    const TiXmlAttribute* Last() const { return (sentinel.prev == &sentinel) ? nullptr : sentinel.prev; }
+    TiXmlAttribute* Last() { return (sentinel.prev == &sentinel) ? nullptr : sentinel.prev; }
 
     TiXmlAttribute* Find(const char* _name) const;
     TiXmlAttribute* FindOrCreate(const char* _name);
@@ -950,10 +949,10 @@ public:
     virtual ~TiXmlElement();
 
     template<typename T = std::string>
-    inline T readType(const std::string& str) const
+    T readType(const std::string& str) const
     {
         T ret;
-        int r = QueryValueAttribute(str, &ret);
+        const int r = QueryValueAttribute(str, &ret);
         if(r == TIXML_NO_ATTRIBUTE || r == TIXML_WRONG_TYPE)
             return T();
         return ret;
@@ -1079,9 +1078,9 @@ class TiXmlComment : public TiXmlNode
 {
 public:
     /// Constructs an empty comment.
-    TiXmlComment() : TiXmlNode(TiXmlNode::TINYXML_COMMENT) {}
+    TiXmlComment() : TiXmlNode(TINYXML_COMMENT) {}
     /// Construct a comment from text.
-    TiXmlComment(const char* _value) : TiXmlNode(TiXmlNode::TINYXML_COMMENT)
+    TiXmlComment(const char* _value) : TiXmlNode(TINYXML_COMMENT)
     {
         SetValue(_value);
     }
@@ -1132,7 +1131,7 @@ public:
         normal, encoded text. If you want it be output as a CDATA text
         element, set the parameter _cdata to 'true'
     */
-    TiXmlText(const char* initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT)
+    TiXmlText(const char* initValue) : TiXmlNode(TINYXML_TEXT)
     {
         SetValue(initValue);
         cdata = false;
@@ -1141,14 +1140,14 @@ public:
 
 #ifdef TIXML_USE_STL
     /// Constructor.
-    TiXmlText(const std::string& initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT)
+    TiXmlText(const std::string& initValue) : TiXmlNode(TINYXML_TEXT)
     {
         SetValue(initValue);
         cdata = false;
     }
 #endif
 
-    TiXmlText(const TiXmlText& copy) : TiXmlNode(TiXmlNode::TINYXML_TEXT) { copy.CopyTo(this); }
+    TiXmlText(const TiXmlText& copy) : TiXmlNode(TINYXML_TEXT) { copy.CopyTo(this); }
     TiXmlText& operator=(const TiXmlText& base) { base.CopyTo(this); return *this; }
 
     // Write this text object to a FILE stream.
@@ -1200,7 +1199,7 @@ class TiXmlDeclaration : public TiXmlNode
 {
 public:
     /// Construct an empty declaration.
-    TiXmlDeclaration() : TiXmlNode(TiXmlNode::TINYXML_DECLARATION) {}
+    TiXmlDeclaration() : TiXmlNode(TINYXML_DECLARATION) {}
 
 #ifdef TIXML_USE_STL
     /// Constructor.
@@ -1232,7 +1231,7 @@ public:
     virtual void Print(FILE* cfile, int depth, TIXML_STRING* str) const;
     virtual void Print(FILE* cfile, int depth) const
     {
-        Print(cfile, depth, 0);
+        Print(cfile, depth, nullptr);
     }
 
     virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
@@ -1268,10 +1267,10 @@ private:
 class TiXmlUnknown : public TiXmlNode
 {
 public:
-    TiXmlUnknown() : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN) {}
+    TiXmlUnknown() : TiXmlNode(TINYXML_UNKNOWN) {}
     virtual ~TiXmlUnknown() {}
 
-    TiXmlUnknown(const TiXmlUnknown& copy) : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN) { copy.CopyTo(this); }
+    TiXmlUnknown(const TiXmlUnknown& copy) : TiXmlNode(TINYXML_UNKNOWN) { copy.CopyTo(this); }
     TiXmlUnknown& operator=(const TiXmlUnknown& copy) { copy.CopyTo(this); return *this; }
 
     /// Creates a copy of this Unknown and returns it.
@@ -1355,7 +1354,7 @@ public:
         method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml
         to use that encoding, regardless of what TinyXml might otherwise try to detect.
     */
-    virtual const char* Parse(const char* p, TiXmlParsingData* data = 0, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+    virtual const char* Parse(const char* p, TiXmlParsingData* data = nullptr, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
 
     /** Get the root element -- the only top level element -- of the document.
         In well formed XML, there should only be one. TinyXml is tolerant of
@@ -1598,13 +1597,13 @@ public:
     TiXmlNode* ToNode() const { return node; }
     /** Return the handle as a TiXmlElement. This may return null.
     */
-    TiXmlElement* ToElement() const { return ((node && node->ToElement()) ? node->ToElement() : 0); }
+    TiXmlElement* ToElement() const { return ((node && node->ToElement()) ? node->ToElement() : nullptr); }
     /**    Return the handle as a TiXmlText. This may return null.
     */
-    TiXmlText* ToText() const { return ((node && node->ToText()) ? node->ToText() : 0); }
+    TiXmlText* ToText() const { return ((node && node->ToText()) ? node->ToText() : nullptr); }
     /** Return the handle as a TiXmlUnknown. This may return null.
     */
-    TiXmlUnknown* ToUnknown() const { return ((node && node->ToUnknown()) ? node->ToUnknown() : 0); }
+    TiXmlUnknown* ToUnknown() const { return ((node && node->ToUnknown()) ? node->ToUnknown() : nullptr); }
 
     /** @deprecated use ToNode.
         Return the handle as a TiXmlNode. This may return null.
@@ -1649,8 +1648,7 @@ private:
 class TiXmlPrinter : public TiXmlVisitor
 {
 public:
-    TiXmlPrinter() : depth(0), simpleTextPrint(false),
-        buffer(), indent("    "), lineBreak("\n")
+    TiXmlPrinter() : depth(0), simpleTextPrint(false), indent("    "), lineBreak("\n")
     {
     }
 

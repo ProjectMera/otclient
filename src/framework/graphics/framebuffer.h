@@ -34,7 +34,7 @@ static constexpr int32_t MAX_NODES = 512;
 class FrameBuffer : public stdext::shared_object
 {
 protected:
-    FrameBuffer(const bool useAlphaWriting, const uint16_t minTimeUpdate);
+    FrameBuffer(bool useAlphaWriting, uint16_t minTimeUpdate);
 
     friend class FrameBufferManager;
 
@@ -42,10 +42,10 @@ public:
     virtual ~FrameBuffer();
 
     void resize(const Size& size);
-    void bind(const bool autoClear = true);
+    void bind(bool autoClear = true);
     void release();
     void draw();
-    void clear(const Color color = Color::black);
+    void clear(Color color = Color::black);
     void draw(const Rect& dest);
     void draw(const Rect& dest, const Rect& src);
 

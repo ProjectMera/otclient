@@ -41,8 +41,8 @@ public:
 
     Color(const uint8 byteColor, const uint8 intensity, const float formule = 0.5f)
     {
-        const float brightness = formule + (intensity / (float)8) * formule;
-        Color colorMap = Color::from8bit(byteColor);
+        const float brightness = formule + (intensity / static_cast<float>(8)) * formule;
+        const Color colorMap = from8bit(byteColor);
         m_a = colorMap.aF();
         m_b = colorMap.bF() * brightness;
         m_g = colorMap.gF() * brightness;
@@ -61,12 +61,12 @@ public:
     float gF() const { return m_g; }
     float rF() const { return m_r; }
 
-    uint32 rgba() const { return uint32(a() | b() << 8 | g() << 16 | r() << 24); }
+    uint32 rgba() const { return static_cast<uint32>(a() | b() << 8 | g() << 16 | r() << 24); }
 
-    void setRed(const int r) { m_r = uint8(r) / 255.0f; }
-    void setGreen(const int g) { m_g = uint8(g) / 255.0f; }
-    void setBlue(const int b) { m_b = uint8(b) / 255.0f; }
-    void setAlpha(const int a) { m_a = uint8(a) / 255.0f; }
+    void setRed(const int r) { m_r = static_cast<uint8>(r) / 255.0f; }
+    void setGreen(const int g) { m_g = static_cast<uint8>(g) / 255.0f; }
+    void setBlue(const int b) { m_b = static_cast<uint8>(b) / 255.0f; }
+    void setAlpha(const int a) { m_a = static_cast<uint8>(a) / 255.0f; }
 
     void setRed(const float r) { m_r = r; }
     void setGreen(const float g) { m_g = g; }
@@ -110,8 +110,8 @@ public:
         if(color >= 216 || color <= 0)
             return Color(0, 0, 0);
 
-        const int r = (static_cast<int>(color / 36) % 6 * 51) * brightness;
-        const int g = (static_cast<int>(color / 6) % 6 * 51) * brightness;
+        const int r = (color / 36 % 6 * 51) * brightness;
+        const int g = (color / 6 % 6 * 51) * brightness;
         const int b = (color % 6 * 51) * brightness;
         return Color(r, g, b);
     }

@@ -37,10 +37,10 @@ void OutputMessage::reset()
 
 void OutputMessage::setBuffer(const std::string& buffer)
 {
-    int len = buffer.size();
+    const int len = buffer.size();
     reset();
     checkWrite(len);
-    memcpy((char*)(m_buffer + m_writePos), buffer.c_str(), len);
+    memcpy(m_buffer + m_writePos, buffer.c_str(), len);
     m_writePos += len;
     m_messageSize += len;
 }
@@ -79,12 +79,12 @@ void OutputMessage::addU64(uint64 value)
 
 void OutputMessage::addString(const std::string& buffer)
 {
-    int len = buffer.length();
+    const int len = buffer.length();
     if(len > MAX_STRING_LENGTH)
         throw stdext::exception(stdext::format("string length > %d", MAX_STRING_LENGTH));
     checkWrite(len + 2);
     addU16(len);
-    memcpy((char*)(m_buffer + m_writePos), buffer.c_str(), len);
+    memcpy(m_buffer + m_writePos, buffer.c_str(), len);
     m_writePos += len;
     m_messageSize += len;
 }
@@ -94,14 +94,14 @@ void OutputMessage::addPaddingBytes(int bytes, uint8 byte)
     if(bytes <= 0)
         return;
     checkWrite(bytes);
-    memset(static_cast<void*>(&m_buffer[m_writePos]), byte, bytes);
+    memset(&m_buffer[m_writePos], byte, bytes);
     m_writePos += bytes;
     m_messageSize += bytes;
 }
 
 void OutputMessage::encryptRsa()
 {
-    int size = g_crypt.rsaGetSize();
+    const int size = g_crypt.rsaGetSize();
     if(m_messageSize < size)
         throw stdext::exception("insufficient bytes in buffer to encrypt");
 
@@ -111,7 +111,7 @@ void OutputMessage::encryptRsa()
 
 void OutputMessage::writeChecksum()
 {
-    uint32 checksum = stdext::adler32(m_buffer + m_headerPos, m_messageSize);
+    const uint32 checksum = stdext::adler32(m_buffer + m_headerPos, m_messageSize);
     assert(m_headerPos - 4 >= 0);
     m_headerPos -= 4;
     stdext::writeULE32(m_buffer + m_headerPos, checksum);

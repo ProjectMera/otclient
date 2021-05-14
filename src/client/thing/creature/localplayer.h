@@ -42,7 +42,7 @@ public:
     bool canWalk(Otc::Direction direction);
 
     void setIcons(int icons);
-    void setSkill(const Otc::skills_t skill, const uint8 level, const uint8 levelPercent);
+    void setSkill(Otc::skills_t skill, uint8 level, uint8 levelPercent);
     void setBaseSkill(Otc::skills_t skill, int baseLevel);
     void setHealth(double health, double maxHealth);
     void setFreeCapacity(double freeCapacity);

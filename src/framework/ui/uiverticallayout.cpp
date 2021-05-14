@@ -47,10 +47,9 @@ bool UIVerticalLayout::internalUpdate()
     if(m_alignBottom)
         std::reverse(widgets.begin(), widgets.end());
 
-    Rect paddingRect = parentWidget->getPaddingRect();
+    const Rect paddingRect = parentWidget->getPaddingRect();
     Point pos = (m_alignBottom) ? paddingRect.bottomLeft() : paddingRect.topLeft();
     int preferredHeight = 0;
-    int gap;
 
     for(const UIWidgetPtr& widget : widgets) {
         if(!widget->isExplicitlyVisible())
@@ -58,7 +57,7 @@ bool UIVerticalLayout::internalUpdate()
 
         Size size = widget->getSize();
 
-        gap = (m_alignBottom) ? -(widget->getMarginBottom() + widget->getHeight()) : widget->getMarginTop();
+        int gap = (m_alignBottom) ? -(widget->getMarginBottom() + widget->getHeight()) : widget->getMarginTop();
         pos.y += gap;
         preferredHeight += gap;
 

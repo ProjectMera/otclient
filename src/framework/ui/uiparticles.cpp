@@ -70,7 +70,7 @@ void UIParticles::onStyleApply(const std::string& styleName, const OTMLNodePtr& 
 
 void UIParticles::addEffect(const std::string& name)
 {
-    ParticleEffectPtr effect = g_particles.createEffect(name);
+    const ParticleEffectPtr effect = g_particles.createEffect(name);
     if(effect)
         m_effects.push_back(effect);
 }

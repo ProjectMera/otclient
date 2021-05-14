@@ -74,10 +74,12 @@ void PlatformWindow::processKeyDown(Fw::Key keyCode)
     if(keyCode == Fw::KeyCtrl) {
         m_inputEvent.keyboardModifiers |= Fw::KeyboardCtrlModifier;
         return;
-    } else if(keyCode == Fw::KeyAlt) {
+    }
+    if(keyCode == Fw::KeyAlt) {
         m_inputEvent.keyboardModifiers |= Fw::KeyboardAltModifier;
         return;
-    } else if(keyCode == Fw::KeyShift) {
+    }
+    if(keyCode == Fw::KeyShift) {
         m_inputEvent.keyboardModifiers |= Fw::KeyboardShiftModifier;
         return;
     }
@@ -111,13 +113,16 @@ void PlatformWindow::processKeyUp(Fw::Key keyCode)
     if(keyCode == Fw::KeyCtrl) {
         m_inputEvent.keyboardModifiers &= ~Fw::KeyboardCtrlModifier;
         return;
-    } else if(keyCode == Fw::KeyAlt) {
+    }
+    if(keyCode == Fw::KeyAlt) {
         m_inputEvent.keyboardModifiers &= ~Fw::KeyboardAltModifier;
         return;
-    } else if(keyCode == Fw::KeyShift) {
+    }
+    if(keyCode == Fw::KeyShift) {
         m_inputEvent.keyboardModifiers &= ~Fw::KeyboardShiftModifier;
         return;
-    } else if(keyCode == Fw::KeyNumLock) {
+    }
+    if(keyCode == Fw::KeyNumLock) {
         for(uchar k = Fw::KeyNumpad0; k <= Fw::KeyNumpad9; ++k) {
             if(m_keysState[static_cast<Fw::Key>(k)])
                 processKeyUp(static_cast<Fw::Key>(k));
@@ -139,8 +144,8 @@ void PlatformWindow::processKeyUp(Fw::Key keyCode)
 void PlatformWindow::releaseAllKeys()
 {
     for(auto it : m_keysState) {
-        Fw::Key keyCode = it.first;
-        bool pressed = it.second;
+        const Fw::Key keyCode = it.first;
+        const bool pressed = it.second;
 
         if(!pressed)
             continue;
@@ -163,13 +168,13 @@ void PlatformWindow::fireKeysPress()
 
     for(auto it : m_keysState) {
         Fw::Key keyCode = it.first;
-        bool pressed = it.second;
+        const bool pressed = it.second;
 
         if(!pressed)
             continue;
 
-        ticks_t lastPressTicks = m_lastKeysPress[keyCode];
-        ticks_t firstKeyPress = m_firstKeysPress[keyCode];
+        const ticks_t lastPressTicks = m_lastKeysPress[keyCode];
+        const ticks_t firstKeyPress = m_firstKeysPress[keyCode];
         if(g_clock.millis() - lastPressTicks >= KEY_PRESS_REPEAT_INTERVAL) {
             if(m_onInputEvent) {
                 m_inputEvent.reset(Fw::KeyPressInputEvent);

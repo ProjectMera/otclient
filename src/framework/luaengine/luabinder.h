@@ -62,7 +62,7 @@ namespace luabinder
         call_fun_and_push_result(const F& f, LuaInterface* lua, const Args&... args)
     {
         Ret ret = f(args...);
-        int numRets = lua->polymorphicPush(ret);
+        const int numRets = lua->polymorphicPush(ret);
         return numRets;
     }
 
@@ -122,7 +122,7 @@ namespace luabinder
     template<typename Ret, typename... Args>
     LuaCppFunction bind_fun(const std::function<Ret(Args...)>& f)
     {
-        typedef typename std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
+        typedef std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
         return bind_fun_specializer<typename stdext::remove_const_ref<Ret>::type,
             decltype(f),
             Tuple>(f);
@@ -136,7 +136,7 @@ namespace luabinder
     struct bind_lambda_fun<Ret(Lambda::*)(Args...) const> {
         static LuaCppFunction call(const Lambda& f)
         {
-            typedef typename std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
+            typedef std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
             return bind_fun_specializer<typename stdext::remove_const_ref<Ret>::type,
                 decltype(f),
                 Tuple>(f);
@@ -197,7 +197,7 @@ namespace luabinder
     template<typename C, typename Ret, class FC, typename... Args>
     LuaCppFunction bind_mem_fun(Ret(FC::* f)(Args...))
     {
-        typedef typename std::tuple<stdext::shared_object_ptr<FC>, typename stdext::remove_const_ref<Args>::type...> Tuple;
+        typedef std::tuple<stdext::shared_object_ptr<FC>, typename stdext::remove_const_ref<Args>::type...> Tuple;
         auto lambda = make_mem_func<Ret, FC>(f);
         return bind_fun_specializer<typename stdext::remove_const_ref<Ret>::type,
             decltype(lambda),
@@ -208,7 +208,7 @@ namespace luabinder
     template<typename C, typename Ret, class FC, typename... Args>
     LuaCppFunction bind_singleton_mem_fun(Ret(FC::* f)(Args...), C* instance)
     {
-        typedef typename std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
+        typedef std::tuple<typename stdext::remove_const_ref<Args>::type...> Tuple;
         assert(instance);
         auto lambda = make_mem_func_singleton<Ret, FC>(f, static_cast<FC*>(instance));
         return bind_fun_specializer<typename stdext::remove_const_ref<Ret>::type,

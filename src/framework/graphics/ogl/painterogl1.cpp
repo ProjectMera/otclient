@@ -62,7 +62,7 @@ void PainterOGL1::unbind()
 
 void PainterOGL1::drawCoords(CoordsBuffer& coordsBuffer, DrawMode drawMode)
 {
-    int vertexCount = coordsBuffer.getVertexCount();
+    const int vertexCount = coordsBuffer.getVertexCount();
     if(vertexCount == 0)
         return;
 
@@ -85,7 +85,7 @@ void PainterOGL1::drawCoords(CoordsBuffer& coordsBuffer, DrawMode drawMode)
     if(g_graphics.canUseDrawArrays()) {
         // update coords buffer hardware caches if enabled
         coordsBuffer.updateCaches();
-        bool hardwareCached = coordsBuffer.isHardwareCached();
+        const bool hardwareCached = coordsBuffer.isHardwareCached();
 
         // only set texture coords arrays when needed
         if(textured) {
@@ -114,7 +114,7 @@ void PainterOGL1::drawCoords(CoordsBuffer& coordsBuffer, DrawMode drawMode)
     }
 #ifndef OPENGL_ES
     else {
-        int verticesSize = vertexCount * 2;
+        const int verticesSize = vertexCount * 2;
         float* vertices = coordsBuffer.getVertexArray();
         float* texCoords = coordsBuffer.getTextureCoordArray();
 
@@ -222,7 +222,7 @@ void PainterOGL1::drawBoundingRect(const Rect& dest, int innerLineWidth)
     drawCoords(m_coordsBuffer);
 }
 
-void PainterOGL1::setMatrixMode(PainterOGL1::MatrixMode matrixMode)
+void PainterOGL1::setMatrixMode(MatrixMode matrixMode)
 {
     if(m_matrixMode == static_cast<GLenum>(matrixMode))
         return;

@@ -47,7 +47,7 @@ namespace stdext {
         static char Buffer[BufferSize] = {};
 
 #ifdef _MSC_VER
-        int written = UnDecorateSymbolName(name, Buffer, BufferSize - 1, UNDNAME_COMPLETE);
+        const int written = UnDecorateSymbolName(name, Buffer, BufferSize - 1, UNDNAME_COMPLETE);
         Buffer[written] = '\0';
 #else
         size_t len;

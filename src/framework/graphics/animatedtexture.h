@@ -29,7 +29,7 @@
 class AnimatedTexture : public Texture
 {
 public:
-    AnimatedTexture(const Size& size, std::vector<ImagePtr> frames, std::vector<int> framesDelay, bool buildMipmaps = false, bool compress = false);
+    AnimatedTexture(const Size& size, const std::vector<ImagePtr>& frames, std::vector<int> framesDelay, bool buildMipmaps = false, bool compress = false);
     virtual ~AnimatedTexture();
 
     virtual bool buildHardwareMipmaps();

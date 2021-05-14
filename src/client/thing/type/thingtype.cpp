@@ -85,7 +85,7 @@ void ThingType::serialize(const FileStreamPtr& fin)
         }
         case ThingAttrMarket:
         {
-            MarketData market = m_attribs.get<MarketData>(attr);
+            auto market = m_attribs.get<MarketData>(attr);
             fin->addU16(market.category);
             fin->addU16(market.tradeAs);
             fin->addU16(market.showAs);
@@ -315,7 +315,7 @@ void ThingType::unserialize(uint16 clientId, ThingCategory category, const FileS
         m_animationPhases += groupAnimationsPhases;
 
         if(groupAnimationsPhases > 1) {
-            AnimatorPtr animator = AnimatorPtr(new Animator);
+            auto animator = AnimatorPtr(new Animator);
             animator->unserialize(groupAnimationsPhases, fin);
 
             if(groupCount == 1 || frameGroupType == FrameGroupMoving)
@@ -494,10 +494,10 @@ const TexturePtr& ThingType::getTexture(int animationPhase, bool allBlank)
                         for(int fy = framePos.y; fy < framePos.y + m_size.height() * Otc::TILE_PIXELS; ++fy) {
                             uint8* p = fullImage->getPixel(fx, fy);
                             if(p[3] != 0x00) {
-                                drawRect.setTop(std::min<int>(fy, static_cast<int>(drawRect.top())));
-                                drawRect.setLeft(std::min<int>(fx, static_cast<int>(drawRect.left())));
-                                drawRect.setBottom(std::max<int>(fy, static_cast<int>(drawRect.bottom())));
-                                drawRect.setRight(std::max<int>(fx, static_cast<int>(drawRect.right())));
+                                drawRect.setTop(std::min<int>(fy, drawRect.top()));
+                                drawRect.setLeft(std::min<int>(fx, drawRect.left()));
+                                drawRect.setBottom(std::max<int>(fy, drawRect.bottom()));
+                                drawRect.setRight(std::max<int>(fx, drawRect.right()));
                             }
                         }
                     }
@@ -533,10 +533,10 @@ Size ThingType::getBestTextureDimension(int w, int h, int count)
     assert(w <= MAX);
     assert(h <= MAX);
 
-    Size bestDimension = Size(MAX, MAX);
+    auto bestDimension = Size(MAX, MAX);
     for(int i = w; i <= MAX; i <<= 1) {
         for(int j = h; j <= MAX; j <<= 1) {
-            Size candidateDimension = Size(i, j);
+            auto candidateDimension = Size(i, j);
             if(candidateDimension.area() < numSprites)
                 continue;
             if((candidateDimension.area() < bestDimension.area()) ||

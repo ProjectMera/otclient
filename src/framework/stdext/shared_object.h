@@ -46,9 +46,12 @@ namespace stdext {
         void dec_ref() { if(--refs == 0) delete this; }
         refcount_t ref_count() { return refs; }
 
-        template<typename T> stdext::shared_object_ptr<T> static_self_cast() { return stdext::shared_object_ptr<T>(static_cast<T*>(this)); }
-        template<typename T> stdext::shared_object_ptr<T> dynamic_self_cast() { return stdext::shared_object_ptr<T>(dynamic_cast<T*>(this)); }
-        template<typename T> stdext::shared_object_ptr<T> const_self_cast() { return stdext::shared_object_ptr<T>(const_cast<T*>(this)); }
+        template<typename T>
+        shared_object_ptr<T> static_self_cast() { return stdext::shared_object_ptr<T>(static_cast<T*>(this)); }
+        template<typename T>
+        shared_object_ptr<T> dynamic_self_cast() { return stdext::shared_object_ptr<T>(dynamic_cast<T*>(this)); }
+        template<typename T>
+        shared_object_ptr<T> const_self_cast() { return stdext::shared_object_ptr<T>(const_cast<T*>(this)); }
 
     private:
 #ifdef THREAD_SAFE
@@ -81,7 +84,7 @@ namespace stdext {
         void swap(shared_object_ptr& rhs) { std::swap(px, rhs.px); }
         T* get() const { return px; }
 
-        refcount_t use_count() const { return ((shared_object*)px)->ref_count(); }
+        refcount_t use_count() const { return static_cast<shared_object*>(px)->ref_count(); }
         bool is_unique() const { return use_count() == 1; }
 
         template<class U> shared_object_ptr& operator=(shared_object_ptr<U> const& rhs) { shared_object_ptr(rhs).swap(*this); return *this; }
@@ -98,8 +101,11 @@ namespace stdext {
         bool operator!() const { return px == nullptr; }
 
         // std::move support
-        shared_object_ptr(shared_object_ptr&& rhs) : px(rhs.px) { rhs.px = nullptr; }
-        shared_object_ptr& operator=(shared_object_ptr&& rhs) { shared_object_ptr(static_cast<shared_object_ptr&&>(rhs)).swap(*this); return *this; }
+        shared_object_ptr(shared_object_ptr&& rhs) noexcept : px(rhs.px) { rhs.px = nullptr; }
+        shared_object_ptr& operator=(shared_object_ptr&& rhs) noexcept
+        {
+            shared_object_ptr(static_cast<shared_object_ptr&&>(rhs)).swap(*this); return *this;
+        }
 
     private:
         void add_ref() { ((shared_object*)px)->add_ref(); }
@@ -120,7 +126,8 @@ namespace stdext {
     template<class T, class U> shared_object_ptr<T> static_pointer_cast(shared_object_ptr<U> const& p) { return static_cast<T*>(p.get()); }
     template<class T, class U> shared_object_ptr<T> const_pointer_cast(shared_object_ptr<U> const& p) { return const_cast<T*>(p.get()); }
     template<class T, class U> shared_object_ptr<T> dynamic_pointer_cast(shared_object_ptr<U> const& p) { return dynamic_cast<T*>(p.get()); }
-    template<class T, typename... Args> stdext::shared_object_ptr<T> make_shared_object(Args... args) { return stdext::shared_object_ptr<T>(new T(args...)); }
+    template<class T, typename... Args>
+    shared_object_ptr<T> make_shared_object(Args... args) { return stdext::shared_object_ptr<T>(new T(args...)); }
 
     // operator<< support
     template<class E, class T, class Y> std::basic_ostream<E, T>& operator<<(std::basic_ostream<E, T>& os, shared_object_ptr<Y> const& p) { os << p.get(); return os; }

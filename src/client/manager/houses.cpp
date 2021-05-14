@@ -100,7 +100,7 @@ void House::save(TiXmlElement* elem)
     elem->SetAttribute("rent", getRent());
     elem->SetAttribute("townid", getTownId());
     elem->SetAttribute("size", getSize());
-    elem->SetAttribute("guildhall", static_cast<int>(m_isGuildHall));
+    elem->SetAttribute("guildhall", m_isGuildHall);
 }
 
 HouseManager::HouseManager()
@@ -168,14 +168,14 @@ void HouseManager::save(const std::string& fileName)
         TiXmlDocument doc;
         doc.SetTabSize(2);
 
-        TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+        auto decl = new TiXmlDeclaration("1.0", "UTF-8", "");
         doc.LinkEndChild(decl);
 
-        TiXmlElement* root = new TiXmlElement("houses");
+        auto root = new TiXmlElement("houses");
         doc.LinkEndChild(root);
 
         for(const auto& house : m_houses) {
-            TiXmlElement* elem = new TiXmlElement("house");
+            auto elem = new TiXmlElement("house");
             house->save(elem);
             root->LinkEndChild(elem);
         }

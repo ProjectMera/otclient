@@ -55,7 +55,7 @@ LocalPlayer::LocalPlayer()
 
 void LocalPlayer::lockWalk(int millis)
 {
-    m_walkLockExpiration = std::max<int>(m_walkLockExpiration, static_cast<ticks_t>(g_clock.millis()) + millis);
+    m_walkLockExpiration = std::max<int>(m_walkLockExpiration, g_clock.millis() + millis);
 }
 
 bool LocalPlayer::canWalk(Otc::Direction)

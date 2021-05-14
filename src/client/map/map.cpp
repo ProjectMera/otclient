@@ -626,7 +626,7 @@ std::vector<CreaturePtr> Map::getSpectatorsInRange(const Position& centerPos, bo
 std::vector<CreaturePtr> Map::getSpectatorsInRangeEx(const Position& centerPos, bool multiFloor, int32 minXRange, int32 maxXRange, int32 minYRange, int32 maxYRange)
 {
     std::vector<CreaturePtr> creatures;
-    uint8 maxZRange = multiFloor ? Otc::MAX_Z : 0;
+    const uint8 maxZRange = multiFloor ? Otc::MAX_Z : 0;
 
     //TODO: optimize
     //TODO: get creatures from other floors corretly
@@ -817,7 +817,7 @@ std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const
     std::unordered_map<Position, Node*, Position::Hasher> nodes;
     std::priority_queue<Node::Pair, std::deque<Node::Pair>, Node::Compare> searchList;
 
-    Node* currentNode = new Node(startPos);
+    auto currentNode = new Node(startPos);
     currentNode->pos = startPos;
     nodes[startPos] = currentNode;
     Node* foundNode = nullptr;

@@ -32,7 +32,7 @@ public:
     void terminate();
     void clear();
 
-    FrameBufferPtr createFrameBuffer(const bool useAlphaWriting = false, const uint16_t minTimeUpdate = MIN_TIME_UPDATE);
+    FrameBufferPtr createFrameBuffer(bool useAlphaWriting = false, uint16_t minTimeUpdate = MIN_TIME_UPDATE);
     const FrameBufferPtr& getTemporaryFrameBuffer() { return m_temporaryFramebuffer; }
 
 protected:

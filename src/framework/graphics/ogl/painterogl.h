@@ -35,8 +35,8 @@ public:
         Matrix3 textureMatrix;
         Color color;
         float opacity;
-        Painter::CompositionMode compositionMode;
-        Painter::BlendEquation blendEquation;
+        CompositionMode compositionMode;
+        BlendEquation blendEquation;
         Rect clipRect;
         Texture* texture;
         PainterShaderProgram* shaderProgram;

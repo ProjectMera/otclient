@@ -98,7 +98,7 @@ void Spawn::save(TiXmlElement* node)
 
     for(const auto& pair : m_creatures) {
         const CreatureTypePtr& creature = pair.second;
-        TiXmlElement* creatureNode = new TiXmlElement(creature->getRace() == CreatureRaceNpc ? "npc" : "monster");
+        auto creatureNode = new TiXmlElement(creature->getRace() == CreatureRaceNpc ? "npc" : "monster");
 
         if(!creatureNode)
             stdext::throw_exception("Spawn::save: Ran out of memory while allocating XML element!  Terminating now.");
@@ -264,14 +264,14 @@ void CreatureManager::saveSpawns(const std::string& fileName)
         TiXmlDocument doc;
         doc.SetTabSize(2);
 
-        TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+        auto decl = new TiXmlDeclaration("1.0", "UTF-8", "");
         doc.LinkEndChild(decl);
 
-        TiXmlElement* root = new TiXmlElement("spawns");
+        auto root = new TiXmlElement("spawns");
         doc.LinkEndChild(root);
 
         for(const auto& pair : m_spawns) {
-            TiXmlElement* elem = new TiXmlElement("spawn");
+            auto elem = new TiXmlElement("spawn");
             pair.second->save(elem);
             root->LinkEndChild(elem);
         }

@@ -83,9 +83,9 @@ public:
         return TPoint<T>(x - other.x, y - other.y).length();
     }
 
-    std::array<TPoint<T>, (uint8)8> getPointsAround(const uint8 pixel) const
+    std::array<TPoint<T>, static_cast<uint8>(8)> getPointsAround(const uint8 pixel) const
     {
-        std::array<TPoint<T>, (uint8)8> positions;
+        std::array<TPoint<T>, static_cast<uint8>(8)> positions;
         int_fast8_t i = -1;
         for(int_fast32_t xi = -1; xi <= 1; ++xi) {
             for(int_fast32_t yi = -1; yi <= 1; ++yi) {

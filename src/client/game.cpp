@@ -292,7 +292,7 @@ void Game::processTalk(const std::string& name, int level, Otc::MessageMode mode
 void Game::processOpenContainer(int containerId, const ItemPtr& containerItem, const std::string& name, int capacity, bool hasParent, const std::vector<ItemPtr>& items, bool isUnlocked, bool hasPages, int containerSize, int firstIndex)
 {
     ContainerPtr previousContainer = getContainer(containerId);
-    ContainerPtr container = ContainerPtr(new Container(containerId, capacity, name, containerItem, hasParent, isUnlocked, hasPages, containerSize, firstIndex));
+    auto container = ContainerPtr(new Container(containerId, capacity, name, containerItem, hasParent, isUnlocked, hasPages, containerSize, firstIndex));
     m_containers[containerId] = container;
     container->onAddItems(items);
 
@@ -430,7 +430,7 @@ void Game::processOpenOutfitWindow(const Outfit& currentOutfit, const std::vecto
                                    const std::vector<std::tuple<uint16, std::string> >& mountList)
 {
     // create virtual creature outfit
-    CreaturePtr virtualOutfitCreature = CreaturePtr(new Creature);
+    auto virtualOutfitCreature = CreaturePtr(new Creature);
     virtualOutfitCreature->setDirection(Otc::South);
 
     Outfit outfit = currentOutfit;
@@ -823,7 +823,7 @@ void Game::useInventoryItem(int itemId)
     if(!canPerformGameAction() || !g_things.isValidDatId(itemId, ThingCategoryItem))
         return;
 
-    const Position pos = Position(0xFFFF, 0, 0); // means that is a item in inventory
+    const auto pos = Position(0xFFFF, 0, 0); // means that is a item in inventory
 
     m_protocolGame->sendUseItem(pos, itemId, 0, 0);
 }
@@ -848,7 +848,7 @@ void Game::useInventoryItemWith(int itemId, const ThingPtr& toThing)
     if(!canPerformGameAction() || !toThing)
         return;
 
-    const Position pos = Position(0xFFFF, 0, 0); // means that is a item in inventory
+    const auto pos = Position(0xFFFF, 0, 0); // means that is a item in inventory
 
     if(toThing->isCreature())
         m_protocolGame->sendUseOnCreature(pos, itemId, 0, toThing->getId());

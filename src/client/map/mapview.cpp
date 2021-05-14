@@ -452,7 +452,7 @@ Position MapView::getPosition(const Point& point, const Size& mapSize)
     const float sh = srcRect.width() / static_cast<float>(mapSize.width());
     const float sv = srcRect.height() / static_cast<float>(mapSize.height());
 
-    const Point framebufferPos = Point(point.x * sh, point.y * sv);
+    const auto framebufferPos = Point(point.x * sh, point.y * sv);
     const Point centerOffset = (framebufferPos + srcRect.topLeft()) / m_tileSize;
 
     const Point tilePos2D = getVisibleCenterOffset() - m_drawDimension.toPoint() + centerOffset + Point(2);
@@ -568,7 +568,7 @@ uint8 MapView::calcFirstVisibleFloor()
     }
 
     // just ensure the that the floor is in the valid range
-    z = stdext::clamp<int>(z, 0, static_cast<int>(Otc::MAX_Z));
+    z = stdext::clamp<int>(z, 0, Otc::MAX_Z);
     return z;
 }
 
@@ -593,7 +593,7 @@ uint8 MapView::calcLastVisibleFloor()
         z = std::max<int>(m_lockedFirstVisibleFloor, z);
 
     // just ensure the that the floor is in the valid range
-    z = stdext::clamp<int>(z, 0, static_cast<int>(Otc::MAX_Z));
+    z = stdext::clamp<int>(z, 0, Otc::MAX_Z);
     return z;
 }
 

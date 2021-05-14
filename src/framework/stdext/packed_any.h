@@ -93,8 +93,7 @@ namespace stdext {
         {
             if(!scalar)
                 return content ? content->type() : typeid(void);
-            else
-                return typeid(std::size_t);
+            return typeid(std::size_t);
         }
     };
 

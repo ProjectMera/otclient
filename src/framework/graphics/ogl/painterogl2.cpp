@@ -65,7 +65,7 @@ void PainterOGL2::unbind()
 
 void PainterOGL2::drawCoords(CoordsBuffer& coordsBuffer, DrawMode drawMode)
 {
-    int vertexCount = coordsBuffer.getVertexCount();
+    const int vertexCount = coordsBuffer.getVertexCount();
     if(vertexCount == 0)
         return;
 
@@ -90,7 +90,7 @@ void PainterOGL2::drawCoords(CoordsBuffer& coordsBuffer, DrawMode drawMode)
 
     // update coords buffer hardware caches if enabled
     coordsBuffer.updateCaches();
-    bool hardwareCached = coordsBuffer.isHardwareCached();
+    const bool hardwareCached = coordsBuffer.isHardwareCached();
 
     // only set texture coords arrays when needed
     if(textured) {

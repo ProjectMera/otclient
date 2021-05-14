@@ -33,10 +33,10 @@
 namespace stdext {
     std::string resolve_path(const std::string& filePath, std::string sourcePath)
     {
-        if(stdext::starts_with(filePath, "/"))
+        if(starts_with(filePath, "/"))
             return filePath;
-        if(!stdext::ends_with(sourcePath, "/")) {
-            std::size_t slashPos = sourcePath.find_last_of("/");
+        if(!ends_with(sourcePath, "/")) {
+            const std::size_t slashPos = sourcePath.find_last_of('/');
             if(slashPos == std::string::npos)
                 throw_exception(format("invalid source path '%s', for file '%s'", sourcePath, filePath));
             sourcePath = sourcePath.substr(0, slashPos + 1);
@@ -71,7 +71,7 @@ namespace stdext {
 
     bool is_valid_utf8(const std::string& src)
     {
-        const unsigned char* bytes = (const unsigned char*)src.c_str();
+        auto bytes = (const unsigned char*)src.c_str();
         while(*bytes) {
             if((// ASCII
                  // use bytes[0] <= 0x7F to allow ASCII control characters
@@ -144,11 +144,11 @@ namespace stdext {
     {
         std::string out;
         for(uint i = 0; i < src.length();) {
-            uchar c = src[i++];
+            const uchar c = src[i++];
             if((c >= 32 && c < 128) || c == 0x0d || c == 0x0a || c == 0x09)
                 out += c;
             else if(c == 0xc2 || c == 0xc3) {
-                uchar c2 = src[i++];
+                const uchar c2 = src[i++];
                 if(c == 0xc2) {
                     if(c2 > 0xa1 && c2 < 0xbb)
                         out += c2;
@@ -194,7 +194,7 @@ namespace stdext {
     {
         std::string res;
         char out[4096];
-        if(WideCharToMultiByte(CP_UTF8, 0, src.c_str(), -1, out, 4096, NULL, NULL))
+        if(WideCharToMultiByte(CP_UTF8, 0, src.c_str(), -1, out, 4096, nullptr, nullptr))
             res = out;
         return res;
     }
@@ -241,7 +241,7 @@ namespace stdext {
 
     void ucwords(std::string& str)
     {
-        uint32 strLen = str.length();
+        const uint32 strLen = str.length();
         if(strLen == 0)
             return;
 

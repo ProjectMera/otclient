@@ -42,7 +42,6 @@ void EventDispatcher::shutdown()
 
 void EventDispatcher::poll()
 {
-    int loops = 0;
     for(int count = 0, max = m_scheduledEventList.size(); count < max && !m_scheduledEventList.empty(); ++count) {
         ScheduledEventPtr scheduledEvent = m_scheduledEventList.top();
         if(scheduledEvent->remainingTicks() > 0)
@@ -57,7 +56,7 @@ void EventDispatcher::poll()
     // execute events list until all events are out, this is needed because some events can schedule new events that would
     // change the UIWidgets layout, in this case we must execute these new events before we continue rendering,
     m_pollEventsSize = m_eventList.size();
-    loops = 0;
+    int loops = 0;
     while(m_pollEventsSize > 0) {
         if(loops > 50) {
             static Timer reportTimer;

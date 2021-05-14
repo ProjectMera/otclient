@@ -38,7 +38,7 @@ void FrameBufferManager::terminate()
 
 FrameBufferPtr FrameBufferManager::createFrameBuffer(const bool useAlphaWriting, const uint16_t minTimeUpdate)
 {
-    FrameBufferPtr fbo = FrameBufferPtr(new FrameBuffer(useAlphaWriting, minTimeUpdate));
+    auto fbo = FrameBufferPtr(new FrameBuffer(useAlphaWriting, minTimeUpdate));
     m_framebuffers.push_back(fbo);
     return fbo;
 }

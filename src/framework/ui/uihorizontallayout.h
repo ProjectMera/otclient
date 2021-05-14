@@ -23,12 +23,14 @@
 #ifndef UIHORIZONTALLAYOUT_H
 #define UIHORIZONTALLAYOUT_H
 
+#include <utility>
+
 #include "uiboxlayout.h"
 
 class UIHorizontalLayout : public UIBoxLayout
 {
 public:
-    UIHorizontalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(parentWidget) {}
+    UIHorizontalLayout(UIWidgetPtr parentWidget) : UIBoxLayout(std::move(parentWidget)) {}
 
     void applyStyle(const OTMLNodePtr& styleNode);
 

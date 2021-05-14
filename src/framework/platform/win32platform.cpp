@@ -53,10 +53,10 @@ bool Platform::spawnProcess(std::string process, const std::vector<std::string>&
     if(!boost::ends_with(process, ".exe"))
         process += ".exe";
 
-    std::wstring wfile = stdext::utf8_to_utf16(process);
-    std::wstring wcommandLine = stdext::utf8_to_utf16(commandLine);
+    const std::wstring wfile = stdext::utf8_to_utf16(process);
+    const std::wstring wcommandLine = stdext::utf8_to_utf16(commandLine);
 
-    if((size_t)ShellExecuteW(NULL, L"open", wfile.c_str(), wcommandLine.c_str(), NULL, SW_SHOWNORMAL) > 32)
+    if((size_t)ShellExecuteW(nullptr, L"open", wfile.c_str(), wcommandLine.c_str(), nullptr, SW_SHOWNORMAL) > 32)
         return true;
     return false;
 }
@@ -68,41 +68,39 @@ int Platform::getProcessId()
 
 bool Platform::isProcessRunning(const std::string& name)
 {
-    if(FindWindowA(name.c_str(), NULL) != NULL)
+    if(FindWindowA(name.c_str(), nullptr) != nullptr)
         return true;
     return false;
 }
 
 bool Platform::killProcess(const std::string& name)
 {
-    HWND window = FindWindowA(name.c_str(), NULL);
-    if(window == NULL)
+    const HWND window = FindWindowA(name.c_str(), nullptr);
+    if(window == nullptr)
         return false;
-    DWORD pid = GetProcessId(window);
-    HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
-    if(handle == NULL)
+    const DWORD pid = GetProcessId(window);
+    const HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS, false, pid);
+    if(handle == nullptr)
         return false;
-    bool ok = TerminateProcess(handle, 1) != 0;
+    const bool ok = TerminateProcess(handle, 1) != 0;
     CloseHandle(handle);
     return ok;
 }
 
 std::string Platform::getTempPath()
 {
-    std::string ret;
     wchar_t path[MAX_PATH];
     GetTempPathW(MAX_PATH, path);
-    ret = stdext::utf16_to_utf8(path);
+    std::string ret = stdext::utf16_to_utf8(path);
     boost::replace_all(ret, "\\", "/");
     return ret;
 }
 
 std::string Platform::getCurrentDir()
 {
-    std::string ret;
     wchar_t path[MAX_PATH];
     GetCurrentDirectoryW(MAX_PATH, path);
-    ret = stdext::utf16_to_utf8(path);
+    std::string ret = stdext::utf16_to_utf8(path);
     boost::replace_all(ret, "\\", "/");
     ret += "/";
     return ret;
@@ -111,8 +109,8 @@ std::string Platform::getCurrentDir()
 bool Platform::fileExists(std::string file)
 {
     boost::replace_all(file, "/", "\\");
-    std::wstring wfile = stdext::utf8_to_utf16(file);
-    DWORD dwAttrib = GetFileAttributesW(wfile.c_str());
+    const std::wstring wfile = stdext::utf8_to_utf16(file);
+    const DWORD dwAttrib = GetFileAttributesW(wfile.c_str());
     return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
@@ -136,7 +134,7 @@ bool Platform::removeFile(std::string file)
 ticks_t Platform::getFileModificationTime(std::string file)
 {
     boost::replace_all(file, "/", "\\");
-    std::wstring wfile = stdext::utf8_to_utf16(file);
+    const std::wstring wfile = stdext::utf8_to_utf16(file);
     WIN32_FILE_ATTRIBUTE_DATA fileAttrData;
     memset(&fileAttrData, 0, sizeof(fileAttrData));
     GetFileAttributesExW(wfile.c_str(), GetFileExInfoStandard, &fileAttrData);
@@ -150,7 +148,7 @@ void Platform::openUrl(std::string url)
 {
     if(url.find("http://") == std::string::npos)
         url.insert(0, "http://");
-    ShellExecuteW(NULL, L"open", stdext::utf8_to_utf16(url).c_str(), NULL, NULL, SW_SHOWNORMAL);
+    ShellExecuteW(nullptr, L"open", stdext::utf8_to_utf16(url).c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 std::string Platform::getCPUName()
@@ -161,7 +159,7 @@ std::string Platform::getCPUName()
     HKEY hKey;
     if(RegOpenKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, KEY_READ, &hKey) != ERROR_SUCCESS)
         return "";
-    RegQueryValueExA(hKey, "ProcessorNameString", NULL, NULL, (LPBYTE)buf, static_cast<LPDWORD>(&bufSize));
+    RegQueryValueExA(hKey, "ProcessorNameString", nullptr, nullptr, (LPBYTE)buf, &bufSize);
     return buf;
 }
 
@@ -255,7 +253,7 @@ std::string Platform::getOSName()
         return std::string();
 
     pGNSI = (PGNSI)GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "GetNativeSystemInfo");
-    if(NULL != pGNSI)
+    if(nullptr != pGNSI)
         pGNSI(&si);
     else
         GetSystemInfo(&si);

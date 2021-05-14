@@ -41,18 +41,18 @@ LightView::LightView(const MapViewPtr& mapView)
 
 void LightView::generateLightTexture()
 {
-    float brightnessIntensity = 1.3f,
-        centerFactor = .0f;
+    const float brightnessIntensity = 1.3f,
+                centerFactor = .0f;
 
     const uint16 bubbleRadius = 256,
         centerRadius = bubbleRadius * centerFactor,
         bubbleDiameter = bubbleRadius * 2;
 
-    ImagePtr lightImage = ImagePtr(new Image(Size(bubbleDiameter, bubbleDiameter)));
+    auto lightImage = ImagePtr(new Image(Size(bubbleDiameter, bubbleDiameter)));
     for(int_fast16_t x = -1; ++x < bubbleDiameter;) {
         for(int_fast16_t y = -1; ++y < bubbleDiameter;) {
             const float radius = std::sqrt((bubbleRadius - x) * (bubbleRadius - x) + (bubbleRadius - y) * (bubbleRadius - y));
-            float intensity = stdext::clamp<float>((bubbleRadius - radius) / static_cast<float>(bubbleRadius - centerRadius), .0f, 1.0f);
+            const float intensity = stdext::clamp<float>((bubbleRadius - radius) / static_cast<float>(bubbleRadius - centerRadius), .0f, 1.0f);
 
             // light intensity varies inversely with the square of the distance
             const uint8_t colorByte = std::min<int16>((intensity * intensity * brightnessIntensity) * 0xff, 0xff);
@@ -69,7 +69,7 @@ void LightView::generateLightTexture()
 void LightView::generateShadeTexture()
 {
     const uint16 diameter = 10;
-    const ImagePtr image = ImagePtr(new Image(Size(diameter, diameter)));
+    const auto image = ImagePtr(new Image(Size(diameter, diameter)));
     for(int_fast16_t x = -1; ++x < diameter;) {
         for(int_fast16_t y = -1; ++y < diameter;) {
             const uint8 alpha = x == 0 || y == 0 || x == diameter - 1 || y == diameter - 1 ? 0 : 0xff;
@@ -100,7 +100,7 @@ void LightView::addLightSource(const Point& pos, const Light& light)
 
 void LightView::setShade(const Point& point)
 {
-    size_t index = (m_mapView->m_drawDimension.width() * (point.y / m_mapView->m_tileSize)) + (point.x / m_mapView->m_tileSize);
+    const size_t index = (m_mapView->m_drawDimension.width() * (point.y / m_mapView->m_tileSize)) + (point.x / m_mapView->m_tileSize);
     if(index >= m_shades.size()) return;
     m_shades[index] = ShadeBlock{ m_currentFloor, point };
 }

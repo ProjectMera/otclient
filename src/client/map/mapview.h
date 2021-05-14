@@ -126,7 +126,7 @@ public:
     std::vector<CreaturePtr> getSpectators(const Position& centerPos, bool multiFloor);
     std::vector<CreaturePtr> getSightSpectators(const Position& centerPos, bool multiFloor);
 
-    bool isInRange(const Position& pos, const bool ignoreZ = false);
+    bool isInRange(const Position& pos, bool ignoreZ = false);
 
     void setCrosshairTexture(const std::string& texturePath);
 
@@ -135,19 +135,19 @@ public:
 
     void setDrawHighlightTarget(const bool enable) { m_drawHighlightTarget = enable; }
 
-    void setAntiAliasing(const bool enable);
-    void setRenderScale(const uint8 scale);
+    void setAntiAliasing(bool enable);
+    void setRenderScale(uint8 scale);
 
-    void onMouseMove(const Position& mousePos, const bool isVirtualMove = false);
+    void onMouseMove(const Position& mousePos, bool isVirtualMove = false);
 
 protected:
     void onCameraMove(const Point& offset);
     void onTileUpdate(const Position& pos);
-    void onFloorDrawingEnd(const uint8 floor);
-    void onFloorDrawingStart(const uint8 floor);
+    void onFloorDrawingEnd(uint8 floor);
+    void onFloorDrawingStart(uint8 floor);
     void onMapCenterChange(const Position& pos);
     void onGlobalLightChange(const Light& light);
-    void onFloorChange(const uint8 floor, const uint8 previousFloor);
+    void onFloorChange(uint8 floor, uint8 previousFloor);
     void onPositionChange(const Position& newPos, const Position& oldPos);
 
     friend class Map;

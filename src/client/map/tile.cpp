@@ -352,7 +352,7 @@ CreaturePtr Tile::getTopCreature(const bool checkAround)
     if(!hasCreature()) return nullptr;
 
     CreaturePtr creature;
-    for(auto thing : m_things) {
+    for(const auto& thing : m_things) {
         if(thing->isLocalPlayer()) // return local player if there is no other creature
             creature = thing->static_self_cast<Creature>();
         else if(thing->isCreature())

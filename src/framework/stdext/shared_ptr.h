@@ -129,8 +129,9 @@ namespace stdext {
         bool operator!() const { return base == nullptr; }
 
         // std::move support
-        shared_ptr(shared_ptr&& rhs) : base(rhs.base) { rhs.base = nullptr; }
-        shared_ptr& operator=(shared_ptr&& rhs) { shared_ptr(static_cast<shared_ptr&&>(rhs)).swap(*this); return *this; }
+        shared_ptr(shared_ptr&& rhs) noexcept : base(rhs.base) { rhs.base = nullptr; }
+        shared_ptr& operator=(shared_ptr&& rhs) noexcept
+        { shared_ptr(static_cast<shared_ptr&&>(rhs)).swap(*this); return *this; }
 
     private:
         shared_ptr(shared_base<T>* base)
@@ -181,8 +182,9 @@ namespace stdext {
         bool operator!() const { return !expired(); }
 
         // std::move support
-        weak_ptr(weak_ptr&& rhs) : base(rhs.base) { rhs.base = nullptr; }
-        weak_ptr& operator=(weak_ptr&& rhs) { weak_ptr(static_cast<weak_ptr&&>(rhs)).swap(*this); return *this; }
+        weak_ptr(weak_ptr&& rhs) noexcept : base(rhs.base) { rhs.base = nullptr; }
+        weak_ptr& operator=(weak_ptr&& rhs) noexcept
+        { weak_ptr(static_cast<weak_ptr&&>(rhs)).swap(*this); return *this; }
 
     private:
         shared_base<T>* base;
@@ -212,7 +214,8 @@ namespace stdext {
     template<class T, class U> shared_ptr<T> static_pointer_cast(shared_ptr<U> const& p) { return static_cast<T*>(p.get()); }
     template<class T, class U> shared_ptr<T> const_pointer_cast(shared_ptr<U> const& p) { return const_cast<T*>(p.get()); }
     template<class T, class U> shared_ptr<T> dynamic_pointer_cast(shared_ptr<U> const& p) { return dynamic_cast<T*>(p.get()); }
-    template<class T, typename... Args> stdext::shared_ptr<T> make_shared(Args... args) { return stdext::shared_ptr<T>(new T(args...)); }
+    template<class T, typename... Args>
+    shared_ptr<T> make_shared(Args... args) { return stdext::shared_ptr<T>(new T(args...)); }
 
     // operator<< support
     template<class E, class T, class Y> std::basic_ostream<E, T>& operator<<(std::basic_ostream<E, T>& os, shared_ptr<Y> const& p) { os << p.get(); return os; }

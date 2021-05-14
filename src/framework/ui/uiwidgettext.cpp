@@ -86,7 +86,7 @@ void UIWidget::drawText(const Rect& screenCoords)
         return;
 
     if(screenCoords != m_textCachedScreenCoords || m_textMustRecache) {
-        Rect coords = Rect(screenCoords.topLeft(), screenCoords.bottomRight());
+        auto coords = Rect(screenCoords.topLeft(), screenCoords.bottomRight());
         coords.translate(m_textOffset);
 
         m_textMustRecache = false;
@@ -122,7 +122,7 @@ void UIWidget::setText(std::string text, bool dontFireLuaCall)
     if(m_text == text)
         return;
 
-    std::string oldText = m_text;
+    const std::string oldText = m_text;
     m_text = text;
     updateText();
 

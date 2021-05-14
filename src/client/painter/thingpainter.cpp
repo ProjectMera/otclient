@@ -35,7 +35,7 @@
 void ThingPainter::drawText(const StaticTextPtr& text, const Point& dest, const Rect& parentRect)
 {
     const Size textSize = text->m_cachedText.getTextSize();
-    const Rect rect = Rect(dest - Point(textSize.width() / 2, textSize.height()) + Point(20, 5), textSize);
+    const auto rect = Rect(dest - Point(textSize.width() / 2, textSize.height()) + Point(20, 5), textSize);
     Rect boundRect = rect;
     boundRect.bind(parentRect);
 
@@ -69,7 +69,7 @@ void ThingPainter::drawText(const AnimatedTextPtr& text, const Point& dest, cons
         const float t0 = tf / 1.2;
         if(t > t0) {
             Color color = text->m_color;
-            color.setAlpha(static_cast<float>(1 - (t - t0) / (tf - t0)));
+            color.setAlpha(1 - (t - t0) / (tf - t0));
             g_painter->setColor(color);
         } else
             g_painter->setColor(text->m_color);
@@ -154,7 +154,7 @@ void ThingPainter::draw(const EffectPtr& effect, const Point& dest, float scaleF
     if(effect->m_animationTimer.ticksElapsed() < effect->m_timeToStartDrawing) return;
 
     // This requires a separate getPhaseAt method as using getPhase would make all magic effects use the same phase regardless of their appearance time
-    int animationPhase = effect->rawGetThingType()->getAnimator()->getPhaseAt(effect->m_animationTimer.ticksElapsed());
+    const int animationPhase = effect->rawGetThingType()->getAnimator()->getPhaseAt(effect->m_animationTimer.ticksElapsed());
 
     const int xPattern = effect->m_position.x % effect->getNumPatternX();
     const int yPattern = effect->m_position.y % effect->getNumPatternY();

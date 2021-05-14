@@ -23,6 +23,8 @@
 #ifndef UIANCHORLAYOUT_H
 #define UIANCHORLAYOUT_H
 
+#include <utility>
+
 #include "uilayout.h"
 
 class UIAnchor : public stdext::shared_object
@@ -64,7 +66,7 @@ private:
 class UIAnchorLayout : public UILayout
 {
 public:
-    UIAnchorLayout(UIWidgetPtr parentWidget) : UILayout(parentWidget) {}
+    UIAnchorLayout(UIWidgetPtr parentWidget) : UILayout(std::move(parentWidget)) {}
 
     void addAnchor(const UIWidgetPtr& anchoredWidget, Fw::AnchorEdge anchoredEdge,
                    const std::string& hookedWidgetId, Fw::AnchorEdge hookedEdge);

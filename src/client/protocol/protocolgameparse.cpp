@@ -45,7 +45,7 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             opcode = msg->getU8();
 
             // try to parse in lua first
-            int readPos = msg->getReadPos();
+            const int readPos = msg->getReadPos();
             if(callLuaField<bool>("onOpcode", opcode, msg))
                 continue;
 
@@ -457,7 +457,7 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 break;
 
             default:
-                stdext::throw_exception(stdext::format("unhandled opcode %d", (int)opcode));
+                stdext::throw_exception(stdext::format("unhandled opcode %d", static_cast<int>(opcode)));
                 break;
             }
             prevOpcode = opcode;
@@ -765,7 +765,7 @@ void ProtocolGame::parseDeath(const InputMessagePtr& msg)
 
 void ProtocolGame::parseMapDescription(const InputMessagePtr& msg)
 {
-    Position pos = getPosition(msg);
+    const Position pos = getPosition(msg);
 
     if(!m_mapKnown)
         m_localPlayer->setPosition(pos);
@@ -1082,7 +1082,7 @@ void ProtocolGame::parseMagicEffect(const InputMessagePtr& msg)
 {
     const Position& pos = getPosition(msg);
 
-    Otc::MagicEffectsType_t effectType = static_cast<Otc::MagicEffectsType_t>(msg->getU8());
+    auto effectType = static_cast<Otc::MagicEffectsType_t>(msg->getU8());
     while(effectType != Otc::MAGIC_EFFECTS_END_LOOP) {
         if(effectType == Otc::MAGIC_EFFECTS_DELTA) {
             msg->getU8();
@@ -1099,7 +1099,7 @@ void ProtocolGame::parseMagicEffect(const InputMessagePtr& msg)
                 return;
             }
 
-            const MissilePtr& missile = MissilePtr(new Missile());
+            const auto& missile = MissilePtr(new Missile());
             missile->setId(shotId);
             missile->setPath(pos, Position(pos.x + offsetX, pos.y + offsetY, pos.z));
 
@@ -1115,7 +1115,7 @@ void ProtocolGame::parseMagicEffect(const InputMessagePtr& msg)
                 return;
             }
 
-            const MissilePtr& missile = MissilePtr(new Missile());
+            const auto& missile = MissilePtr(new Missile());
             missile->setId(shotId);
             missile->setPath(Position(pos.x + offsetX, pos.y + offsetY, pos.z), pos);
 
@@ -1127,7 +1127,7 @@ void ProtocolGame::parseMagicEffect(const InputMessagePtr& msg)
                 continue;
             }
 
-            const EffectPtr& effect = EffectPtr(new Effect());
+            const auto& effect = EffectPtr(new Effect());
             effect->setId(effectId);
             g_map.addThing(effect, pos);
         }
@@ -1208,7 +1208,7 @@ void ProtocolGame::parseCreatureHealth(const InputMessagePtr& msg)
 
 void ProtocolGame::parseCreatureLight(const InputMessagePtr& msg)
 {
-    uint32 id = msg->getU32();
+    const uint32 id = msg->getU32();
 
     Light light;
     light.intensity = msg->getU8();
@@ -1279,8 +1279,8 @@ void ProtocolGame::parseCreatureShields(const InputMessagePtr& msg)
 
 void ProtocolGame::parseCreatureUnpass(const InputMessagePtr& msg)
 {
-    uint id = msg->getU32();
-    bool unpass = msg->getU8();
+    const uint id = msg->getU32();
+    const bool unpass = msg->getU8();
 
     const auto& creature = g_map.getCreatureById(id);
     if(!creature)
@@ -1399,9 +1399,9 @@ void ProtocolGame::parsePlayerSkills(const InputMessagePtr& msg)
     m_localPlayer->setBaseMagicLevel(baseMagicLevel);
 
     for(uint8_t skill = Otc::SKILL_FIRST; skill <= Otc::SKILL_FISHING; ++skill) {
-        uint16_t level = msg->getU16(),
-            baseLevel = msg->getU16(),
-            levelPercent = msg->getU16();
+        const uint16_t level = msg->getU16(),
+                       baseLevel = msg->getU16(),
+                       levelPercent = msg->getU16();
 
         m_localPlayer->setSkill(static_cast<Otc::skills_t>(skill), level, levelPercent);
         m_localPlayer->setBaseSkill(static_cast<Otc::skills_t>(skill), baseLevel);
@@ -1425,7 +1425,7 @@ void ProtocolGame::parsePlayerIcons(const InputMessagePtr& msg)
 
 void ProtocolGame::parsePlayerCancelAttack(const InputMessagePtr& msg)
 {
-    uint      seq = msg->getU32();
+    const uint      seq = msg->getU32();
 
     g_game.processAttackCancel(seq);
 }
@@ -1438,7 +1438,7 @@ void ProtocolGame::parsePlayerModes(const InputMessagePtr& msg)
     const bool safeMode = msg->getU8();
     const uint8 pvpMode = msg->getU8();
 
-    g_game.processPlayerModes((Otc::FightModes)fightMode, (Otc::ChaseModes)chaseMode, safeMode, (Otc::PVPModes)pvpMode);
+    g_game.processPlayerModes(static_cast<Otc::FightModes>(fightMode), static_cast<Otc::ChaseModes>(chaseMode), safeMode, static_cast<Otc::PVPModes>(pvpMode));
 }
 
 void ProtocolGame::parseSpellCooldown(const InputMessagePtr& msg)
@@ -1516,7 +1516,7 @@ void ProtocolGame::parseTalk(const InputMessagePtr& msg)
         break;
     }
 
-    std::string text = msg->getString();
+    const std::string text = msg->getString();
 
     g_game.processTalk(name, level, mode, text, channelId, pos);
 }
@@ -1625,7 +1625,7 @@ void ProtocolGame::parseTextMessage(const InputMessagePtr& msg)
     case Otc::MessageDamageReceived:
     case Otc::MessageDamageOthers:
     {
-        Position pos = getPosition(msg);
+        const Position pos = getPosition(msg);
         uint value[2];
         int color[2];
 
@@ -1642,7 +1642,7 @@ void ProtocolGame::parseTextMessage(const InputMessagePtr& msg)
         {
             if(value[i] == 0)
                 continue;
-            AnimatedTextPtr animatedText = AnimatedTextPtr(new AnimatedText);
+            auto animatedText = AnimatedTextPtr(new AnimatedText);
             animatedText->setColor(color[i]);
             animatedText->setText(stdext::to_string(value[i]));
             g_map.addThing(animatedText, pos);
@@ -1655,12 +1655,12 @@ void ProtocolGame::parseTextMessage(const InputMessagePtr& msg)
     case Otc::MessageHealOthers:
     case Otc::MessageExpOthers:
     {
-        Position pos = getPosition(msg);
-        uint value = msg->getU32();
-        int color = msg->getU8();
+        const Position pos = getPosition(msg);
+        const uint value = msg->getU32();
+        const int color = msg->getU8();
         text = msg->getString();
 
-        AnimatedTextPtr animatedText = AnimatedTextPtr(new AnimatedText);
+        auto animatedText = AnimatedTextPtr(new AnimatedText);
         animatedText->setColor(color);
         animatedText->setText(stdext::to_string(value));
         g_map.addThing(animatedText, pos);
@@ -1679,7 +1679,7 @@ void ProtocolGame::parseTextMessage(const InputMessagePtr& msg)
 
 void ProtocolGame::parseCancelWalk(const InputMessagePtr& msg)
 {
-    const Otc::Direction direction = static_cast<Otc::Direction>(msg->getU8());
+    const auto direction = static_cast<Otc::Direction>(msg->getU8());
 
     g_game.processWalkCancel(direction);
 }
@@ -1946,7 +1946,7 @@ void ProtocolGame::parseModalDialog(const InputMessagePtr& msg)
     const uint8 enterButton = msg->getU8(),
         escapeButton = msg->getU8();
 
-    bool priority = msg->getU8() == 0x01;
+    const bool priority = msg->getU8() == 0x01;
 
     g_game.processModalDialog(windowId, title, message, buttonList, enterButton, escapeButton, choiceList, priority);
 }
@@ -2027,7 +2027,7 @@ void ProtocolGame::setMapDescription(const InputMessagePtr& msg, int x, int y, i
 
     if(z > Otc::SEA_FLOOR) {
         startz = z - Otc::AWARE_UNDEGROUND_FLOOR_RANGE;
-        endz = std::min<int>(z + Otc::AWARE_UNDEGROUND_FLOOR_RANGE, (int)Otc::MAX_Z);
+        endz = std::min<int>(z + Otc::AWARE_UNDEGROUND_FLOOR_RANGE, Otc::MAX_Z);
         zstep = 1;
     } else {
         startz = Otc::SEA_FLOOR;
@@ -2240,7 +2240,7 @@ CreaturePtr ProtocolGame::getCreature(const InputMessagePtr& msg, uint16 type)
         }
 
         const uint8 healthPercent = msg->getU8();
-        Otc::Direction direction = static_cast<Otc::Direction>(msg->getU8());
+        const auto direction = static_cast<Otc::Direction>(msg->getU8());
 
         const Outfit& outfit = getOutfit(msg);
         if(outfit.hasMount()) {
@@ -2315,8 +2315,8 @@ CreaturePtr ProtocolGame::getCreature(const InputMessagePtr& msg, uint16 type)
         if(!creature)
             g_logger.traceError("invalid creature");
 
-        Otc::Direction direction = (Otc::Direction)msg->getU8();
-        bool unpass = msg->getU8();
+        const auto direction = static_cast<Otc::Direction>(msg->getU8());
+        const bool unpass = msg->getU8();
         if(creature) {
             creature->turn(direction);
             creature->setPassable(!unpass);
@@ -2439,7 +2439,7 @@ void ProtocolGame::parseBlessDialog(const InputMessagePtr& msg)
     msg->getU8(); // aol
 
     // parse log
-    uint8_t logCount = msg->getU8(); // log count
+    const uint8_t logCount = msg->getU8(); // log count
     for(uint_fast8_t i = 0; i < logCount; ++i) {
         msg->getU32(); // timestamp
         msg->getU8(); // color message (0 = white loss, 1 = red)
@@ -2468,7 +2468,7 @@ void ProtocolGame::parseUpdateImpactTracker(const InputMessagePtr& msg)
 
 void ProtocolGame::parseItemsPrice(const InputMessagePtr& msg)
 {
-    uint16_t priceCount = msg->getU16(); // count
+    const uint16_t priceCount = msg->getU16(); // count
 
     for(uint_fast16_t i = 0; i < priceCount; ++i) {
         msg->getU16(); // item client id
@@ -2504,7 +2504,7 @@ void ProtocolGame::parseKillTrackerUpdate(const InputMessagePtr& msg)
     msg->getU8(); // feet
     msg->getU8(); // addons
 
-    uint8_t corpseSize = msg->getU8(); // corpse size
+    const uint8_t corpseSize = msg->getU8(); // corpse size
 
     for(uint_fast8_t i = 0; i < corpseSize; ++i) {
         getItem(msg); // corpse item
@@ -2532,7 +2532,7 @@ void ProtocolGame::parseOpenRewardWall(const InputMessagePtr& msg)
     msg->getU8(); // bonus shrine (1) or instant bonus (0)
     msg->getU32(); // next reward time
     msg->getU8(); // day streak day
-    uint8_t wasDailyRewardTaken = msg->getU8(); // taken (player already took reward?)
+    const uint8_t wasDailyRewardTaken = msg->getU8(); // taken (player already took reward?)
 
     if(wasDailyRewardTaken) {
         msg->getString(); // error message

@@ -27,11 +27,13 @@
 #include <framework/luaengine/luaobject.h>
 #include <framework/otml/otml.h>
 
- // @bindclass
+#include <utility>
+
+// @bindclass
 class UILayout : public LuaObject
 {
 public:
-    UILayout(UIWidgetPtr parentWidget) : m_parentWidget(parentWidget) { m_updateDisabled = 0; }
+    UILayout(UIWidgetPtr parentWidget) : m_parentWidget(std::move(parentWidget)) { m_updateDisabled = 0; }
 
     void update();
     void updateLater();
@@ -42,7 +44,7 @@ public:
     void disableUpdates() { m_updateDisabled++; }
     void enableUpdates() { m_updateDisabled = std::max<int>(m_updateDisabled - 1, 0); }
 
-    void setParent(UIWidgetPtr parentWidget) { m_parentWidget = parentWidget; }
+    void setParent(UIWidgetPtr parentWidget) { m_parentWidget = std::move(parentWidget); }
     UIWidgetPtr getParentWidget() { return m_parentWidget; }
 
     bool isUpdateDisabled() { return m_updateDisabled > 0; }

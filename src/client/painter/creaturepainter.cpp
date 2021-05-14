@@ -185,7 +185,8 @@ void CreaturePainter::drawOutfit(const CreaturePtr& creature, const Rect& destRe
     }
 }
 
-void CreaturePainter::drawInformation(const CreaturePtr& creature, const Rect& parentRect, const Point& dest, float scaleFactor, Point drawOffset, const float horizontalStretchFactor, const float verticalStretchFactor, int drawFlags)
+void CreaturePainter::drawInformation(const CreaturePtr& creature, const Rect& parentRect, const Point& dest, float scaleFactor,
+                                      const Point& drawOffset, const float horizontalStretchFactor, const float verticalStretchFactor, int drawFlags)
 {
     if(creature->m_healthPercent < 1) // creature is dead
         return;
@@ -197,7 +198,7 @@ void CreaturePainter::drawInformation(const CreaturePtr& creature, const Rect& p
         return;
 
     const PointF jumpOffset = creature->getJumpOffset() * scaleFactor;
-    Point creatureOffset = Point(16 - creature->getDisplacementX(), -creature->getDisplacementY() - 2);
+    const auto creatureOffset = Point(16 - creature->getDisplacementX(), -creature->getDisplacementY() - 2);
     Position pos = creature->getPosition();
     Point p = dest - drawOffset;
     p += (creature->getDrawOffset() + creatureOffset) * scaleFactor - Point(stdext::round(jumpOffset.x), stdext::round(jumpOffset.y));
@@ -205,19 +206,19 @@ void CreaturePainter::drawInformation(const CreaturePtr& creature, const Rect& p
     p.y *= verticalStretchFactor;
     p += parentRect.topLeft();
 
-    bool useGray = tile->isCovered();
+    const bool useGray = tile->isCovered();
 
-    Color fillColor = Color(96, 96, 96);
+    auto fillColor = Color(96, 96, 96);
 
     if(!useGray)
         fillColor = creature->m_informationColor;
 
     // calculate main rects
-    Rect backgroundRect = Rect(p.x - (13.5), p.y, 27, 4);
+    auto backgroundRect = Rect(p.x - (13.5), p.y, 27, 4);
     backgroundRect.bind(parentRect);
 
     const Size nameSize = creature->m_nameCache.getTextSize();
-    Rect textRect = Rect(p.x - nameSize.width() / 2.0, p.y - 12, nameSize);
+    auto textRect = Rect(p.x - nameSize.width() / 2.0, p.y - 12, nameSize);
     textRect.bind(parentRect);
 
     // distance them
@@ -276,27 +277,27 @@ void CreaturePainter::drawInformation(const CreaturePtr& creature, const Rect& p
 
     if(creature->m_skull != Otc::SkullNone && creature->m_skullTexture) {
         g_painter->resetColor();
-        const Rect skullRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 5, creature->m_skullTexture->getSize());
+        const auto skullRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 5, creature->m_skullTexture->getSize());
         g_painter->drawTexturedRect(skullRect, creature->m_skullTexture);
     }
     if(creature->m_shield != Otc::ShieldNone && creature->m_shieldTexture && creature->m_showShieldTexture) {
         g_painter->resetColor();
-        const Rect shieldRect = Rect(backgroundRect.x() + 13.5, backgroundRect.y() + 5, creature->m_shieldTexture->getSize());
+        const auto shieldRect = Rect(backgroundRect.x() + 13.5, backgroundRect.y() + 5, creature->m_shieldTexture->getSize());
         g_painter->drawTexturedRect(shieldRect, creature->m_shieldTexture);
     }
     if(creature->m_emblem != Otc::EmblemNone && creature->m_emblemTexture) {
         g_painter->resetColor();
-        const Rect emblemRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 16, creature->m_emblemTexture->getSize());
+        const auto emblemRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 16, creature->m_emblemTexture->getSize());
         g_painter->drawTexturedRect(emblemRect, creature->m_emblemTexture);
     }
     if(creature->m_type != Proto::CREATURE_TYPE_UNKNOW && creature->m_typeTexture) {
         g_painter->resetColor();
-        const Rect typeRect = Rect(backgroundRect.x() + 13.5 + 12 + 12, backgroundRect.y() + 16, creature->m_typeTexture->getSize());
+        const auto typeRect = Rect(backgroundRect.x() + 13.5 + 12 + 12, backgroundRect.y() + 16, creature->m_typeTexture->getSize());
         g_painter->drawTexturedRect(typeRect, creature->m_typeTexture);
     }
     if(creature->m_icon != Otc::NpcIconNone && creature->m_iconTexture) {
         g_painter->resetColor();
-        const Rect iconRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 5, creature->m_iconTexture->getSize());
+        const auto iconRect = Rect(backgroundRect.x() + 13.5 + 12, backgroundRect.y() + 5, creature->m_iconTexture->getSize());
         g_painter->drawTexturedRect(iconRect, creature->m_iconTexture);
     }
 }

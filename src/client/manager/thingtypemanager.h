@@ -44,7 +44,7 @@ public:
     void saveDat(const std::string& fileName);
 
     void addItemType(const ItemTypePtr& itemType);
-    const ItemTypePtr& findItemTypeByClientId(const uint16 id);
+    const ItemTypePtr& findItemTypeByClientId(uint16 id);
     const ItemTypePtr& findItemTypeByName(const std::string& name);
     ItemTypeList findItemTypesByName(const std::string& name);
     ItemTypeList findItemTypesByString(const std::string& name);
@@ -52,15 +52,15 @@ public:
     const ThingTypePtr& getNullThingType() { return m_nullThingType; }
     const ItemTypePtr& getNullItemType() { return m_nullItemType; }
 
-    const ThingTypePtr& getThingType(const uint16 id, const ThingCategory category);
+    const ThingTypePtr& getThingType(uint16 id, ThingCategory category);
     const ItemTypePtr& getItemType(uint16 id);
     ThingType* rawGetThingType(const uint16 id, const ThingCategory category) { return m_thingTypes[category][id].get(); }
     ItemType* rawGetItemType(uint16 id) { return m_itemTypes[id].get(); }
 
-    ThingTypeList findThingTypeByAttr(const ThingAttr attr, const ThingCategory category);
-    ItemTypeList findItemTypeByCategory(const ItemCategory category);
+    ThingTypeList findThingTypeByAttr(ThingAttr attr, ThingCategory category);
+    ItemTypeList findItemTypeByCategory(ItemCategory category);
 
-    const ThingTypeList& getThingTypes(const ThingCategory category);
+    const ThingTypeList& getThingTypes(ThingCategory category);
     const ItemTypeList& getItemTypes() { return m_itemTypes; }
 
     uint32 getDatSignature() { return m_datSignature; }

@@ -276,7 +276,7 @@ public:
     int setFloorDescription(const InputMessagePtr& msg, int x, int y, int z, int width, int height, int offset, int skip);
     int setTileDescription(const InputMessagePtr& msg, const Position& position);
 
-    Outfit getOutfit(const InputMessagePtr& msg, const bool addMount = true);
+    Outfit getOutfit(const InputMessagePtr& msg, bool addMount = true);
     ThingPtr getThing(const InputMessagePtr& msg);
     ThingPtr getMappedThing(const InputMessagePtr& msg);
     CreaturePtr getCreature(const InputMessagePtr& msg, uint16 type = 0);

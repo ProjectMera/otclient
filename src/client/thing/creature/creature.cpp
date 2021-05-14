@@ -491,7 +491,7 @@ void Creature::setSpeed(uint16 speed)
     speed *= 2;
 
     if(speed > -speedB) {
-        m_calculatedStepSpeed = floor((Creature::speedA * log((speed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
+        m_calculatedStepSpeed = floor((speedA * log((speed / 2) + speedB) + speedC) + 0.5);
         if(m_calculatedStepSpeed == 0) m_calculatedStepSpeed = 1;
     } else m_calculatedStepSpeed = 1;
 

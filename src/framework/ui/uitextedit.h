@@ -70,7 +70,7 @@ public:
     void wrapText();
     std::string getDisplayedText();
     std::string getSelection();
-    int getTextPos(Point pos);
+    int getTextPos(const Point& pos);
     int getCursorPos() { return m_cursorPos; }
     Point getTextVirtualOffset() { return m_textVirtualOffset; }
     Size getTextVirtualSize() { return m_textVirtualSize; }

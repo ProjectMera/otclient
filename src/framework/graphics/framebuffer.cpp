@@ -84,7 +84,7 @@ void FrameBuffer::resize(const Size& size)
         internalBind();
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture->getId(), 0);
 
-        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if(status != GL_FRAMEBUFFER_COMPLETE)
             g_logger.fatal("Unable to setup framebuffer object");
         internalRelease();
