@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "towns.h"
+#include <client/manager/towns.h>
 
 TownManager g_towns;
 

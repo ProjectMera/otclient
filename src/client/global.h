@@ -26,8 +26,7 @@
 #include <framework/global.h>
 
  // widely used headers
-#include "const.h"
-#include "position.h"
-#include "features.h"
+#include <client/const.h>
+#include <client/util/position.h>
 
 #endif

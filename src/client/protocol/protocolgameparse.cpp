@@ -20,17 +20,17 @@
  * THE SOFTWARE.
  */
 
-#include "protocolgame.h"
+#include <client/protocol/protocolgame.h>
 
-#include "../localplayer.h"
-#include "../manager/thingtypemanager.h"
-#include "../game.h"
-#include "../map.h"
-#include "../item.h"
-#include "../effect.h"
-#include "../missile.h"
-#include "../tile.h"
-#include "../luavaluecasts.h"
+#include <client/thing/creature/localplayer.h>
+#include <client/manager/thingtypemanager.h>
+#include <client/game.h>
+#include <client/map/map.h>
+#include <client/thing/item.h>
+#include <client/thing/effect.h>
+#include <client/thing/missile.h>
+#include <client/map/tile.h>
+#include <client/lua/luavaluecasts.h>
 #include <framework/core/eventdispatcher.h>
 
 void ProtocolGame::parseMessage(const InputMessagePtr& msg)

@@ -2,7 +2,7 @@
  * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
+ * of this software and associated documentation files (the <client/Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -20,19 +20,19 @@
  * THE SOFTWARE.
  */
 
-#include "game.h"
 #include <framework/core/application.h>
 #include <framework/core/eventdispatcher.h>
 #include <framework/ui/uimanager.h>
-#include "container.h"
-#include "creature.h"
-#include "localplayer.h"
-#include "luavaluecasts.h"
-#include "map.h"
-#include "protocol/protocolcodes.h"
-#include "protocol/protocolgame.h"
-#include "statictext.h"
-#include "tile.h"
+#include <client/game.h>
+#include <client/thing/type/container.h>
+#include <client/thing/creature/creature.h>
+#include <client/thing/creature/localplayer.h>
+#include <client/lua/luavaluecasts.h>
+#include <client/map/map.h>
+#include <client/protocol/protocolcodes.h>
+#include <client/protocol/protocolgame.h>
+#include <client/thing/text/statictext.h>
+#include <client/map/tile.h>
 
 const uint16_t CLIENT_VERSION = 1264;
 

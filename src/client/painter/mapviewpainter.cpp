@@ -20,13 +20,13 @@
  * THE SOFTWARE.
  */
 
-#include "mapviewpainter.h"
-#include "tilepainter.h"
-#include "thingpainter.h"
-#include "../map.h"
-#include "../game.h"
-#include "../missile.h"
-#include "../manager/shadermanager.h"
+#include <client/painter/mapviewpainter.h>
+#include <client/painter/tilepainter.h>
+#include <client/painter/thingpainter.h>
+#include <client/map/map.h>
+#include <client/game.h>
+#include <client/thing/missile.h>
+#include <client/manager/shadermanager.h>
 
 #include <framework/core/declarations.h>
 #include <framework/graphics/framebuffermanager.h>

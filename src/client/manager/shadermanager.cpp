@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "shadermanager.h"
+#include <client/manager/shadermanager.h>
 #include <framework/core/resourcemanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/graphics/paintershaderprogram.h>

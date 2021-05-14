@@ -20,14 +20,14 @@
  * THE SOFTWARE.
  */
 
-#include "thingtypemanager.h"
-#include "../creature.h"
-#include "creatures.h"
-#include "../game.h"
-#include "../itemtype.h"
-#include "spritemanager.h"
-#include "../thing.h"
-#include "../thingtype.h"
+#include <client/manager/thingtypemanager.h>
+#include <client/thing/creature/creature.h>
+#include <client/manager/creatures.h>
+#include <client/game.h>
+#include <client/thing/type/itemtype.h>
+#include <client/manager/spritemanager.h>
+#include <client/thing/thing.h>
+#include <client/thing/type/thingtype.h>
 
 #include <framework/core/binarytree.h>
 #include <framework/core/filestream.h>

@@ -20,12 +20,11 @@
  * THE SOFTWARE.
  */
 
-#include "creaturepainter.h"
-#include "thingpainter.h"
-#include "thingpainter.h"
+#include <client/painter/creaturepainter.h>
+#include <client/painter/thingpainter.h>
 
-#include "../map.h"
-#include "../game.h"
+#include <client/map/map.h>
+#include <client/game.h>
 
 #include <framework/core/declarations.h>
 #include <framework/graphics/graphics.h>

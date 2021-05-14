@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-#include "protocolgame.h"
-#include "../game.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../player.h"
+#include <client/protocol/protocolgame.h>
+#include <client/game.h>
+#include <client/thing/item.h>
+#include <client/thing/creature/localplayer.h>
+#include <client/thing/creature/player.h>
 
 void ProtocolGame::login(const std::string& accountName, const std::string& accountPassword, const std::string& host, uint16 port, const std::string& characterName, const std::string& authenticatorToken, const std::string& sessionKey)
 {

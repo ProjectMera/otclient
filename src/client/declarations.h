@@ -25,7 +25,7 @@
 
 #include <framework/net/declarations.h>
 #include <framework/ui/declarations.h>
-#include "global.h"
+#include <client/global.h>
 
  // core
 class Map;

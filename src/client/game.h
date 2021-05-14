@@ -2,7 +2,7 @@
  * Copyright (c) 2010-2020 OTClient <https://github.com/edubart/otclient>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
+ * of this software and associated documentation files (the <client/Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -24,15 +24,15 @@
 #define GAME_H
 
 #include <framework/core/timer.h>
-#include "animatedtext.h"
-#include "container.h"
-#include "creature.h"
-#include "declarations.h"
-#include "effect.h"
-#include "item.h"
-#include "localplayer.h"
-#include "outfit.h"
-#include "protocol/protocolgame.h"
+#include <client/thing/text/animatedtext.h>
+#include <client/thing/type/container.h>
+#include <client/thing/creature/creature.h>
+#include <client/declarations.h>
+#include <client/thing/effect.h>
+#include <client/thing/item.h>
+#include <client/thing/creature/localplayer.h>
+#include <client/thing/creature/outfit.h>
+#include <client/protocol/protocolgame.h>
 
 #include <bitset>
 

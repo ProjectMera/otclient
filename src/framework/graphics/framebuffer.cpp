@@ -28,8 +28,6 @@
 #include <framework/platform/platformwindow.h>
 #include <framework/core/application.h>
 
-#include <client/features.h>
-
 uint FrameBuffer::boundFbo = 0;
 
 FrameBuffer::FrameBuffer(const bool useAlphaWriting, const uint16_t minTimeUpdate)

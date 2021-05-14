@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "uicreature.h"
-#include "../painter/creaturepainter.h"
+#include <client/ui/uicreature.h>
+#include <client/painter/creaturepainter.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>
 

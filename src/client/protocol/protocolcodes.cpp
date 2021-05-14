@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "protocolcodes.h"
+#include <client/protocol/protocolcodes.h>
 
 namespace Proto {
     std::map<uint8, uint8> messageModesMap;

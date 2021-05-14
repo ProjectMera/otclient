@@ -20,11 +20,11 @@
  * THE SOFTWARE.
  */
 
-#include "spritemanager.h"
+#include <client/manager/spritemanager.h>
 #include <framework/core/filestream.h>
 #include <framework/core/resourcemanager.h>
 #include <framework/graphics/image.h>
-#include "../game.h"
+#include <client/game.h>
 
 SpriteManager g_sprites;
 

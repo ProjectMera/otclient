@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "../map.h"
+#include <client/map/map.h>
 
 #include <framework/core/resourcemanager.h>
 

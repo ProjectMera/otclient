@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 
-#include "creatures.h"
-#include "../creature.h"
-#include "../map.h"
+#include <client/manager/creatures.h>
+#include <client/thing/creature/creature.h>
+#include <client/map/map.h>
 
 #include <framework/core/resourcemanager.h>
 #include <framework/xml/tinyxml.h>

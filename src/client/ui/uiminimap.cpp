@@ -20,14 +20,14 @@
  * THE SOFTWARE.
  */
 
-#include "uiminimap.h"
-#include "../game.h"
-#include "../luavaluecasts.h"
-#include "../minimap.h"
-#include "uimapanchorlayout.h"
+#include <client/ui/uiminimap.h>
+#include <client/game.h>
+#include <client/lua/luavaluecasts.h>
+#include <client/map/minimap.h>
+#include <client/ui/uimapanchorlayout.h>
 
 #include <framework/graphics/painter.h>
-#include "uimapanchorlayout.h"
+#include <client/ui/uimapanchorlayout.h>
 
 UIMinimap::UIMinimap()
 {

@@ -20,14 +20,14 @@
  * THE SOFTWARE.
  */
 
-#include "uimap.h"
+#include <client/ui/uimap.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>
-#include "../game.h"
-#include "../localplayer.h"
-#include "../map.h"
-#include "../mapview.h"
-#include "../painter/mapviewpainter.h"
+#include <client/game.h>
+#include <client/thing/creature/localplayer.h>
+#include <client/map/map.h>
+#include <client/map/mapview.h>
+#include <client/painter/mapviewpainter.h>
 
 UIMap::UIMap()
 {

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "uiprogressrect.h"
+#include <client/ui/uiprogressrect.h>
 #include <framework/graphics/fontmanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>

@@ -127,6 +127,48 @@
     <Filter Include="Header Files\client\manager">
       <UniqueIdentifier>{d7b1545d-6b48-47e5-abfb-42a70567afba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\client\util">
+      <UniqueIdentifier>{5e5bb50e-f7f9-4f40-9f80-18ea7f0e96b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\thing">
+      <UniqueIdentifier>{a134c6c8-a609-478c-9291-059242047f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\map">
+      <UniqueIdentifier>{509f11cb-cfef-467e-8b9c-0b8b26d84d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\lua">
+      <UniqueIdentifier>{ab239dee-946e-49a1-b8a5-ef68026ab6ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\thing\creature">
+      <UniqueIdentifier>{d18d1160-3309-48dd-8fa6-889aad77d418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\thing\text">
+      <UniqueIdentifier>{3fb191da-875f-47ab-8039-70227c1e47f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\client\thing\type">
+      <UniqueIdentifier>{08d42f0f-daf5-4cbe-8162-b5c252564b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\lua">
+      <UniqueIdentifier>{6a0ef46a-631e-40c6-811e-f5b90b458a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\map">
+      <UniqueIdentifier>{3ed9a9d7-e0d5-49d9-8f5c-cb385cb932f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\thing">
+      <UniqueIdentifier>{f837069e-64e3-4447-a27d-75d737140951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\util">
+      <UniqueIdentifier>{102906e5-8236-4b28-8cc5-df5452694037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\thing\creature">
+      <UniqueIdentifier>{e5cd73da-af52-43e7-bfb2-1a7cc0453b44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\thing\text">
+      <UniqueIdentifier>{67dd1c33-c3b3-4c43-8a8f-2a7f0e608ac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client\thing\type">
+      <UniqueIdentifier>{4bb045fa-08cc-4c4f-ae6c-92485a459ca7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\framework\luafunctions.cpp">
@@ -426,70 +468,10 @@
     <ClCompile Include="..\src\framework\xml\tinyxmlparser.cpp">
       <Filter>Source Files\framework\xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\animatedtext.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\client.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\container.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\creature.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\effect.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\client\game.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\item.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\itemtype.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\lightview.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\localplayer.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\luafunctions.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\luavaluecasts.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\map.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\mapview.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\minimap.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\missile.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\outfit.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\player.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\statictext.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\thing.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\thingtype.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\tile.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\main.cpp">
@@ -497,9 +479,6 @@
     </ClCompile>
     <ClCompile Include="..\src\framework\core\config.cpp">
       <Filter>Source Files\framework\core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\animator.cpp">
-      <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\painter\creaturepainter.cpp">
       <Filter>Source Files\client\painter</Filter>
@@ -566,6 +545,69 @@
     </ClCompile>
     <ClCompile Include="..\src\client\manager\spritemanager.cpp">
       <Filter>Source Files\client\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\util\animator.cpp">
+      <Filter>Source Files\client\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\creature\creature.cpp">
+      <Filter>Source Files\client\thing\creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\effect.cpp">
+      <Filter>Source Files\client\thing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\item.cpp">
+      <Filter>Source Files\client\thing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\map\lightview.cpp">
+      <Filter>Source Files\client\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\lua\luafunctions.cpp">
+      <Filter>Source Files\client\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\lua\luavaluecasts.cpp">
+      <Filter>Source Files\client\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\type\itemtype.cpp">
+      <Filter>Source Files\client\thing\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\map\mapview.cpp">
+      <Filter>Source Files\client\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\map\minimap.cpp">
+      <Filter>Source Files\client\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\map\tile.cpp">
+      <Filter>Source Files\client\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\map\map.cpp">
+      <Filter>Source Files\client\map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\creature\player.cpp">
+      <Filter>Source Files\client\thing\creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\creature\outfit.cpp">
+      <Filter>Source Files\client\thing\creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\creature\localplayer.cpp">
+      <Filter>Source Files\client\thing\creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\text\statictext.cpp">
+      <Filter>Source Files\client\thing\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\text\animatedtext.cpp">
+      <Filter>Source Files\client\thing\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\missile.cpp">
+      <Filter>Source Files\client\thing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\thing.cpp">
+      <Filter>Source Files\client\thing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\type\thingtype.cpp">
+      <Filter>Source Files\client\thing\type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\thing\type\container.cpp">
+      <Filter>Source Files\client\thing\type</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -959,25 +1001,13 @@
     <ClInclude Include="..\src\framework\xml\tinyxml.h">
       <Filter>Header Files\framework\xml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\animatedtext.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\client.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\const.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\container.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\creature.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\client\declarations.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\effect.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\game.h">
@@ -986,65 +1016,8 @@
     <ClInclude Include="..\src\client\global.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\client\item.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\itemtype.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\lightview.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\localplayer.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\luavaluecasts.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\map.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\mapview.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\minimap.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\missile.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\outfit.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\player.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\position.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\statictext.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\thing.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\thingstype.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\thingtype.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\tile.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\framework\core\config.h">
       <Filter>Header Files\framework\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\animator.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\features.h">
-      <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\painter\creaturepainter.h">
       <Filter>Header Files\client\painter</Filter>
@@ -1102,6 +1075,72 @@
     </ClInclude>
     <ClInclude Include="..\src\client\manager\shadermanager.h">
       <Filter>Header Files\client\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\lua\luavaluecasts.h">
+      <Filter>Header Files\client\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\map\lightview.h">
+      <Filter>Header Files\client\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\map\mapview.h">
+      <Filter>Header Files\client\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\map\minimap.h">
+      <Filter>Header Files\client\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\map\tile.h">
+      <Filter>Header Files\client\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\map\map.h">
+      <Filter>Header Files\client\map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\util\animator.h">
+      <Filter>Header Files\client\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\util\position.h">
+      <Filter>Header Files\client\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\effect.h">
+      <Filter>Header Files\client\thing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\item.h">
+      <Filter>Header Files\client\thing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\missile.h">
+      <Filter>Header Files\client\thing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\thing.h">
+      <Filter>Header Files\client\thing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\creature\creature.h">
+      <Filter>Header Files\client\thing\creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\creature\localplayer.h">
+      <Filter>Header Files\client\thing\creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\creature\outfit.h">
+      <Filter>Header Files\client\thing\creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\creature\player.h">
+      <Filter>Header Files\client\thing\creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\type\itemtype.h">
+      <Filter>Header Files\client\thing\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\type\thingstype.h">
+      <Filter>Header Files\client\thing\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\type\thingtype.h">
+      <Filter>Header Files\client\thing\type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\text\statictext.h">
+      <Filter>Header Files\client\thing\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\text\animatedtext.h">
+      <Filter>Header Files\client\thing\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\thing\type\container.h">
+      <Filter>Header Files\client\thing\type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

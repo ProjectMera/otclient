@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  */
 
-#include "../game.h"
-#include "../map.h"
-#include "../tile.h"
+#include <client/game.h>
+#include <client/map/map.h>
+#include <client/map/tile.h>
 
 #include <framework/core/application.h>
 #include <framework/core/binarytree.h>

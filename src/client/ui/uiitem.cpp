@@ -20,8 +20,8 @@
  * THE SOFTWARE.
  */
 
-#include "uiitem.h"
-#include "../painter/thingpainter.h"
+#include <client/ui/uiitem.h>
+#include <client/painter/thingpainter.h>
 #include <framework/graphics/fontmanager.h>
 #include <framework/graphics/graphics.h>
 #include <framework/otml/otml.h>

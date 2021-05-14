@@ -20,16 +20,16 @@
  * THE SOFTWARE.
  */
 
-#include "client.h"
 #include <framework/core/configmanager.h>
 #include <framework/core/modulemanager.h>
 #include <framework/core/resourcemanager.h>
 #include <framework/graphics/graphics.h>
-#include "game.h"
-#include "map.h"
-#include "minimap.h"
-#include "manager/shadermanager.h"
-#include "manager/spritemanager.h"
+#include <client/game.h>
+#include <client/client.h>
+#include <client/map/map.h>
+#include <client/map/minimap.h>
+#include <client/manager/shadermanager.h>
+#include <client/manager/spritemanager.h>
 
 Client g_client;
 

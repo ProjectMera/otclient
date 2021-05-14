@@ -20,15 +20,15 @@
  * THE SOFTWARE.
  */
 
-#include "thingpainter.h"
-#include "../lightview.h"
-#include "../thingtype.h"
-#include "../game.h"
-#include "../missile.h"
-#include "../effect.h"
-#include "../item.h"
-#include "../animatedtext.h"
-#include "../statictext.h"
+#include <client/painter/thingpainter.h>
+#include <client/map/lightview.h>
+#include <client/thing/type/thingtype.h>
+#include <client/game.h>
+#include <client/thing/missile.h>
+#include <client/thing/effect.h>
+#include <client/thing/item.h>
+#include <client/thing/text/animatedtext.h>
+#include <client/thing/text/statictext.h>
 
 #include <framework/graphics/graphics.h>
 
